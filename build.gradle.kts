@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform") version "1.5.21"
     kotlin("plugin.serialization") version "1.5.21"
     id("com.diffplug.spotless") version "5.14.2"
+    id("at.stnwtr.gradle-secrets-plugin") version "1.0.1"
 }
 
 group = "de.nycode"
@@ -55,6 +56,21 @@ kotlin {
             }
         }
         val jsTest by getting
+    }
+}
+
+tasks.withType<Test> {
+    val githubToken = secrets.getOrEnv("GITHUB_TOKEN")
+    if (githubToken != null) {
+        environment["GITHUB_TOKEN"] = githubToken
+    }
+    val repoOwner = secrets.getOrEnv("REPO_OWNER")
+    if (repoOwner != null) {
+        environment["REPO_OWNER"] = repoOwner
+    }
+    val repoName = secrets.getOrEnv("REPO_NAME")
+    if (repoName != null) {
+        environment["REPO_NAME"] = repoName
     }
 }
 

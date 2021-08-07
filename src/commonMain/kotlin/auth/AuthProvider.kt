@@ -27,11 +27,10 @@ public sealed interface AuthProvider {
         override fun HttpClientConfig<*>.configureClient() {
             install(Auth) {
                 basic {
-                    basic {
-                        credentials {
-                            BasicAuthCredentials(_username, token)
-                        }
+                    credentials {
+                        BasicAuthCredentials(_username, token)
                     }
+                    sendWithoutRequest { true }
                 }
             }
         }

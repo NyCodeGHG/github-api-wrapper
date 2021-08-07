@@ -28,13 +28,17 @@ public class GitHubClient(
             serializer = KotlinxSerializer()
         }
         defaultRequest {
+            with(authProvider) {
+                configureAuth()
+            }
             // Set the Accept Header according to
             // https://docs.github.com/en/rest/overview/resources-in-the-rest-api#current-version
             header(HttpHeaders.Accept, "application/vnd.github.v3+json")
             userAgent("NyCodeGHG/github-api-wrapper") // TODO: replace hardcoded repo with build variable
-            url.takeFrom(URLBuilder().takeFrom(baseUrl).apply {
-                encodedPath += url.encodedPath
-            })
+            host = baseUrl.removePrefix("https://")
+            url {
+                protocol = URLProtocol.HTTPS
+            }
         }
     }
 

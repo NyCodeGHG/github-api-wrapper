@@ -11,5 +11,4 @@ class RepositoriesOrganizationsAPITests {
         val repos = client.repos.organizations.listOrganizationRepositories("PaperMC")
         println(repos.joinToString { it.name })
     }
-
 }
