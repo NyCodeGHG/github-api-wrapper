@@ -60,7 +60,7 @@ kotlin {
 }
 
 tasks.withType<Test> {
-    val githubToken = secrets.getOrEnv("GITHUB_TOKEN")
+    val githubToken = secrets.getOrEnv("GH_TOKEN")
     if (githubToken != null) {
         environment["GITHUB_TOKEN"] = githubToken
     }
