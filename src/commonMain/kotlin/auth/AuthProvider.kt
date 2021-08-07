@@ -9,20 +9,20 @@ import io.ktor.http.*
 /**
  * Abstraction of different authentication methods for authenticating with the GitHub API.
  */
-sealed interface AuthProvider {
+public sealed interface AuthProvider {
 
-    fun HttpClientConfig<*>.configureClient() {}
-    fun HttpRequestBuilder.configureAuth() {}
+    public fun HttpClientConfig<*>.configureClient() {}
+    public fun HttpRequestBuilder.configureAuth() {}
 
     /**
      * [AuthProvider] for accessing the GitHub API without authentication.
      */
-    object None : AuthProvider
+    public object None : AuthProvider
 
     /**
      * [AuthProvider] for authenticating with [Basic Authentication](https://docs.github.com/en/rest/overview/other-authentication-methods#basic-authentication).
      */
-    class Basic(private val _username: String, private val token: String) : AuthProvider {
+    public class Basic(private val _username: String, private val token: String) : AuthProvider {
 
         override fun HttpClientConfig<*>.configureClient() {
             install(Auth) {
@@ -41,7 +41,7 @@ sealed interface AuthProvider {
     /**
      * [AuthProvider] for authentication with an [OAuth Token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/authorizing-oauth-apps) or a [Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token).
      */
-    class OAuth(private val token: String) : AuthProvider {
+    public class OAuth(private val token: String) : AuthProvider {
 
         override fun HttpRequestBuilder.configureAuth() {
             header(HttpHeaders.Authorization, "token $token")
