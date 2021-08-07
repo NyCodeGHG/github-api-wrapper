@@ -45,3 +45,7 @@ jobs:
 
             - name: Build with Gradle
               run: ./gradlew build
+              env:
+                GH_TOKEN: ${{ secrets.GH_TOKEN }}
+                REPO_OWNER: ${{ secrets.REPO_OWNER }}
+                REPO_NAME: ${{ secrets.REPO_NAME }}
