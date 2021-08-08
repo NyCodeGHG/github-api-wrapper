@@ -48,4 +48,15 @@ public value class RepositoriesAPI(private val httpClient: HttpClient) {
             contentType(ContentType.Application.Json)
             body = builder
         }
+
+    public suspend fun deleteRepository(
+        owner: String,
+        repo: String
+    ): Unit =
+        httpClient.delete {
+            url {
+                path("repos", owner, repo)
+            }
+        }
+
 }
