@@ -17,6 +17,7 @@
 package de.nycode.github.repositories
 
 import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
+import de.nycode.github.request.paginatedGet
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -57,6 +58,20 @@ public value class RepositoriesAPI(private val httpClient: HttpClient) {
             url {
                 path("repos", owner, repo)
             }
+        }
+
+    public suspend fun listRepositoryContributors(
+        owner: String,
+        repo: String,
+        includeAnonymousContributors: Boolean? = null,
+        page: Int? = null,
+        perPage: Int? = null
+    ): List<Contributor> =
+        httpClient.paginatedGet(page, perPage) {
+            url {
+                path("repos", owner, repo, "contributors")
+            }
+            parameter("anon", includeAnonymousContributors)
         }
 
 }
