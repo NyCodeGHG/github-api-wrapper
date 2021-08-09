@@ -110,4 +110,15 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         repo: String
     ): List<Language> =
         gitHubClient.get<Map<String, Int>>("repos", owner, repo, "languages").map { Language(it.key, it.value) }
+
+    public suspend fun listRepositoryTags(
+        owner: String,
+        repo: String,
+        builder: PaginatedRequestBuilder.() -> Unit
+    ): List<Tag> =
+        gitHubClient.paginatedGet("repos", owner, repo, "tags") {
+            val (page, perPage) = PaginatedRequestBuilder().apply(builder)
+            this.page = page
+            this.perPage = perPage
+        }
 }
