@@ -17,8 +17,11 @@
 package de.nycode.github.request
 
 import de.nycode.github.GitHubClient
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.request.parameter
+import io.ktor.client.request.request
+import io.ktor.http.HttpMethod
+import io.ktor.http.URLBuilder
+import io.ktor.http.takeFrom
 
 internal suspend inline fun <reified T> GitHubClient.request(
     vararg path: String,
@@ -37,6 +40,17 @@ internal suspend inline fun <reified T> GitHubClient.get(
         builder()
         request {
             method = HttpMethod.Get
+        }
+    }
+
+internal suspend inline fun <reified T> GitHubClient.post(
+    vararg path: String,
+    builder: RequestBuilder.() -> Unit = {}
+): T =
+    request(*path) {
+        builder()
+        request {
+            method = HttpMethod.Post
         }
     }
 

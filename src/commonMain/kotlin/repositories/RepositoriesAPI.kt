@@ -40,13 +40,12 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     public suspend fun updateRepository(
         owner: String,
         repo: String,
-        block: UpdateRepositoryRequestBuilder.() -> Unit
+        builder: UpdateRepositoryRequestBuilder.() -> Unit
     ): Repository =
         gitHubClient.patch("repos", owner, repo) {
             request {
-                val builder = UpdateRepositoryRequestBuilder().apply(block)
                 contentType(ContentType.Application.Json)
-                body = builder
+                body = UpdateRepositoryRequestBuilder().apply(builder)
             }
         }
 
@@ -90,6 +89,19 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
             this.perPage = perPage
             request {
                 parameter("anon", includeAnonymousContributors)
+            }
+        }
+
+    public suspend fun createRepositoryDispatchEvent(
+        owner: String,
+        repo: String,
+        eventType: String,
+        builder: CreateRepositoryDispatchEventRequestBuilder.() -> Unit
+    ): Unit =
+        gitHubClient.post("repos", owner, repo, "dispatches") {
+            request {
+                contentType(ContentType.Application.Json)
+                body = CreateRepositoryDispatchEventRequestBuilder(eventType).apply(builder)
             }
         }
 }
