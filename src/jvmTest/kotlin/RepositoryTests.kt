@@ -16,6 +16,7 @@
 
 import de.nycode.github.GitHubClient
 import de.nycode.github.auth.AuthProvider
+import de.nycode.github.preview.ApiPreview
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -29,5 +30,12 @@ class RepositoryTests {
         val repo = client.repos.getRepository("octocat", "Spoon-Knife")
         assertEquals("octocat", repo.owner.login)
         assertEquals("Spoon-Knife", repo.name)
+    }
+
+    @OptIn(ApiPreview::class)
+    @Test
+    fun `getRepositoryTopics returns correct data`(): Unit = runBlocking {
+        val topics = client.repos.getRepositoryTopics("kordlib", "kord")
+        assert(topics.isNotEmpty())
     }
 }

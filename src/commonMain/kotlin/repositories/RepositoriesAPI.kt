@@ -40,7 +40,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     public suspend fun updateRepository(
         owner: String,
         repo: String,
-        builder: UpdateRepositoryRequestBuilder.() -> Unit
+        builder: UpdateRepositoryRequestBuilder.() -> Unit = {}
     ): Repository =
         gitHubClient.patch("repos", owner, repo) {
             request {
@@ -81,7 +81,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         owner: String,
         repo: String,
         includeAnonymousContributors: Boolean? = null,
-        builder: PaginatedRequestBuilder.() -> Unit
+        builder: PaginatedRequestBuilder.() -> Unit = {}
     ): List<Contributor> =
         gitHubClient.paginatedGet("repos", owner, repo, "contributors") {
             builder()
@@ -94,7 +94,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         owner: String,
         repo: String,
         eventType: String,
-        builder: CreateRepositoryDispatchEventRequestBuilder.() -> Unit
+        builder: CreateRepositoryDispatchEventRequestBuilder.() -> Unit = {}
     ): Unit =
         gitHubClient.post("repos", owner, repo, "dispatches") {
             request {
@@ -112,7 +112,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     public suspend fun listRepositoryTags(
         owner: String,
         repo: String,
-        builder: PaginatedRequestBuilder.() -> Unit
+        builder: PaginatedRequestBuilder.() -> Unit = {}
     ): List<Tag> =
         gitHubClient.paginatedGet("repos", owner, repo, "tags") {
             builder()
@@ -121,9 +121,22 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     public suspend fun listRepositoryTeams(
         owner: String,
         repo: String,
-        builder: PaginatedRequestBuilder.() -> Unit
+        builder: PaginatedRequestBuilder.() -> Unit = {}
     ): List<Team> =
         gitHubClient.paginatedGet("repos", owner, repo, "teams") {
             builder()
         }
+
+    @ApiPreview
+    public suspend fun getRepositoryTopics(
+        owner: String,
+        repo: String,
+        builder: PaginatedRequestBuilder.() -> Unit = {}
+    ): List<String> =
+        gitHubClient.paginatedGet<GetRepositoryTopicsRequestResponse>("repos", owner, repo, "topics") {
+            builder()
+            request {
+                header(HttpHeaders.Accept, Previews.MercyPreview)
+            }
+        }.names
 }

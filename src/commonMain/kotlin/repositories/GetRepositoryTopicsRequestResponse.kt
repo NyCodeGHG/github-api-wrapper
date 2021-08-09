@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.preview
+package de.nycode.github.repositories
 
-internal object Previews {
+import kotlinx.serialization.Serializable
 
-    const val LondonPreview = "application/vnd.github.london-preview+json"
-    const val MercyPreview = "application/vnd.github.mercy-preview+json"
-
-}
+@Serializable
+internal class GetRepositoryTopicsRequestResponse(
+    val names: List<String>
+)
