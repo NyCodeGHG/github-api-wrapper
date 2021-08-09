@@ -14,20 +14,19 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.request
+package de.nycode.github.repositories
 
-import io.ktor.client.request.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-public open class PaginatedRequestBuilder(
-    public var page: Int? = null,
-    public var perPage: Int? = null,
-    private val requests: MutableList<HttpRequestBuilder.() -> Unit> = mutableListOf()
-) {
-    public operator fun component1(): Int? = page
-    public operator fun component2(): Int? = perPage
-    public operator fun component3(): List<HttpRequestBuilder.() -> Unit> = requests
+@Serializable
+public enum class Affiliation {
+    @SerialName("owner")
+    OWNER,
 
-    public fun request(builder: HttpRequestBuilder.() -> Unit) {
-        requests += builder
-    }
+    @SerialName("collaborator")
+    COLLABORATOR,
+
+    @SerialName("organization_member")
+    ORGANIZATION_MEMBER
 }

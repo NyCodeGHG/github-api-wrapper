@@ -227,4 +227,12 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
                 parameter("since", ListPublicRepositoriesRequestBuilder().apply(builder).since)
             }
         }
+
+    public suspend fun listRepositoriesForAuthenticatedUser(builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit): List<Repository> =
+        gitHubClient.get("user", "repos") {
+            request {
+                contentType(ContentType.Application.Json)
+                body = ListRepositoriesForAuthenticatedUserRequestBuilder().apply(builder)
+            }
+        }
 }

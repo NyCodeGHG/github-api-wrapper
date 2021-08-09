@@ -16,10 +16,22 @@
 
 package de.nycode.github.request
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 public enum class RepositorySort {
+
+    @SerialName("created")
     CREATED,
+
+    @SerialName("updated")
     UPDATED,
+
+    @SerialName("pushed")
     PUSHED,
+
+    @SerialName("full_name")
     FULL_NAME;
 
     override fun toString(): String = name.lowercase()
