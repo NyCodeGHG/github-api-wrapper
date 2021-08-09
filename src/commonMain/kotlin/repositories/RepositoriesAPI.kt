@@ -104,4 +104,10 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
                 body = CreateRepositoryDispatchEventRequestBuilder(eventType).apply(builder)
             }
         }
+
+    public suspend fun listRepositoryLanguages(
+        owner: String,
+        repo: String
+    ): List<Language> =
+        gitHubClient.get<Map<String, Int>>("repos", owner, repo, "languages").map { Language(it.key, it.value) }
 }
