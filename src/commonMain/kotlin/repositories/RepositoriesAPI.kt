@@ -23,10 +23,8 @@ import de.nycode.github.preview.preview
 import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
 import de.nycode.github.request.*
 import io.ktor.client.features.expectSuccess
-import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlin.jvm.JvmInline
@@ -218,6 +216,15 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
                 preview(Previews.BaptistePreview)
                 contentType(ContentType.Application.Json)
                 body = CreateRepositoryFromTemplateRequestBuilder(name).apply(builder)
+            }
+        }
+
+    public suspend fun listPublicRepositories(
+        builder: ListPublicRepositoriesRequestBuilder.() -> Unit = {}
+    ): List<Repository> =
+        gitHubClient.get("repositories") {
+            request {
+                parameter("since", ListPublicRepositoriesRequestBuilder().apply(builder).since)
             }
         }
 }

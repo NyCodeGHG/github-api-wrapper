@@ -21,7 +21,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public class Repository(
+public data class Repository(
     public val id: Int,
     @SerialName("node_id")
     public val nodeId: String,
@@ -110,53 +110,53 @@ public class Repository(
     @SerialName("deployments_url")
     public val deploymentsUrl: String,
     @SerialName("created_at")
-    public val createdAt: Instant,
+    public val createdAt: Instant? = null,
     @SerialName("updated_at")
-    public val updatedAt: Instant,
+    public val updatedAt: Instant? = null,
     @SerialName("pushed_at")
-    public val pushedAt: Instant,
+    public val pushedAt: Instant? = null,
     @SerialName("git_url")
-    public val gitUrl: String,
+    public val gitUrl: String? = null,
     @SerialName("ssh_url")
-    public val sshUrl: String,
+    public val sshUrl: String? = null,
     @SerialName("clone_url")
-    public val cloneUrl: String,
+    public val cloneUrl: String? = null,
     @SerialName("svn_url")
-    public val svnUrl: String,
-    public val homepage: String?,
-    public val size: Int,
+    public val svnUrl: String? = null,
+    public val homepage: String? = null,
+    public val size: Int? = null,
     @SerialName("stargazers_count")
-    public val stargazersCount: Int,
+    public val stargazersCount: Int? = null,
     @SerialName("watchers_count")
-    public val watchersCount: Int,
-    public val language: String?,
+    public val watchersCount: Int? = null,
+    public val language: String? = null,
     @SerialName("has_issues")
-    public val hasIssues: Boolean,
+    public val hasIssues: Boolean? = null,
     @SerialName("has_projects")
-    public val hasProjects: Boolean,
+    public val hasProjects: Boolean? = null,
     @SerialName("has_downloads")
-    public val hasDownloads: Boolean,
+    public val hasDownloads: Boolean? = null,
     @SerialName("has_wiki")
-    public val hasWiki: Boolean,
+    public val hasWiki: Boolean? = null,
     @SerialName("has_pages")
-    public val hasPages: Boolean,
+    public val hasPages: Boolean? = null,
     @SerialName("forks_count")
-    public val forksCount: Int,
+    public val forksCount: Int? = null,
     @SerialName("mirror_url")
-    public val mirrorUrl: String?,
+    public val mirrorUrl: String? = null,
     @SerialName("archived")
-    public val isArchived: Boolean,
+    public val isArchived: Boolean? = null,
     @SerialName("disabled")
-    public val isDisabled: Boolean,
+    public val isDisabled: Boolean? = null,
     @SerialName("open_issues_count")
-    public val openIssuesCount: Int,
-    public val license: SimpleLicense?,
-    public val forks: Int,
+    public val openIssuesCount: Int? = null,
+    public val license: SimpleLicense? = null,
+    public val forks: Int? = null,
     @SerialName("open_issues")
-    public val openIssues: Int,
-    public val watchers: Int,
+    public val openIssues: Int? = null,
+    public val watchers: Int? = null,
     @SerialName("default_branch")
-    public val defaultBranch: String,
+    public val defaultBranch: String? = null,
     public val organization: SimpleUser? = null,
     public val parent: Repository? = null,
     public val source: Repository? = null,

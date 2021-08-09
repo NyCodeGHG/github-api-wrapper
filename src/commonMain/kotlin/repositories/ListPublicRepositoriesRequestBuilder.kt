@@ -14,12 +14,11 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.request
+package de.nycode.github.repositories
 
-import io.ktor.client.request.HttpRequestBuilder
+import kotlinx.serialization.Serializable
 
-public class RequestBuilder(internal val requests: MutableList<HttpRequestBuilder.() -> Unit> = mutableListOf()) {
-    public fun request(builder: HttpRequestBuilder.() -> Unit) {
-        requests += builder
-    }
-}
+@Serializable
+public class ListPublicRepositoriesRequestBuilder(
+    public var since: Int? = null
+)

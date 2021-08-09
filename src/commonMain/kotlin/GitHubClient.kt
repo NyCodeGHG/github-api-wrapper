@@ -18,12 +18,14 @@ package de.nycode.github
 
 import de.nycode.github.auth.AuthProvider
 import de.nycode.github.repositories.RepositoriesAPI
-import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.features.defaultRequest
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
+import io.ktor.http.userAgent
 
 public class GitHubClient(
     public val baseUrl: String = "https://api.github.com",
