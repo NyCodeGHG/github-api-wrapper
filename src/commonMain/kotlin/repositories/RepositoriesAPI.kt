@@ -16,49 +16,43 @@
 
 package de.nycode.github.repositories
 
+import de.nycode.github.GitHubClient
 import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
+import de.nycode.github.request.delete
+import de.nycode.github.request.get
 import de.nycode.github.request.paginatedGet
-import io.ktor.client.*
+import de.nycode.github.request.patch
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlin.jvm.JvmInline
 
 @JvmInline
-public value class RepositoriesAPI(private val httpClient: HttpClient) {
+public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
 
     public val organizations: RepositoriesOrganizationsAPI
-        get() = RepositoriesOrganizationsAPI(httpClient)
+        get() = RepositoriesOrganizationsAPI(gitHubClient)
 
     public suspend fun getRepository(owner: String, repo: String): Repository =
-        httpClient.get {
-            url {
-                path("repos", owner, repo)
-            }
-        }
+        gitHubClient.get("repos", owner, repo)
 
     public suspend fun updateRepository(
         owner: String,
         repo: String,
         block: UpdateRepositoryRequestBuilder.() -> Unit
     ): Repository =
-        httpClient.patch {
-            url {
-                path("repos", owner, repo)
+        gitHubClient.patch("repos", owner, repo) {
+            request {
+                val builder = UpdateRepositoryRequestBuilder().apply(block)
+                contentType(ContentType.Application.Json)
+                body = builder
             }
-            val builder = UpdateRepositoryRequestBuilder().apply(block)
-            contentType(ContentType.Application.Json)
-            body = builder
         }
 
     public suspend fun deleteRepository(
         owner: String,
         repo: String
     ): Unit =
-        httpClient.delete {
-            url {
-                path("repos", owner, repo)
-            }
-        }
+        gitHubClient.delete("repos", owner, repo)
 
     public suspend fun listRepositoryContributors(
         owner: String,
@@ -67,11 +61,11 @@ public value class RepositoriesAPI(private val httpClient: HttpClient) {
         page: Int? = null,
         perPage: Int? = null
     ): List<Contributor> =
-        httpClient.paginatedGet(page, perPage) {
-            url {
-                path("repos", owner, repo, "contributors")
+        gitHubClient.paginatedGet("repos", owner, repo, "contributors") {
+            this.page = page
+            this.perPage = perPage
+            request {
+                parameter("anon", includeAnonymousContributors)
             }
-            parameter("anon", includeAnonymousContributors)
         }
-
 }

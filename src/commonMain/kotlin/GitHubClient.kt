@@ -26,7 +26,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 
 public class GitHubClient(
-    private val baseUrl: String = "https://api.github.com",
+    public val baseUrl: String = "https://api.github.com",
     httpBuilder: HttpClientConfig<*>.() -> Unit = {},
     private val authProvider: AuthProvider = AuthProvider.None
 ) {
@@ -35,7 +35,7 @@ public class GitHubClient(
         require(baseUrl.startsWith("https://")) { "GitHub API base url must start with https." }
     }
 
-    private val httpClient = HttpClient() {
+    internal val httpClient = HttpClient() {
         httpBuilder()
         with(authProvider) {
             configureClient()
@@ -51,13 +51,9 @@ public class GitHubClient(
             // https://docs.github.com/en/rest/overview/resources-in-the-rest-api#current-version
             header(HttpHeaders.Accept, "application/vnd.github.v3+json")
             userAgent("NyCodeGHG/github-api-wrapper") // TODO: replace hardcoded repo with build variable
-            host = baseUrl.removePrefix("https://")
-            url {
-                protocol = URLProtocol.HTTPS
-            }
         }
     }
 
-    public val repos: RepositoriesAPI = RepositoriesAPI(httpClient)
+    public val repos: RepositoriesAPI = RepositoriesAPI(this)
 
 }

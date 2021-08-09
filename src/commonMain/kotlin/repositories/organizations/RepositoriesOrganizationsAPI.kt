@@ -16,15 +16,16 @@
 
 package de.nycode.github.repositories.organizations
 
+import de.nycode.github.GitHubClient
 import de.nycode.github.repositories.Repository
 import de.nycode.github.request.paginatedGet
-import io.ktor.client.*
+import de.nycode.github.request.request
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlin.jvm.JvmInline
 
 @JvmInline
-public value class RepositoriesOrganizationsAPI(private val httpClient: HttpClient) {
+public value class RepositoriesOrganizationsAPI(private val gitHubClient: GitHubClient) {
 
     public suspend fun listOrganizationRepositories(
         organization: String,
@@ -32,13 +33,14 @@ public value class RepositoriesOrganizationsAPI(private val httpClient: HttpClie
         perPage: Int? = null,
         block: ListOrganizationRepositoriesRequestBuilder.() -> Unit = {}
     ): List<Repository> =
-        httpClient.paginatedGet(page, perPage) {
-            val builder = ListOrganizationRepositoriesRequestBuilder().apply(block)
-            parameter("type", builder.type)
-            parameter("sort", builder.sort)
-            parameter("direction", builder.direction)
-            url {
-                path("orgs", organization, "repos")
+        gitHubClient.paginatedGet("orgs", organization, "repos") {
+            this.page = page
+            this.perPage = perPage
+            request {
+                val builder = ListOrganizationRepositoriesRequestBuilder().apply(block)
+                parameter("type", builder.type)
+                parameter("sort", builder.sort)
+                parameter("direction", builder.direction)
             }
         }
 
@@ -47,12 +49,11 @@ public value class RepositoriesOrganizationsAPI(private val httpClient: HttpClie
         name: String,
         block: CreateOrganizationRepositoryRequestBuilder.() -> Unit
     ): Repository =
-        httpClient.post {
-            val builder = CreateOrganizationRepositoryRequestBuilder(name).apply(block)
-            url {
-                path("orgs", organization, "repos")
+        gitHubClient.request("orgs", organization, "repos") {
+            request {
+                val builder = CreateOrganizationRepositoryRequestBuilder(name).apply(block)
+                contentType(ContentType.Application.Json)
+                body = builder
             }
-            contentType(ContentType.Application.Json)
-            body = builder
         }
 }

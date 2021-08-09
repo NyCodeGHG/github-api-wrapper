@@ -16,35 +16,91 @@
 
 package de.nycode.github.request
 
-import io.ktor.client.*
+import de.nycode.github.GitHubClient
 import io.ktor.client.request.*
 import io.ktor.http.*
+
+internal suspend inline fun <reified T> GitHubClient.request(
+    vararg path: String,
+    builder: RequestBuilder.() -> Unit = {}
+): T =
+    httpClient.request {
+        RequestBuilder().apply(builder).requests.forEach { it() }
+        url.takeFrom(URLBuilder(baseUrl).path(*path))
+    }
+
+internal suspend inline fun <reified T> GitHubClient.get(
+    vararg path: String,
+    builder: RequestBuilder.() -> Unit = {}
+): T =
+    request(*path) {
+        builder()
+        request {
+            method = HttpMethod.Get
+        }
+    }
+
+internal suspend inline fun <reified T> GitHubClient.put(
+    vararg path: String,
+    builder: RequestBuilder.() -> Unit = {}
+): T =
+    request(*path) {
+        builder()
+        request {
+            method = HttpMethod.Put
+        }
+    }
+
+internal suspend inline fun <reified T> GitHubClient.patch(
+    vararg path: String,
+    builder: RequestBuilder.() -> Unit = {}
+): T =
+    request(*path) {
+        builder()
+        request {
+            method = HttpMethod.Patch
+        }
+    }
+
+internal suspend inline fun <reified T> GitHubClient.delete(
+    vararg path: String,
+    builder: RequestBuilder.() -> Unit = {}
+): T =
+    request(*path) {
+        builder()
+        request {
+            method = HttpMethod.Delete
+        }
+    }
 
 /**
  * Implements parameters for [pagination](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#pagination) in the GitHub API.
  */
-internal suspend inline fun <reified T> HttpClient.paginatedRequest(
-    page: Int? = null,
-    perPage: Int? = null,
-    builder: HttpRequestBuilder.() -> Unit
+internal suspend inline fun <reified T> GitHubClient.paginatedRequest(
+    vararg path: String,
+    builder: PaginatedRequestBuilder.() -> Unit
 ): T =
-    request {
+    request(*path) {
+        val (page, perPage, builders) = PaginatedRequestBuilder().apply(builder)
         require(page == null || perPage in 1..100) { "perPage must be between 1 and 100" }
-        parameter("per_page", perPage)
         require(page == null || page > 0) { "page mustn't be negative" }
-        parameter("page", page)
-        builder()
+        request {
+            parameter("per_page", perPage)
+            parameter("page", page)
+            builders.forEach { it() }
+        }
     }
 
 /**
  * Performs a paginated GET Request.
  */
-internal suspend inline fun <reified T> HttpClient.paginatedGet(
-    page: Int? = null,
-    perPage: Int? = null,
-    builder: HttpRequestBuilder.() -> Unit
+internal suspend inline fun <reified T> GitHubClient.paginatedGet(
+    vararg path: String,
+    builder: PaginatedRequestBuilder.() -> Unit
 ): T =
-    paginatedRequest(page, perPage) {
-        method = HttpMethod.Get
+    paginatedRequest(*path) {
         builder()
+        request {
+            method = HttpMethod.Get
+        }
     }
