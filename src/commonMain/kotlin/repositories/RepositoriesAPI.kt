@@ -81,12 +81,10 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         owner: String,
         repo: String,
         includeAnonymousContributors: Boolean? = null,
-        page: Int? = null,
-        perPage: Int? = null
+        builder: PaginatedRequestBuilder.() -> Unit
     ): List<Contributor> =
         gitHubClient.paginatedGet("repos", owner, repo, "contributors") {
-            this.page = page
-            this.perPage = perPage
+            builder()
             request {
                 parameter("anon", includeAnonymousContributors)
             }
@@ -117,8 +115,15 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         builder: PaginatedRequestBuilder.() -> Unit
     ): List<Tag> =
         gitHubClient.paginatedGet("repos", owner, repo, "tags") {
-            val (page, perPage) = PaginatedRequestBuilder().apply(builder)
-            this.page = page
-            this.perPage = perPage
+            builder()
+        }
+
+    public suspend fun listRepositoryTeams(
+        owner: String,
+        repo: String,
+        builder: PaginatedRequestBuilder.() -> Unit
+    ): List<Team> =
+        gitHubClient.paginatedGet("repos", owner, repo, "teams") {
+            builder()
         }
 }
