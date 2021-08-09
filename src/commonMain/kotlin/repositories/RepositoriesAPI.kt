@@ -193,4 +193,15 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
                 header(HttpHeaders.Accept, Previews.DorianPreview)
             }
         }
+
+    @ApiPreview
+    public suspend fun disableVulnerabilityAlerts(
+        owner: String,
+        repo: String
+    ): Unit =
+        gitHubClient.delete("repos", owner, repo, "vulnerability-alerts") {
+            request {
+                header(HttpHeaders.Accept, Previews.DorianPreview)
+            }
+        }
 }
