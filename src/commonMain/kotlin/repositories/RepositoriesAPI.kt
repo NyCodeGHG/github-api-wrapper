@@ -182,4 +182,15 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         }
         return statusCode.value == 204
     }
+
+    @ApiPreview
+    public suspend fun enableVulnerabilityAlerts(
+        owner: String,
+        repo: String
+    ): Unit =
+        gitHubClient.put("repos", owner, repo, "vulnerability-alerts") {
+            request {
+                header(HttpHeaders.Accept, Previews.DorianPreview)
+            }
+        }
 }
