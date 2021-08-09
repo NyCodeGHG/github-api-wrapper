@@ -153,4 +153,17 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
                 body = names
             }
         }.names
+
+    public suspend fun transferRepository(
+        owner: String,
+        repo: String,
+        newOwner: String,
+        builder: TransferRepositoryRequestBuilder.() -> Unit = {}
+    ): Repository =
+        gitHubClient.post("repos", owner, repo, "transfer") {
+            request {
+                contentType(ContentType.Application.Json)
+                body = TransferRepositoryRequestBuilder(newOwner).apply(builder)
+            }
+        }
 }
