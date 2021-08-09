@@ -133,10 +133,24 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         repo: String,
         builder: PaginatedRequestBuilder.() -> Unit = {}
     ): List<String> =
-        gitHubClient.paginatedGet<GetRepositoryTopicsRequestResponse>("repos", owner, repo, "topics") {
+        gitHubClient.paginatedGet<RepositoryTopicsRequestResponse>("repos", owner, repo, "topics") {
             builder()
             request {
                 header(HttpHeaders.Accept, Previews.MercyPreview)
+            }
+        }.names
+
+    @ApiPreview
+    public suspend fun replaceRepositoryTopics(
+        owner: String,
+        repo: String,
+        names: List<String>
+    ): List<String> =
+        gitHubClient.put<RepositoryTopicsRequestResponse>("repos", owner, repo, "topics") {
+            request {
+                header(HttpHeaders.Accept, Previews.MercyPreview)
+                contentType(ContentType.Application.Json)
+                body = names
             }
         }.names
 }

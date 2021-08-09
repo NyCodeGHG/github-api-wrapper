@@ -19,6 +19,6 @@ package de.nycode.github.repositories
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class GetRepositoryTopicsRequestResponse(
+internal class RepositoryTopicsRequestResponse(
     val names: List<String>
 )
