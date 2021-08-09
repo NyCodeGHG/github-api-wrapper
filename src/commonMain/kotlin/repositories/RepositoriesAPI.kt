@@ -21,10 +21,12 @@ import de.nycode.github.preview.ApiPreview
 import de.nycode.github.preview.Previews
 import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
 import de.nycode.github.request.*
+import io.ktor.client.features.expectSuccess
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlin.jvm.JvmInline
 
@@ -166,4 +168,18 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
                 body = TransferRepositoryRequestBuilder(newOwner).apply(builder)
             }
         }
+
+    @ApiPreview
+    public suspend fun checkVulnerabilityAlertsEnabled(
+        owner: String,
+        repo: String
+    ): Boolean {
+        val statusCode = gitHubClient.get<HttpStatusCode>("repos", owner, repo, "vulnerability-alerts") {
+            request {
+                header(HttpHeaders.Accept, Previews.DorianPreview)
+                expectSuccess = false
+            }
+        }
+        return statusCode.value == 204
+    }
 }

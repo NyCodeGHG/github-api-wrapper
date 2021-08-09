@@ -20,6 +20,8 @@ import de.nycode.github.preview.ApiPreview
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class RepositoryTests {
 
@@ -37,5 +39,16 @@ class RepositoryTests {
     fun `getRepositoryTopics returns correct data`(): Unit = runBlocking {
         val topics = client.repos.getRepositoryTopics("kordlib", "kord")
         assert(topics.isNotEmpty())
+    }
+
+    @OptIn(ApiPreview::class)
+    @Test
+    fun `checkVulnerabilityAlertsEnabled returns correct data`(): Unit = runBlocking {
+        assertTrue {
+            client.repos.checkVulnerabilityAlertsEnabled("NyCodeGHG", "github-api-wrapper")
+        }
+        assertFalse {
+            client.repos.checkVulnerabilityAlertsEnabled("NyCodeGHG", "github-api")
+        }
     }
 }

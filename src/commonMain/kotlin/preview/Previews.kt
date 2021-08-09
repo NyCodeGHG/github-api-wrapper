@@ -18,6 +18,7 @@ package de.nycode.github.preview
 
 internal object Previews {
 
+    const val DorianPreview = "application/vnd.github.dorian-preview+json"
     const val LondonPreview = "application/vnd.github.london-preview+json"
     const val MercyPreview = "application/vnd.github.mercy-preview+json"
 
