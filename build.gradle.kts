@@ -59,18 +59,25 @@ kotlin {
     }
 }
 
-tasks.withType<Test> {
-    val githubToken = secrets.getOrEnv("GH_TOKEN")
-    if (githubToken != null) {
-        environment["GITHUB_TOKEN"] = githubToken
+tasks {
+    withType<Test> {
+        val githubToken = secrets.getOrEnv("GH_TOKEN")
+        if (githubToken != null) {
+            environment["GITHUB_TOKEN"] = githubToken
+        }
+        val repoOwner = secrets.getOrEnv("REPO_OWNER")
+        if (repoOwner != null) {
+            environment["REPO_OWNER"] = repoOwner
+        }
+        val repoName = secrets.getOrEnv("REPO_NAME")
+        if (repoName != null) {
+            environment["REPO_NAME"] = repoName
+        }
     }
-    val repoOwner = secrets.getOrEnv("REPO_OWNER")
-    if (repoOwner != null) {
-        environment["REPO_OWNER"] = repoOwner
-    }
-    val repoName = secrets.getOrEnv("REPO_NAME")
-    if (repoName != null) {
-        environment["REPO_NAME"] = repoName
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
+        }
     }
 }
 

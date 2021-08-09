@@ -17,13 +17,15 @@
 package de.nycode.github.repositories
 
 import de.nycode.github.GitHubClient
+import de.nycode.github.preview.ApiPreview
+import de.nycode.github.preview.Previews
 import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
-import de.nycode.github.request.delete
-import de.nycode.github.request.get
-import de.nycode.github.request.paginatedGet
-import de.nycode.github.request.patch
-import io.ktor.client.request.*
-import io.ktor.http.*
+import de.nycode.github.request.*
+import io.ktor.client.request.header
+import io.ktor.client.request.parameter
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.contentType
 import kotlin.jvm.JvmInline
 
 @JvmInline
@@ -53,6 +55,28 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         repo: String
     ): Unit =
         gitHubClient.delete("repos", owner, repo)
+
+    @ApiPreview
+    public suspend fun enableAutomatedSecurityFixes(
+        owner: String,
+        repo: String
+    ): Unit =
+        gitHubClient.put("repos", owner, repo, "automated-security-fixes") {
+            request {
+                header(HttpHeaders.Accept, Previews.LondonPreview)
+            }
+        }
+
+    @ApiPreview
+    public suspend fun disableAutomatedSecurityFixes(
+        owner: String,
+        repo: String
+    ): Unit =
+        gitHubClient.delete("repos", owner, repo, "automated-security-fixes") {
+            request {
+                header(HttpHeaders.Accept, Previews.LondonPreview)
+            }
+        }
 
     public suspend fun listRepositoryContributors(
         owner: String,
