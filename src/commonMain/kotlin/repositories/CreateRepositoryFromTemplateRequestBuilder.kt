@@ -14,13 +14,17 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.preview
+package de.nycode.github.repositories
 
-internal object Previews {
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-    const val BaptistePreview = "application/vnd.github.baptiste-preview+json"
-    const val DorianPreview = "application/vnd.github.dorian-preview+json"
-    const val LondonPreview = "application/vnd.github.london-preview+json"
-    const val MercyPreview = "application/vnd.github.mercy-preview+json"
-
-}
+@Serializable
+public class CreateRepositoryFromTemplateRequestBuilder(
+    public val name: String,
+    public var owner: String? = null,
+    public var description: String? = null,
+    @SerialName("include_all_branches")
+    public var includeAllBranches: Boolean? = null,
+    public var private: Boolean? = null
+)

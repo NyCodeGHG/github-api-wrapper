@@ -16,11 +16,8 @@
 
 package de.nycode.github.preview
 
-internal object Previews {
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
 
-    const val BaptistePreview = "application/vnd.github.baptiste-preview+json"
-    const val DorianPreview = "application/vnd.github.dorian-preview+json"
-    const val LondonPreview = "application/vnd.github.london-preview+json"
-    const val MercyPreview = "application/vnd.github.mercy-preview+json"
-
-}
+public fun HttpRequestBuilder.preview(preview: String): Unit = header(HttpHeaders.Accept, preview)

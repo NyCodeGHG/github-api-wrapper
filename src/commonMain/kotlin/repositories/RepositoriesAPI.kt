@@ -19,6 +19,7 @@ package de.nycode.github.repositories
 import de.nycode.github.GitHubClient
 import de.nycode.github.preview.ApiPreview
 import de.nycode.github.preview.Previews
+import de.nycode.github.preview.preview
 import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
 import de.nycode.github.request.*
 import io.ktor.client.features.expectSuccess
@@ -64,7 +65,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     ): Unit =
         gitHubClient.put("repos", owner, repo, "automated-security-fixes") {
             request {
-                header(HttpHeaders.Accept, Previews.LondonPreview)
+                preview(Previews.LondonPreview)
             }
         }
 
@@ -75,7 +76,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     ): Unit =
         gitHubClient.delete("repos", owner, repo, "automated-security-fixes") {
             request {
-                header(HttpHeaders.Accept, Previews.LondonPreview)
+                preview(Previews.LondonPreview)
             }
         }
 
@@ -138,7 +139,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         gitHubClient.paginatedGet<RepositoryTopicsRequestResponse>("repos", owner, repo, "topics") {
             builder()
             request {
-                header(HttpHeaders.Accept, Previews.MercyPreview)
+                preview(Previews.MercyPreview)
             }
         }.names
 
@@ -150,7 +151,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     ): List<String> =
         gitHubClient.put<RepositoryTopicsRequestResponse>("repos", owner, repo, "topics") {
             request {
-                header(HttpHeaders.Accept, Previews.MercyPreview)
+                preview(Previews.MercyPreview)
                 contentType(ContentType.Application.Json)
                 body = names
             }
@@ -176,7 +177,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     ): Boolean {
         val statusCode = gitHubClient.get<HttpStatusCode>("repos", owner, repo, "vulnerability-alerts") {
             request {
-                header(HttpHeaders.Accept, Previews.DorianPreview)
+                preview(Previews.DorianPreview)
                 expectSuccess = false
             }
         }
@@ -190,7 +191,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     ): Unit =
         gitHubClient.put("repos", owner, repo, "vulnerability-alerts") {
             request {
-                header(HttpHeaders.Accept, Previews.DorianPreview)
+                preview(Previews.DorianPreview)
             }
         }
 
@@ -201,7 +202,22 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     ): Unit =
         gitHubClient.delete("repos", owner, repo, "vulnerability-alerts") {
             request {
-                header(HttpHeaders.Accept, Previews.DorianPreview)
+                preview(Previews.DorianPreview)
+            }
+        }
+
+    @ApiPreview
+    public suspend fun createRepositoryFromTemplate(
+        templateOwner: String,
+        templateRepo: String,
+        name: String,
+        builder: CreateRepositoryFromTemplateRequestBuilder.() -> Unit = {}
+    ): Repository =
+        gitHubClient.post("repos", templateOwner, templateRepo, "generate") {
+            request {
+                preview(Previews.BaptistePreview)
+                contentType(ContentType.Application.Json)
+                body = CreateRepositoryFromTemplateRequestBuilder(name).apply(builder)
             }
         }
 }
