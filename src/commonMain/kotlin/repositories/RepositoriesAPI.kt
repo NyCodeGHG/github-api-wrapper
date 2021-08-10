@@ -234,6 +234,17 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     ): List<Language> =
         gitHubClient.get<Map<String, Int>>("repos", owner, repo, "languages").map { Language(it.key, it.value) }
 
+    /**
+     * Lists tags for the specified repository.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-repository-tags).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param builder builder for configuring pagination
+     * @return [List] of [Tag]s
+     * @throws GitHubRequestException when the request fails
+     */
     public suspend fun listRepositoryTags(
         owner: String,
         repo: String,
