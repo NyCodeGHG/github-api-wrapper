@@ -86,6 +86,20 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         }
     }
 
+    /**
+     * Delete a repository by its owner and name.
+     * Deleting a repository requires admin access.
+     * If OAuth is used, the delete_repo scope is required.
+     * If an organization owner has configured the organization
+     * to prevent members from deleting organization-owned repositories,
+     * you will get a 403 Forbidden response and an [GitHubRequestException].
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#delete-a-repository).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @throws GitHubRequestException when the request fails
+     */
     public suspend fun deleteRepository(
         owner: String,
         repo: String
