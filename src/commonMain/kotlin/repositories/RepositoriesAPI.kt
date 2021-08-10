@@ -419,6 +419,18 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
             }
         }
 
+    /**
+     * Disables dependency alerts and the dependency graph for a repository.
+     * The authenticated user must have admin access to the repository.
+     * For more information, see ["About security alerts for vulnerable dependencies"](https://help.github.com/en/articles/about-security-alerts-for-vulnerable-dependencies).
+     * Note: This API is in preview. It could change anytime.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#disable-vulnerability-alerts).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @throws GitHubRequestException when the request fails.
+     */
     @ApiPreview
     public suspend fun disableVulnerabilityAlerts(
         owner: String,
