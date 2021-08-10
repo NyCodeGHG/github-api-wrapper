@@ -17,13 +17,15 @@
 package de.nycode.github.repositories.organizations
 
 import de.nycode.github.GitHubClient
+import de.nycode.github.model.MinimalRepository
 import de.nycode.github.model.Repository
 import de.nycode.github.repositories.organizations.request.CreateOrganizationRepositoryRequestBuilder
 import de.nycode.github.repositories.organizations.request.ListOrganizationRepositoriesRequestBuilder
 import de.nycode.github.request.paginatedGet
 import de.nycode.github.request.request
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.request.parameter
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlin.jvm.JvmInline
 
 @JvmInline
@@ -34,7 +36,7 @@ public value class RepositoriesOrganizationsAPI(private val gitHubClient: GitHub
         page: Int? = null,
         perPage: Int? = null,
         block: ListOrganizationRepositoriesRequestBuilder.() -> Unit = {}
-    ): List<Repository> =
+    ): List<MinimalRepository> =
         gitHubClient.paginatedGet("orgs", organization, "repos") {
             this.page = page
             this.perPage = perPage

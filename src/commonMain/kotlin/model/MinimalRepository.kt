@@ -21,7 +21,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class Repository(
+public data class MinimalRepository(
     val id: Int,
     @SerialName("node_id")
     val nodeId: String,
@@ -157,24 +157,5 @@ public data class Repository(
     val watchers: Int,
     @SerialName("default_branch")
     val defaultBranch: String,
-    val permissions: RepositoryPermissions? = null,
-    @SerialName("temp_clone_token")
-    val tempCloneToken: String?,
-    @SerialName("allow_squash_merge")
-    val allowSquashMerge: Boolean? = null,
-    @SerialName("allow_merge_commit")
-    val allowMergeCommit: Boolean? = null,
-    @SerialName("allow_rebase_merge")
-    val allowRebaseMerge: Boolean? = null,
-    @SerialName("allow_auto_merge")
-    val allowAutoMerge: Boolean? = null,
-    @SerialName("delete_branch_on_merge")
-    val deleteBranchOnMerge: Boolean? = null,
-    val parent: MinimalRepository? = null,
-    val source: MinimalRepository? = null,
-    val organization: SimpleUser? = null,
-    @SerialName("network_count")
-    val networkCount: Int,
-    @SerialName("subscribers_count")
-    val subscribersCount: Int
+    val permissions: RepositoryPermissions
 )
