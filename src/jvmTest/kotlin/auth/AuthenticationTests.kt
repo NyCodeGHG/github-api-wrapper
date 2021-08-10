@@ -18,6 +18,7 @@ package auth
 
 import de.nycode.github.GitHubClient
 import de.nycode.github.auth.AuthProvider
+import de.nycode.github.request.GitHubRequestException
 import io.ktor.client.features.*
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
@@ -38,7 +39,7 @@ class AuthenticationTests {
 
     @Test
     fun `Unauthenticated Request fails`(): Unit = runBlocking {
-        assertFailsWith<ClientRequestException> {
+        assertFailsWith<GitHubRequestException> {
             client.repos.getRepository(repoOwner, repoName)
         }
     }
