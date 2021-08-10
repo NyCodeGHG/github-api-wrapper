@@ -369,6 +369,19 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         }
     }
 
+    /**
+     * Shows whether dependency alerts are enabled or disabled for a repository.
+     * The authenticated user must have admin access to the repository.
+     * For more information, see ["About security alerts for vulnerable dependencies"](https://help.github.com/en/articles/about-security-alerts-for-vulnerable-dependencies).
+     * Note: This API is in preview. It could change anytime.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#check-if-vulnerability-alerts-are-enabled-for-a-repository).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @return the current state of the repository.
+     * @throws GitHubRequestException when the request fails.
+     */
     @ApiPreview
     public suspend fun checkVulnerabilityAlertsEnabled(
         owner: String,
