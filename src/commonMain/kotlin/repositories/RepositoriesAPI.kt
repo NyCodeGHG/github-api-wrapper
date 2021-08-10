@@ -337,6 +337,21 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
             }
         }.names
 
+    /**
+     * Transfers the specified repository.
+     * A transfer request will need to be accepted
+     * by the new owner when transferring a personal repository to another user.
+     * The response will contain the original owner, and the transfer will continue asynchronously.
+     * For more details on the requirements to transfer personal and organization-owned repositories,
+     * see [about repository transfers](https://help.github.com/articles/about-repository-transfers/).
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#transfer-a-repository).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @return the current state of the repository.
+     * @throws GitHubRequestException when the request fails.
+     */
     public suspend fun transferRepository(
         owner: String,
         repo: String,
