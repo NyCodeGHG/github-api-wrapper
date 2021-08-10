@@ -258,6 +258,17 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         }
     }
 
+    /**
+     * Lists teams of the specified repository.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-repository-teams).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param builder builder for configuring pagination
+     * @return [List] of [Team]s
+     * @throws GitHubRequestException when the request fails
+     */
     public suspend fun listRepositoryTeams(
         owner: String,
         repo: String,
