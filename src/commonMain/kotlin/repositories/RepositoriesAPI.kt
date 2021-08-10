@@ -23,7 +23,6 @@ import de.nycode.github.preview.Previews
 import de.nycode.github.preview.preview
 import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
 import de.nycode.github.repositories.request.*
-import de.nycode.github.repositories.request.RepositoryTopicsRequestResponse
 import de.nycode.github.request.*
 import io.ktor.client.features.expectSuccess
 import io.ktor.client.request.parameter
@@ -231,7 +230,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
             }
         }
 
-    public suspend fun listRepositoriesForAuthenticatedUser(builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit): List<Repository> =
+    public suspend fun listRepositoriesForAuthenticatedUser(builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit = {}): List<Repository> =
         gitHubClient.get("user", "repos") {
             request {
                 contentType(ContentType.Application.Json)

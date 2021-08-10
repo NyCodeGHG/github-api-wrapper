@@ -17,15 +17,15 @@
 import de.nycode.github.GitHubClient
 import de.nycode.github.auth.AuthProvider
 import de.nycode.github.preview.ApiPreview
+import de.nycode.github.request.GitHubRequestException
 import kotlinx.coroutines.runBlocking
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class RepositoryTests {
 
     private val client = GitHubClient(authProvider = AuthProvider.Basic("nycodeghg", System.getenv("GITHUB_TOKEN")))
+
+    private val unauthenticatedClient = GitHubClient()
 
     @Test
     fun `getRepository returns correct data`(): Unit = runBlocking {
@@ -49,6 +49,13 @@ class RepositoryTests {
         }
         assertFalse {
             client.repos.checkVulnerabilityAlertsEnabled("NyCodeGHG", "github-api")
+        }
+    }
+
+    @Test
+    fun `listRepositoriesForAuthenticatedUser should throw exception without authentication`(): Unit = runBlocking {
+        assertFailsWith<GitHubRequestException> {
+            unauthenticatedClient.repos.listRepositoriesForAuthenticatedUser()
         }
     }
 }

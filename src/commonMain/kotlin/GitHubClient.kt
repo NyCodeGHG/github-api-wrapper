@@ -18,8 +18,13 @@ package de.nycode.github
 
 import de.nycode.github.auth.AuthProvider
 import de.nycode.github.repositories.RepositoriesAPI
+import de.nycode.github.request.GitHubErrorResponse
+import de.nycode.github.request.GitHubRequestException
+import de.nycode.github.utils.receiveOrNull
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
+import io.ktor.client.features.ClientRequestException
+import io.ktor.client.features.HttpResponseValidator
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -53,6 +58,15 @@ public class GitHubClient(
             // https://docs.github.com/en/rest/overview/resources-in-the-rest-api#current-version
             header(HttpHeaders.Accept, "application/vnd.github.v3+json")
             userAgent("NyCodeGHG/github-api-wrapper") // TODO: replace hardcoded repo with build variable
+        }
+        HttpResponseValidator {
+            handleResponseException { exception ->
+                if (exception !is ClientRequestException) return@handleResponseException
+                val errorResponse = exception.response.receiveOrNull<GitHubErrorResponse>()
+                if (errorResponse != null) {
+                    throw GitHubRequestException(errorResponse)
+                }
+            }
         }
     }
 
