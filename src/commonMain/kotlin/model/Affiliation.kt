@@ -14,20 +14,19 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class SimpleLicense(
-    val key: String,
-    val name: String,
-    val url: String?,
-    @SerialName("spdx_id")
-    val spdxId: String?,
-    @SerialName("node_id")
-    val nodeId: String,
-    @SerialName("html_url")
-    val htmlUrl: String? = null
-)
+public enum class Affiliation {
+    @SerialName("owner")
+    OWNER,
+
+    @SerialName("collaborator")
+    COLLABORATOR,
+
+    @SerialName("organization_member")
+    ORGANIZATION_MEMBER
+}

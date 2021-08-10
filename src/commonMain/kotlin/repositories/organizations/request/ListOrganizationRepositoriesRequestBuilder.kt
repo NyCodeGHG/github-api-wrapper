@@ -14,27 +14,14 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.repositories.organizations.request
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import de.nycode.github.request.RepositorySort
+import de.nycode.github.request.RepositoryType
+import de.nycode.github.request.SortDirection
 
-@Serializable
-public data class Team(
-    val id: Int,
-    @SerialName("node_id")
-    val nodeId: String,
-    val url: String,
-    @SerialName("html_url")
-    val htmlUrl: String,
-    val name: String,
-    val slug: String,
-    val description: String?,
-    val privacy: String,
-    val permission: String,
-    @SerialName("members_url")
-    val membersUrl: String,
-    @SerialName("repositories_url")
-    val repositoriesUrl: String,
-    val parent: SimpleTeam?
+public class ListOrganizationRepositoriesRequestBuilder(
+    public var type: RepositoryType? = null,
+    public var sort: RepositorySort? = null,
+    public var direction: SortDirection? = null
 )

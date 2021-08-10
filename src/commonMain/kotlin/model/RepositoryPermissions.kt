@@ -14,11 +14,15 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.model
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-public class ListPublicRepositoriesRequestBuilder(
-    public var since: Int? = null
+public data class RepositoryPermissions(
+    val admin: Boolean,
+    val push: Boolean,
+    val pull: Boolean,
+    val maintain: Boolean? = null,
+    val triage: Boolean? = null
 )

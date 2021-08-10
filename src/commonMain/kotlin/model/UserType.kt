@@ -14,14 +14,16 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public class TransferRepositoryRequestBuilder(
-    @SerialName("new_owner")
-    public val newOwner: String,
-    public var teamIds: List<Int>? = null
-)
+public enum class UserType {
+    @SerialName("User")
+    USER,
+
+    @SerialName("Organization")
+    ORGANIZATION
+}

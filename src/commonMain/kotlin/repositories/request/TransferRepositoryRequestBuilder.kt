@@ -14,15 +14,14 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.repositories.request
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class RepositoryPermissions(
-    val admin: Boolean,
-    val push: Boolean,
-    val pull: Boolean,
-    val maintain: Boolean? = null,
-    val triage: Boolean? = null
+public class TransferRepositoryRequestBuilder(
+    @SerialName("new_owner")
+    public val newOwner: String,
+    public var teamIds: List<Int>? = null
 )

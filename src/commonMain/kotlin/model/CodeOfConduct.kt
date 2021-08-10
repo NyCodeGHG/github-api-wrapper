@@ -14,15 +14,17 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public class CreateRepositoryDispatchEventRequestBuilder(
-    @SerialName("event_type")
-    public val eventType: String,
-    @SerialName("client_payload")
-    public var clientPayload: String? = null
+public data class CodeOfConduct(
+    val key: String,
+    val name: String,
+    val url: String,
+    val body: String,
+    @SerialName("html_url")
+    val htmlUrl: String?
 )

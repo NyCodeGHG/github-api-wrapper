@@ -14,18 +14,17 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.repositories.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class License(
-    val key: String,
-    val name: String,
-    @SerialName("spdx_id")
-    val spdxId: String,
-    val url: String,
-    @SerialName("node_id")
-    val nodeId: String
+public class CreateRepositoryFromTemplateRequestBuilder(
+    public val name: String,
+    public var owner: String? = null,
+    public var description: String? = null,
+    @SerialName("include_all_branches")
+    public var includeAllBranches: Boolean? = null,
+    public var private: Boolean? = null
 )

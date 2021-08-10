@@ -17,10 +17,13 @@
 package de.nycode.github.repositories
 
 import de.nycode.github.GitHubClient
+import de.nycode.github.model.*
 import de.nycode.github.preview.ApiPreview
 import de.nycode.github.preview.Previews
 import de.nycode.github.preview.preview
 import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
+import de.nycode.github.repositories.request.*
+import de.nycode.github.repositories.request.RepositoryTopicsRequestResponse
 import de.nycode.github.request.*
 import io.ktor.client.features.expectSuccess
 import io.ktor.client.request.parameter

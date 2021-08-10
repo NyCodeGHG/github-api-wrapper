@@ -14,16 +14,15 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.repositories.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public enum class UserType {
-    @SerialName("User")
-    USER,
-
-    @SerialName("Organization")
-    ORGANIZATION
-}
+public class CreateRepositoryDispatchEventRequestBuilder(
+    @SerialName("event_type")
+    public val eventType: String,
+    @SerialName("client_payload")
+    public var clientPayload: String? = null
+)

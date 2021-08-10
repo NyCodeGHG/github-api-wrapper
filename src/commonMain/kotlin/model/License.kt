@@ -14,25 +14,18 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * Represents the visibility of a [Repository].
- *
- */
 @Serializable
-public enum class Visibility {
-
-    @SerialName("public")
-    PUBLIC,
-
-    @SerialName("private")
-    PRIVATE,
-
-    @SerialName("internal")
-    INTERNAL
-
-}
+public data class License(
+    val key: String,
+    val name: String,
+    @SerialName("spdx_id")
+    val spdxId: String,
+    val url: String,
+    @SerialName("node_id")
+    val nodeId: String
+)

@@ -14,8 +14,10 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.repositories.request
 
+import de.nycode.github.model.Affiliation
+import de.nycode.github.model.Visibility
 import de.nycode.github.request.RepositorySort
 import de.nycode.github.request.SortDirection
 import kotlinx.datetime.Instant

@@ -14,17 +14,20 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.model
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-public data class Tag(
+@Serializable
+public data class SimpleLicense(
+    val key: String,
     val name: String,
-    val commit: Commit,
-    @SerialName("zipball_url")
-    val zipballUrl: String,
-    @SerialName("tarball_url")
-    val tarballUrl: String,
+    val url: String?,
+    @SerialName("spdx_id")
+    val spdxId: String?,
     @SerialName("node_id")
-    val nodeId: String
+    val nodeId: String,
+    @SerialName("html_url")
+    val htmlUrl: String? = null
 )

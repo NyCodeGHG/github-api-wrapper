@@ -14,17 +14,9 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.model
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
-public class CreateRepositoryFromTemplateRequestBuilder(
-    public val name: String,
-    public var owner: String? = null,
-    public var description: String? = null,
-    @SerialName("include_all_branches")
-    public var includeAllBranches: Boolean? = null,
-    public var private: Boolean? = null
-)
+/**
+ * Represents a language response of the /repos/{owner}/{repo}/languages endpoint.
+ */
+public data class Language(val name: String, val bytes: Int)

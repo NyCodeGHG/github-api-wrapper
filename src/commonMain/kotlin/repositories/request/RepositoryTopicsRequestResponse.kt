@@ -14,28 +14,11 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.repositories.request
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class SimpleTeam(
-    val id: Int,
-    @SerialName("node_id")
-    val nodeId: String,
-    val url: String,
-    @SerialName("members_url")
-    val membersUrl: String,
-    val name: String,
-    val description: String?,
-    val permission: String,
-    val privacy: String,
-    @SerialName("html_url")
-    val htmlUrl: String,
-    @SerialName("repositories_url")
-    val repositoriesUrl: String,
-    val slug: String,
-    @SerialName("ldap_dn")
-    val ldapDn: String
+internal class RepositoryTopicsRequestResponse(
+    val names: List<String>
 )

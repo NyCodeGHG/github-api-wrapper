@@ -14,14 +14,9 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.organizations
+package de.nycode.github.model
 
-import de.nycode.github.request.RepositorySort
-import de.nycode.github.request.RepositoryType
-import de.nycode.github.request.SortDirection
+import kotlinx.serialization.Serializable
 
-public class ListOrganizationRepositoriesRequestBuilder(
-    public var type: RepositoryType? = null,
-    public var sort: RepositorySort? = null,
-    public var direction: SortDirection? = null
-)
+@Serializable
+public data class Commit(val sha: String, val url: String)

@@ -14,9 +14,25 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.model
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
- * Represents a language response of the /repos/{owner}/{repo}/languages endpoint.
+ * Represents the visibility of a [Repository].
+ *
  */
-public data class Language(val name: String, val bytes: Int)
+@Serializable
+public enum class Visibility {
+
+    @SerialName("public")
+    PUBLIC,
+
+    @SerialName("private")
+    PRIVATE,
+
+    @SerialName("internal")
+    INTERNAL
+
+}

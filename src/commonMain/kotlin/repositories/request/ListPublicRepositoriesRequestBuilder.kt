@@ -14,19 +14,11 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package de.nycode.github.repositories.request
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public enum class Affiliation {
-    @SerialName("owner")
-    OWNER,
-
-    @SerialName("collaborator")
-    COLLABORATOR,
-
-    @SerialName("organization_member")
-    ORGANIZATION_MEMBER
-}
+public class ListPublicRepositoriesRequestBuilder(
+    public var since: Int? = null
+)
