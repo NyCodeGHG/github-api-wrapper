@@ -282,6 +282,18 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         }
     }
 
+    /**
+     * Gets all topics of the specified repository.
+     * Note: This API is in preview. It could change anytime.
+     * 
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-all-repository-topics).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param builder builder for configuring pagination
+     * @return [List] of [String]s
+     * @throws GitHubRequestException when the request fails
+     */
     @ApiPreview
     public suspend fun getRepositoryTopics(
         owner: String,
