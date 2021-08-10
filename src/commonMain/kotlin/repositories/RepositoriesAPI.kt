@@ -42,6 +42,19 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     public val organizations: RepositoriesOrganizationsAPI
         get() = RepositoriesOrganizationsAPI(gitHubClient)
 
+    /**
+     * Get a repository by its owner and name.
+     * The parent and source properties are present when the repository is a fork.
+     * parent is the repository this repository was forked from,
+     * source is the ultimate source for the network.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-a-repository).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @return the resolved repository
+     * @throws GitHubRequestException when the request fails
+     */
     public suspend fun getRepository(owner: String, repo: String): Repository =
         gitHubClient.get("repos", owner, repo)
 
