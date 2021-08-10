@@ -36,6 +36,9 @@ import kotlin.jvm.JvmInline
 @JvmInline
 public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
 
+    /**
+     * Access APIs related to organization repositories.
+     */
     public val organizations: RepositoriesOrganizationsAPI
         get() = RepositoriesOrganizationsAPI(gitHubClient)
 
