@@ -477,6 +477,16 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         }
     }
 
+    /**
+     * Lists all public repositories in the order that they were created.
+     * For GitHub Enterprise Server, this endpoint will only list repositories available to all users on the enterprise.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-public-repositories).
+     *
+     * @param builder builder for configuring the request
+     * @return [List] of the found repositories.
+     * @throws GitHubRequestException when the request fails.
+     */
     public suspend fun listPublicRepositories(
         builder: ListPublicRepositoriesRequestBuilder.() -> Unit = {}
     ): List<Repository> {
