@@ -500,6 +500,18 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         }
     }
 
+    /**
+     * Lists repositories that the authenticated user has explicit permission (:read, :write, or :admin) to access.
+     * The authenticated user has explicit permission to access repositories they own,
+     * repositories where they are a collaborator,
+     * and repositories that they can access through an organization membership.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-repositories-for-the-authenticated-user).
+     *
+     * @param builder builder for configuring the request
+     * @return [List] of repositories
+     * @throws GitHubRequestException when the request fails.
+     */
     public suspend fun listRepositoriesForAuthenticatedUser(builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit = {}): List<Repository> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
