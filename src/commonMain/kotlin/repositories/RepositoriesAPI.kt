@@ -187,6 +187,20 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         }
     }
 
+    /**
+     * You can use this endpoint to trigger a webhook event called `repository_dispatch`
+     * when you want activity that happens outside of GitHub to trigger a GitHub Actions workflow or GitHub App webhook.
+     * You must configure your GitHub Actions workflow or GitHub App to run when the repository_dispatch event occurs.
+     * For an example repository_dispatch webhook payload, see "[RepositoryDispatchEvent](https://docs.github.com/webhooks/event-payloads/#repository_dispatch)."
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#create-a-repository-dispatch-event).
+     *
+     * @param owner the name of the repository
+     * @param repo the name of the repo
+     * @param eventType a custom webhook event name
+     * @param builder optional builder for providing the client payload
+     * @throws GitHubRequestException when the request fails
+     */
     public suspend fun createRepositoryDispatchEvent(
         owner: String,
         repo: String,
