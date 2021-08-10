@@ -233,8 +233,17 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     public suspend fun listRepositoriesForAuthenticatedUser(builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit = {}): List<Repository> =
         gitHubClient.get("user", "repos") {
             request {
-                contentType(ContentType.Application.Json)
-                body = ListRepositoriesForAuthenticatedUserRequestBuilder().apply(builder)
+                val (visibility, affiliation, type, sort, direction, page, perPage, since, before)
+                    = ListRepositoriesForAuthenticatedUserRequestBuilder().apply(builder)
+                parameter("visibility", visibility)
+                parameter("affiliation", affiliation)
+                parameter("type", type)
+                parameter("sort", sort)
+                parameter("direction", direction)
+                parameter("per_page", perPage)
+                parameter("page", page)
+                parameter("since", since)
+                parameter("before", before)
             }
         }
 }

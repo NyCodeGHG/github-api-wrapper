@@ -21,11 +21,8 @@ import de.nycode.github.model.Visibility
 import de.nycode.github.request.RepositorySort
 import de.nycode.github.request.SortDirection
 import kotlinx.datetime.Instant
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
-@Serializable
-public class ListRepositoriesForAuthenticatedUserRequestBuilder(
+public data class ListRepositoriesForAuthenticatedUserRequestBuilder(
     public var visibility: Visibility? = null,
     public val affiliation: MutableList<Affiliation>? = null,
     public var type: Type? = null,
@@ -36,21 +33,13 @@ public class ListRepositoriesForAuthenticatedUserRequestBuilder(
     public var since: Instant? = null,
     public var before: Instant? = null
 ) {
-    @Serializable
     public enum class Type {
-        @SerialName("all")
         ALL,
-
-        @SerialName("owner")
         OWNER,
-
-        @SerialName("public")
         PUBLIC,
-
-        @SerialName("private")
         PRIVATE,
+        MEMBER;
 
-        @SerialName("member")
-        MEMBER
+        override fun toString(): String = name.lowercase()
     }
 }

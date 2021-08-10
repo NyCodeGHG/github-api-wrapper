@@ -16,7 +16,19 @@
 
 package de.nycode.github.request
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 public enum class SortDirection {
+    @SerialName("asc")
     ASCENDING,
-    DESCENDING
+
+    @SerialName("desc")
+    DESCENDING;
+
+    override fun toString(): String = when (this) {
+        ASCENDING -> "asc"
+        DESCENDING -> "desc"
+    }
 }
