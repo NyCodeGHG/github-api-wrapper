@@ -30,6 +30,12 @@ kotlin {
     }
 
     sourceSets {
+        all {
+            languageSettings {
+                useExperimentalAnnotation("kotlin.RequiresOptIn")
+                useExperimentalAnnotation("kotlin.contracts.ExperimentalContracts")
+            }
+        }
         val commonMain by getting {
             dependencies {
                 implementation(libs.ktor.client.core)
@@ -72,11 +78,6 @@ tasks {
         val repoName = secrets.getOrEnv("REPO_NAME")
         if (repoName != null) {
             environment["REPO_NAME"] = repoName
-        }
-    }
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
         }
     }
 }

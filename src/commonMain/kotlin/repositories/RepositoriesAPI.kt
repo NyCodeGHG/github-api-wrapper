@@ -29,6 +29,8 @@ import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlin.jvm.JvmInline
 
 @JvmInline
@@ -44,13 +46,17 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         owner: String,
         repo: String,
         builder: UpdateRepositoryRequestBuilder.() -> Unit = {}
-    ): Repository =
-        gitHubClient.patch("repos", owner, repo) {
+    ): Repository {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.patch("repos", owner, repo) {
             request {
                 contentType(ContentType.Application.Json)
                 body = UpdateRepositoryRequestBuilder().apply(builder)
             }
         }
+    }
 
     public suspend fun deleteRepository(
         owner: String,
@@ -85,26 +91,34 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         repo: String,
         includeAnonymousContributors: Boolean? = null,
         builder: PaginatedRequestBuilder.() -> Unit = {}
-    ): List<Contributor> =
-        gitHubClient.paginatedGet("repos", owner, repo, "contributors") {
+    ): List<Contributor> {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.paginatedGet("repos", owner, repo, "contributors") {
             builder()
             request {
                 parameter("anon", includeAnonymousContributors)
             }
         }
+    }
 
     public suspend fun createRepositoryDispatchEvent(
         owner: String,
         repo: String,
         eventType: String,
         builder: CreateRepositoryDispatchEventRequestBuilder.() -> Unit = {}
-    ): Unit =
-        gitHubClient.post("repos", owner, repo, "dispatches") {
+    ) {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.post("repos", owner, repo, "dispatches") {
             request {
                 contentType(ContentType.Application.Json)
                 body = CreateRepositoryDispatchEventRequestBuilder(eventType).apply(builder)
             }
         }
+    }
 
     public suspend fun listRepositoryLanguages(
         owner: String,
@@ -116,32 +130,44 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         owner: String,
         repo: String,
         builder: PaginatedRequestBuilder.() -> Unit = {}
-    ): List<Tag> =
-        gitHubClient.paginatedGet("repos", owner, repo, "tags") {
+    ): List<Tag> {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.paginatedGet("repos", owner, repo, "tags") {
             builder()
         }
+    }
 
     public suspend fun listRepositoryTeams(
         owner: String,
         repo: String,
         builder: PaginatedRequestBuilder.() -> Unit = {}
-    ): List<Team> =
-        gitHubClient.paginatedGet("repos", owner, repo, "teams") {
+    ): List<Team> {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.paginatedGet("repos", owner, repo, "teams") {
             builder()
         }
+    }
 
     @ApiPreview
     public suspend fun getRepositoryTopics(
         owner: String,
         repo: String,
         builder: PaginatedRequestBuilder.() -> Unit = {}
-    ): List<String> =
-        gitHubClient.paginatedGet<RepositoryTopicsRequestResponse>("repos", owner, repo, "topics") {
+    ): List<String> {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.paginatedGet<RepositoryTopicsRequestResponse>("repos", owner, repo, "topics") {
             builder()
             request {
                 preview(Previews.MercyPreview)
             }
         }.names
+    }
 
     @ApiPreview
     public suspend fun replaceRepositoryTopics(
@@ -162,13 +188,17 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         repo: String,
         newOwner: String,
         builder: TransferRepositoryRequestBuilder.() -> Unit = {}
-    ): Repository =
-        gitHubClient.post("repos", owner, repo, "transfer") {
+    ): Repository {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.post("repos", owner, repo, "transfer") {
             request {
                 contentType(ContentType.Application.Json)
                 body = TransferRepositoryRequestBuilder(newOwner).apply(builder)
             }
         }
+    }
 
     @ApiPreview
     public suspend fun checkVulnerabilityAlertsEnabled(
@@ -212,26 +242,37 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         templateRepo: String,
         name: String,
         builder: CreateRepositoryFromTemplateRequestBuilder.() -> Unit = {}
-    ): Repository =
-        gitHubClient.post("repos", templateOwner, templateRepo, "generate") {
+    ): Repository {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.post("repos", templateOwner, templateRepo, "generate") {
             request {
                 preview(Previews.BaptistePreview)
                 contentType(ContentType.Application.Json)
                 body = CreateRepositoryFromTemplateRequestBuilder(name).apply(builder)
             }
         }
+    }
 
     public suspend fun listPublicRepositories(
         builder: ListPublicRepositoriesRequestBuilder.() -> Unit = {}
-    ): List<Repository> =
-        gitHubClient.get("repositories") {
+    ): List<Repository> {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.get("repositories") {
             request {
                 parameter("since", ListPublicRepositoriesRequestBuilder().apply(builder).since)
             }
         }
+    }
 
-    public suspend fun listRepositoriesForAuthenticatedUser(builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit = {}): List<Repository> =
-        gitHubClient.get("user", "repos") {
+    public suspend fun listRepositoriesForAuthenticatedUser(builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit = {}): List<Repository> {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.get("user", "repos") {
             request {
                 val (visibility, affiliation, type, sort, direction, page, perPage, since, before)
                     = ListRepositoriesForAuthenticatedUserRequestBuilder().apply(builder)
@@ -246,4 +287,20 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
                 parameter("before", before)
             }
         }
+    }
+
+    public suspend fun createRepositoryForAuthenticatedUser(
+        name: String,
+        builder: CreateRepositoryForAuthenticatedUserRequestBuilder.() -> Unit
+    ): Repository {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.post("user", "repos") {
+            request {
+                contentType(ContentType.Application.Json)
+                body = CreateRepositoryForAuthenticatedUserRequestBuilder(name).apply(builder)
+            }
+        }
+    }
 }
