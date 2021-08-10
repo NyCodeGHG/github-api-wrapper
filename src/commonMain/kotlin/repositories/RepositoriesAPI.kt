@@ -442,6 +442,22 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
             }
         }
 
+    /**
+     * Creates a new repository using a repository template.
+     * Use the [templateOwner] and [templateRepo] route parameters to specify the repository to use as the template.
+     * The authenticated user must own or be a member of an organization that owns the repository.
+     * To check if a repository is available to use as a template,
+     * get the repository's information using the [getRepository] endpoint and check that the isTemplate key is true.
+     * Note: This API is in preview. It could change anytime.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#create-a-repository-using-a-template).
+     * @param templateOwner the owner of the repository
+     * @param templateRepo the name of the repo
+     * @param name name of the new repo
+     * @param builder builder for configuring the new repository
+     * @return the new repository
+     * @throws GitHubRequestException when the request fails.
+     */
     @ApiPreview
     public suspend fun createRepositoryFromTemplate(
         templateOwner: String,
