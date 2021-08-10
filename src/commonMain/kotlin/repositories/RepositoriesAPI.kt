@@ -285,7 +285,7 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     /**
      * Gets all topics of the specified repository.
      * Note: This API is in preview. It could change anytime.
-     * 
+     *
      * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-all-repository-topics).
      *
      * @param owner the owner of the repository
@@ -311,6 +311,18 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         }.names
     }
 
+    /**
+     * Replaces all topics of the specified repository.
+     * Provide an empty [List] to clear all topics.
+     * Note: This API is in preview. It could change anytime.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-all-repository-topics).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @return the new [List] of topics
+     * @throws GitHubRequestException when the request fails.
+     */
     @ApiPreview
     public suspend fun replaceRepositoryTopics(
         owner: String,
