@@ -58,6 +58,18 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     public suspend fun getRepository(owner: String, repo: String): Repository =
         gitHubClient.get("repos", owner, repo)
 
+    /**
+     * Update a repository by its owner and name.
+     * Note: To edit a repository's topics, use the [replaceRepositoryTopics] endpoint.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#update-a-repository).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param builder builder for editing properties of the repository
+     * @return the edited repository
+     * @throws GitHubRequestException when the request fails
+     */
     public suspend fun updateRepository(
         owner: String,
         repo: String,
