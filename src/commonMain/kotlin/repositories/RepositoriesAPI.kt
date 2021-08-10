@@ -218,6 +218,16 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         }
     }
 
+    /**
+     * Lists languages for the specified repository.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-repository-languages).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @return [List] of [Language]s
+     * @throws GitHubRequestException when the request fails
+     */
     public suspend fun listRepositoryLanguages(
         owner: String,
         repo: String
