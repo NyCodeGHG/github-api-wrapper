@@ -533,6 +533,20 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         }
     }
 
+    /**
+     * Creates a new repository for the authenticated user.
+     * OAuth scope requirements:
+     * When using OAuth, authorizations must include:
+     * - `public_repo` scope or repo scope to create a public repository.
+     * - `repo` scope to create a private repository.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#create-a-repository-for-the-authenticated-user).
+     *
+     * @param name name of the new [Repository]
+     * @param builder builder for configuring the request
+     * @return the new [Repository]
+     * @throws GitHubRequestException when the request fails.
+     */
     public suspend fun createRepositoryForAuthenticatedUser(
         name: String,
         builder: CreateRepositoryForAuthenticatedUserRequestBuilder.() -> Unit
