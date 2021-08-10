@@ -128,6 +128,17 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
             }
         }
 
+    /**
+     * Disables automated security fixes for a repository by its owner and name.
+     * The authenticated user must have admin access to the repository.
+     * Note: This API is in preview. It could change anytime.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#disable-automated-security-fixes).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @throws GitHubRequestException when the request fails
+     */
     @ApiPreview
     public suspend fun disableAutomatedSecurityFixes(
         owner: String,
