@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     name: Publish Docs
-    if: github.ref == 'main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: Fetch Sources
         uses: actions/checkout@v2
