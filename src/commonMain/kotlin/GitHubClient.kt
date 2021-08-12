@@ -32,6 +32,13 @@ import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.http.userAgent
 
+/**
+ * Represents the root implementation of the [GitHub REST API v3](https://docs.github.com/en/rest/).
+ *
+ * @property baseUrl the base url of the GitHub API. Most of the time, you want to leave that to the default value.
+ * @param httpBuilder builder for providing options to the underlying [HttpClient].
+ * @property authProvider configure different authentication ways.
+ */
 public class GitHubClient(
     public val baseUrl: String = "https://api.github.com",
     httpBuilder: HttpClientConfig<*>.() -> Unit = {},
@@ -70,6 +77,9 @@ public class GitHubClient(
         }
     }
 
+    /**
+     * Access [Repository endpoints](https://docs.github.com/en/rest/reference/repos).
+     */
     public val repos: RepositoriesAPI = RepositoriesAPI(this)
 
 }
