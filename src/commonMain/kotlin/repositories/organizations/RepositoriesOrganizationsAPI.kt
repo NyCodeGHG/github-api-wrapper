@@ -31,20 +31,28 @@ import kotlin.jvm.JvmInline
 @JvmInline
 public value class RepositoriesOrganizationsAPI(private val gitHubClient: GitHubClient) {
 
+    /**
+     * Lists repositories for the specified organization.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-organization-repositories).
+     *
+     * @param organization the organization to list the repos from
+     * @param block builder for configuring list and pagination options
+     * @return [List] of the organizations repositories
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
     public suspend fun listOrganizationRepositories(
         organization: String,
-        page: Int? = null,
-        perPage: Int? = null,
         block: ListOrganizationRepositoriesRequestBuilder.() -> Unit = {}
     ): List<MinimalRepository> =
         gitHubClient.paginatedGet("orgs", organization, "repos") {
+            val (type, sort, direction, page, perPage) = ListOrganizationRepositoriesRequestBuilder().apply(block)
             this.page = page
             this.perPage = perPage
             request {
-                val builder = ListOrganizationRepositoriesRequestBuilder().apply(block)
-                parameter("type", builder.type)
-                parameter("sort", builder.sort)
-                parameter("direction", builder.direction)
+                parameter("type", type)
+                parameter("sort", sort)
+                parameter("direction", direction)
             }
         }
 
