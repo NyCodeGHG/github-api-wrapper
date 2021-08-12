@@ -28,8 +28,11 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlin.jvm.JvmInline
 
+/**
+ * Provides APIs regarding repositories in organizations.
+ */
 @JvmInline
-public value class RepositoriesOrganizationsAPI(private val gitHubClient: GitHubClient) {
+public value class RepositoriesOrganizationsAPI internal constructor(private val gitHubClient: GitHubClient) {
 
     /**
      * Lists repositories for the specified organization.
