@@ -20,6 +20,15 @@ import de.nycode.github.request.RepositorySort
 import de.nycode.github.request.RepositoryType
 import de.nycode.github.request.SortDirection
 
+/**
+ * Builder for configuring the [List organization repositories endpoint](https://docs.github.com/en/rest/reference/repos#list-organization-repositories).
+ *
+ * @property type specifies the types of repositories you want returned
+ * @property sort specify the sorting type
+ * @property direction specify the sort direction
+ * @property page specify which page you want returned
+ * @property perPage specify how many items should be in a page
+ */
 public data class ListOrganizationRepositoriesRequestBuilder(
     public var type: RepositoryType? = null,
     public var sort: RepositorySort? = null,
