@@ -20,6 +20,28 @@ import de.nycode.github.model.Visibility
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Builder for configuring the [Create organization repository endpoint](https://docs.github.com/en/rest/reference/repos#create-an-organization-repository).
+ *
+ * @property name the name of the repository
+ * @property description short description of the repository
+ * @property homepage an url with more information about the repository
+ * @property private if the new repo should be private. Default: false
+ * @property visibility the visibility of the new repo
+ * @property hasIssues if the new repo should have issues enabled. Default: true
+ * @property hasProjects if the new repo should have projects enabled. Default: true
+ * @property hasWiki if the new repo should have wiki enabled: Default: true
+ * @property isTemplate if the new repo is a template: Default: false
+ * @property teamId The id of the team that will be granted access to this repository. This is only valid when creating a repository in an organization
+ * @property autoInit Pass true to create an initial commit with empty README
+ * @property gitignoreTemplate Desired language or platform [.gitignore template](https://github.com/github/gitignore) to apply. Use the name of the template without the extension
+ * @property licenseTemplate Choose an [open source license template](https://choosealicense.com/) that best suits your needs, and then use the [license keyword](https://help.github.com/articles/licensing-a-repository/#searching-github-by-license-type) as the [licenseTemplate] string. For example, "mit" or "mpl-2.0"
+ * @property allowSquashMerge Either true to allow squash-merging pull requests, or false to prevent squash-merging. Default: true
+ * @property allowMergeCommit Either true to allow merging pull requests with a merge commit, or false to prevent merging pull requests with merge commits. Default: true
+ * @property allowRebaseMerge Either true to allow rebase-merging pull requests, or false to prevent rebase-merging. Default: true
+ * @property allowAutoMerge Either true to allow auto-merge on pull requests, or false to disallow auto-merge. Default: false
+ * @property deleteBranchOnMerge Either true to allow automatically deleting head branches when pull requests are merged, or false to prevent automatic deletion. Default: false
+ */
 @Serializable
 public class CreateOrganizationRepositoryRequestBuilder(
     public val name: String,
