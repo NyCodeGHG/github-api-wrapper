@@ -56,6 +56,18 @@ public value class RepositoriesOrganizationsAPI(private val gitHubClient: GitHub
             }
         }
 
+    /**
+     * Creates a new repository in the specified organization.
+     * The authenticated user must be a member of the organization.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#create-an-organization-repository).
+     *
+     * @param organization the organization to create the repo in
+     * @param name the name of the new repository
+     * @param block builder for configuring options of the new repo
+     * @return the new [Repository]
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
     public suspend fun createOrganizationRepository(
         organization: String,
         name: String,
