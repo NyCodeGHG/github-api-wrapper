@@ -25,7 +25,7 @@ kotlin {
         }
     }
 
-    js(IR) {
+    js(BOTH) {
         browser()
         nodejs()
     }
