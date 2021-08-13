@@ -2,6 +2,15 @@ rootProject.name = "github-api-wrapper"
 
 enableFeaturePreview("VERSION_CATALOGS")
 
+include("core")
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+    }
+}
+
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {

@@ -1,9 +1,24 @@
+/*
+ *    Copyright 2021 NyCode
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 plugins {
     kotlin("multiplatform") version "1.5.21"
     kotlin("plugin.serialization") version "1.5.21"
     id("org.jetbrains.dokka") version "1.5.0"
     id("com.diffplug.spotless") version "5.14.2"
-    id("at.stnwtr.gradle-secrets-plugin") version "1.0.1"
 }
 
 group = "de.nycode"
@@ -37,7 +52,7 @@ kotlin {
                 useExperimentalAnnotation("kotlin.contracts.ExperimentalContracts")
             }
         }
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.auth)
@@ -46,7 +61,7 @@ kotlin {
                 implementation(libs.kotlinx.datetime)
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test"))
             }
@@ -68,18 +83,10 @@ kotlin {
 
 tasks {
     withType<Test> {
-        val githubToken = secrets.getOrEnv("GH_TOKEN")
-        if (githubToken != null) {
-            environment["GITHUB_TOKEN"] = githubToken
-        }
-        val repoOwner = secrets.getOrEnv("REPO_OWNER")
-        if (repoOwner != null) {
-            environment["REPO_OWNER"] = repoOwner
-        }
-        val repoName = secrets.getOrEnv("REPO_NAME")
-        if (repoName != null) {
-            environment["REPO_NAME"] = repoName
-        }
+        val secretLoader = SecretLoader(rootProject.file("secrets.properties"))
+        environment["GITHUB_TOKEN"] = secretLoader["GH_TOKEN"]
+        environment["REPO_OWNER"] = secretLoader["REPO_OWNER"]
+        environment["REPO_NAME"] = secretLoader["REPO_NAME"]
     }
 }
 
