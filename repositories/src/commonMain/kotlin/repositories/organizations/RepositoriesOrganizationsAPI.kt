@@ -26,6 +26,7 @@ import de.nycode.github.request.request
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.JvmInline
 
 /**
@@ -44,14 +45,15 @@ public value class RepositoriesOrganizationsAPI internal constructor(private val
      * @return [List] of the organizations repositories
      * @throws de.nycode.github.request.GitHubRequestException when the request fails
      */
-    public suspend fun listOrganizationRepositories(
+    public fun listOrganizationRepositories(
         organization: String,
         block: ListOrganizationRepositoriesRequestBuilder.() -> Unit = {}
-    ): List<MinimalRepository> =
+    ): Flow<MinimalRepository> =
         gitHubClient.paginatedGet("orgs", organization, "repos") {
-            val (type, sort, direction, page, perPage) = ListOrganizationRepositoriesRequestBuilder().apply(block)
-            this.page = page
-            this.perPage = perPage
+            val (type, sort, direction, perPage) = ListOrganizationRepositoriesRequestBuilder().apply(block)
+            perPage?.let {
+                this.perPage = it
+            }
             request {
                 parameter("type", type)
                 parameter("sort", sort)

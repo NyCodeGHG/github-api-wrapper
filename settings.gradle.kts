@@ -18,6 +18,7 @@ dependencyResolutionManagement {
             alias("ktor-client-java").to("io.ktor", "ktor-client-java").versionRef("ktor")
             alias("ktor-client-js").to("io.ktor", "ktor-client-js").versionRef("ktor")
             alias("ktor-client-auth").to("io.ktor", "ktor-client-auth").versionRef("ktor")
+            alias("ktor-client-mock").to("io.ktor", "ktor-client-mock").versionRef("ktor")
             alias("ktor-client-serialization").to("io.ktor", "ktor-client-serialization").versionRef("ktor")
             alias("kotlinx-serialization-json").to("org.jetbrains.kotlinx", "kotlinx-serialization-json")
                 .version("1.2.2")

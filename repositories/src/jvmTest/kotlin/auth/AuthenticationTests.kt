@@ -28,6 +28,11 @@ import kotlin.test.assertFailsWith
 
 class AuthenticationTests {
 
+    private val authenticatedClient = GitHubClient {
+        authProvider = AuthProvider.OAuth(System.getenv("GITHUB_TOKEN"))
+    }
+    private val client = GitHubClient()
+
     private val repoOwner: String = System.getenv("REPO_OWNER")!!
     private val repoName: String = System.getenv("REPO_NAME")!!
 

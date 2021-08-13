@@ -14,18 +14,23 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.request
+package de.nycode.github.utils
 
-import io.ktor.client.request.HttpRequestBuilder
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-public open class PaginatedRequestBuilder(
-    public var perPage: Int = 20,
-    private val requests: MutableList<HttpRequestBuilder.() -> Unit> = mutableListOf()
-) {
-    public operator fun component1(): Int = perPage
-    public operator fun component2(): List<HttpRequestBuilder.() -> Unit> = requests
-
-    public fun request(builder: HttpRequestBuilder.() -> Unit) {
-        requests += builder
+/**
+ * Returns a flow which requests items in batches of [batchSize] items by calling [requestPaginated].
+ */
+internal fun <T, C : Collection<T>> paginate(
+    batchSize: Int = 20,
+    requestPaginated: suspend (offset: Int, batchSize: Int) -> C
+): Flow<T> = flow {
+    var page = 0
+    while (true) {
+        val items = requestPaginated(page, batchSize)
+        for (item in items) emit(item)
+        if (items.size < batchSize) return@flow // no more items after this
+        page++
     }
 }

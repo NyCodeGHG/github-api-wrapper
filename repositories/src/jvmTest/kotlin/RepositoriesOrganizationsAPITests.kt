@@ -17,21 +17,22 @@
 import de.nycode.github.GitHubClient
 import de.nycode.github.auth.AuthProvider
 import de.nycode.github.repositories.repositories
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 
 class RepositoriesOrganizationsAPITests {
 
-    private val client = GitHubClient(
+    private val client = GitHubClient {
         authProvider =
-        if (System.getenv("GITHUB_TOKEN") != null)
-            AuthProvider.OAuth(System.getenv("GITHUB_TOKEN"))
-        else AuthProvider.None
-    )
+            if (System.getenv("GITHUB_TOKEN") != null)
+                AuthProvider.OAuth(System.getenv("GITHUB_TOKEN"))
+            else AuthProvider.None
+    }
 
     @Test
     fun `listOrganizationRepositories returns correct data`() = runBlocking {
         val repos = client.repositories.organizations.listOrganizationRepositories("PaperMC")
-        println(repos.joinToString { it.name })
+        println(repos.toList().joinToString { it.name })
     }
 }
