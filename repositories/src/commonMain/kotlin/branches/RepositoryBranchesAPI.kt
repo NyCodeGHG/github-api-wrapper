@@ -56,6 +56,17 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
             }
         }
 
+    /**
+     * Gets a specific branch of the specified repository.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-a-branch).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch
+     * @return the branch with its protection data
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
     public suspend fun getBranch(
         owner: String,
         repo: String,
