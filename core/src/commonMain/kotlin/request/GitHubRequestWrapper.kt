@@ -95,16 +95,21 @@ internal typealias HttpBuilder = HttpRequestBuilder.() -> Unit
 /**
  * Implements parameters for [pagination](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#pagination) in the GitHub API.
  *
+ * @param T the response type of the endpoint (See [PaginatedRequestBuilder.mapper]
+ * @param R the type of the resulting [Flow]
+ *
  * @see paginate
+ * @see simplePaginatedGet
+ * @see paginatedGet
  */
-public inline fun <reified T> GitHubClient.paginatedRequest(
+public inline fun <reified T, R> GitHubClient.paginatedRequest(
     vararg path: String,
-    builder: PaginatedRequestBuilder.() -> Unit
-): Flow<T> {
-    val (perPage, builders)= PaginatedRequestBuilder().apply(builder)
+    builder: PaginatedRequestBuilder<T, R>.() -> Unit
+): Flow<R> {
+    val (perPage, builders, mapper)= PaginatedRequestBuilder<T, R>().apply(builder)
 
     return paginate(perPage) { offset, batchSize ->
-        request(*path) {
+       val response = request<T>(*path) {
             request {
                 parameter("per_page", batchSize)
                 parameter("page", offset + 1)
@@ -112,6 +117,8 @@ public inline fun <reified T> GitHubClient.paginatedRequest(
                 builders.forEach { it() }
             }
         }
+
+        mapper(response)
     }
 }
 
@@ -120,10 +127,25 @@ public inline fun <reified T> GitHubClient.paginatedRequest(
  *
  * @see paginatedRequest
  */
-public inline fun <reified T> GitHubClient.paginatedGet(
+public inline fun <reified T, R> GitHubClient.paginatedGet(
     vararg path: String,
-    builder: PaginatedRequestBuilder.() -> Unit = {}
-): Flow<T> = paginatedRequest(*path) {
+    builder: PaginatedRequestBuilder<T, R>.() -> Unit = {}
+): Flow<R> = paginatedRequest<T, R>(*path) {
+        builder()
+        request {
+            method = HttpMethod.Get
+        }
+    }
+
+/**
+ * Performs a paginated GET Request which requests a [List] of [T].
+ *
+ * @see paginatedRequest
+ */
+public inline fun <reified T> GitHubClient.simplePaginatedGet(
+    vararg path: String,
+    builder: SimplePaginatedRequestBuilder<T>.() -> Unit = {}
+): Flow<T> = paginatedRequest<List<T>, T>(*path) {
         builder()
         request {
             method = HttpMethod.Get

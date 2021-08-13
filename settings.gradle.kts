@@ -24,5 +24,10 @@ dependencyResolutionManagement {
                 .version("1.2.2")
             alias("kotlinx-datetime").to("org.jetbrains.kotlinx", "kotlinx-datetime").version("0.2.1")
         }
+
+        create("test") {
+            version("junit", "5.7.2")
+            alias("junit5").to("org.junit.jupiter", "junit-jupiter-engine").versionRef("junit")
+        }
     }
 }

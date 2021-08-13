@@ -16,7 +16,6 @@
 
 package de.nycode.github
 
-import de.nycode.github.repositories.RepositoriesAPI
 import io.ktor.client.HttpClient
 
 /**
@@ -35,10 +34,5 @@ public class GitHubClient internal constructor(
     init {
         require(baseUrl.startsWith("https://")) { "GitHub API base url must start with https." }
     }
-
-    /**
-     * Access [Repository endpoints](https://docs.github.com/en/rest/reference/repos).
-     */
-    public val repos: RepositoriesAPI = RepositoriesAPI(this)
 
 }

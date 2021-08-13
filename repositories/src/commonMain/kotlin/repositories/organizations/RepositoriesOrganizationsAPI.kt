@@ -23,6 +23,7 @@ import de.nycode.github.repositories.organizations.request.CreateOrganizationRep
 import de.nycode.github.repositories.organizations.request.ListOrganizationRepositoriesRequestBuilder
 import de.nycode.github.request.paginatedGet
 import de.nycode.github.request.request
+import de.nycode.github.request.simplePaginatedGet
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -49,7 +50,7 @@ public value class RepositoriesOrganizationsAPI internal constructor(private val
         organization: String,
         block: ListOrganizationRepositoriesRequestBuilder.() -> Unit = {}
     ): Flow<MinimalRepository> =
-        gitHubClient.paginatedGet("orgs", organization, "repos") {
+        gitHubClient.simplePaginatedGet("orgs", organization, "repos") {
             val (type, sort, direction, perPage) = ListOrganizationRepositoriesRequestBuilder().apply(block)
             perPage?.let {
                 this.perPage = it

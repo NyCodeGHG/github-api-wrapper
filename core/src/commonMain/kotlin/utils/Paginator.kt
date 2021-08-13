@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.flow
 /**
  * Returns a flow which requests items in batches of [batchSize] items by calling [requestPaginated].
  */
+@PublishedApi
 internal fun <T, C : Collection<T>> paginate(
     batchSize: Int = 20,
     requestPaginated: suspend (offset: Int, batchSize: Int) -> C

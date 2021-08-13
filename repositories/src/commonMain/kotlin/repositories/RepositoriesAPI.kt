@@ -36,12 +36,14 @@ import de.nycode.github.repositories.request.TransferRepositoryRequestBuilder
 import de.nycode.github.repositories.request.UpdateRepositoryRequestBuilder
 import de.nycode.github.request.GitHubRequestException
 import de.nycode.github.request.PaginatedRequestBuilder
+import de.nycode.github.request.SimplePaginatedRequestBuilder
 import de.nycode.github.request.delete
 import de.nycode.github.request.get
 import de.nycode.github.request.paginatedGet
 import de.nycode.github.request.patch
 import de.nycode.github.request.post
 import de.nycode.github.request.put
+import de.nycode.github.request.simplePaginatedGet
 import io.ktor.client.features.expectSuccess
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
@@ -49,8 +51,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.jvm.JvmInline
@@ -202,12 +202,12 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
         owner: String,
         repo: String,
         includeAnonymousContributors: Boolean? = null,
-        builder: PaginatedRequestBuilder.() -> Unit = {}
+        builder: SimplePaginatedRequestBuilder<Contributor>.() -> Unit = {}
     ): Flow<Contributor> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
-        return gitHubClient.paginatedGet("repos", owner, repo, "contributors") {
+        return gitHubClient.simplePaginatedGet("repos", owner, repo, "contributors") {
             builder()
             request {
                 parameter("anon", includeAnonymousContributors)
@@ -276,12 +276,12 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     public fun listRepositoryTags(
         owner: String,
         repo: String,
-        builder: PaginatedRequestBuilder.() -> Unit = {}
+        builder: SimplePaginatedRequestBuilder<Tag>.() -> Unit = {}
     ): Flow<Tag> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
-        return gitHubClient.paginatedGet("repos", owner, repo, "tags") {
+        return gitHubClient.simplePaginatedGet("repos", owner, repo, "tags") {
             builder()
         }
     }
@@ -300,12 +300,12 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     public fun listRepositoryTeams(
         owner: String,
         repo: String,
-        builder: PaginatedRequestBuilder.() -> Unit = {}
+        builder: SimplePaginatedRequestBuilder<Team>.() -> Unit = {}
     ): Flow<Team> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
-        return gitHubClient.paginatedGet("repos", owner, repo, "teams") {
+        return gitHubClient.simplePaginatedGet("repos", owner, repo, "teams") {
             builder()
         }
     }
@@ -327,17 +327,19 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
     public fun getRepositoryTopics(
         owner: String,
         repo: String,
-        builder: PaginatedRequestBuilder.() -> Unit = {}
+        builder: PaginatedRequestBuilder<*, String>.() -> Unit = {}
     ): Flow<String> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
-        return gitHubClient.paginatedGet<RepositoryTopicsRequestResponse>("repos", owner, repo, "topics") {
-                builder()
-                request {
-                    preview(Previews.MercyPreview)
-                }
-            }.flatMapConcat { it.names.asFlow() }
+        return gitHubClient.paginatedGet<RepositoryTopicsRequestResponse, String>("repos", owner, repo, "topics") {
+            builder()
+            request {
+                preview(Previews.MercyPreview)
+            }
+
+            mapper { it.names }
+        }
     }
 
     /**

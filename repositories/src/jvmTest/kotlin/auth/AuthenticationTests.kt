@@ -36,14 +36,8 @@ class AuthenticationTests {
     private val repoOwner: String = System.getenv("REPO_OWNER")!!
     private val repoName: String = System.getenv("REPO_NAME")!!
 
-    private val client = GitHubClient()
-
-    @EnabledIfEnvironmentVariables(
-        EnabledIfEnvironmentVariable(named = "GITHUB_TOKEN", matches = ".+")
-    )
     @Test
     fun `Authenticated Request works`(): Unit = runBlocking {
-        val authenticatedClient = GitHubClient(authProvider = AuthProvider.OAuth(System.getenv("GITHUB_TOKEN")))
         authenticatedClient.repositories.getRepository(repoOwner, repoName)
     }
 

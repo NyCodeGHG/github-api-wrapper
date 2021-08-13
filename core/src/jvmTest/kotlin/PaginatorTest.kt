@@ -1,5 +1,6 @@
 import de.nycode.github.GitHubClient
 import de.nycode.github.request.paginatedGet
+import de.nycode.github.request.simplePaginatedGet
 import de.nycode.github.utils.paginate
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
@@ -108,7 +109,7 @@ class PaginatorTest {
 
     private suspend fun assertRequestedBatchCount(expectedCount: Int, requestItems: Int) {
         batchRequests = 0
-        val items = client.paginatedGet<Int>(paginatedEndpoint).take(requestItems).toList()
+        val items = client.simplePaginatedGet<Int>(paginatedEndpoint).take(requestItems).toList()
         assertEquals(content.take(requestItems).toList(), items, "Items must be first $requestItems items")
         assertEquals(expectedCount, batchRequests, "Must request exactly one batch")
     }
