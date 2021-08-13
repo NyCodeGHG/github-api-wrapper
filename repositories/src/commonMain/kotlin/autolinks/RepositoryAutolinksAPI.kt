@@ -14,11 +14,15 @@
  *    limitations under the License.
  */
 
-package autolinks;
+package de.nycode.github.repositories.autolinks
 
 import de.nycode.github.GitHubClient
+import de.nycode.github.repositories.autolinks.request.CreateRepositoryAutolinkReferenceRequest
 import de.nycode.github.repositories.model.Autolink
+import de.nycode.github.request.post
 import de.nycode.github.request.simplePaginatedGet
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.JvmInline
 
@@ -45,4 +49,28 @@ public value class RepositoryAutolinksAPI(private val gitHubClient: GitHubClient
     ): Flow<Autolink> =
         gitHubClient.simplePaginatedGet("repos", owner, repo, "autolinks")
 
+    /**
+     * Creates an autolink reference for a repository.
+     * Only users with admin access to the repository can create an autolink.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#create-an-autolink-reference-for-a-repository).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param keyPrefix The prefix appended by a number will generate a link any time it is found in an issue, pull request, or commit
+     * @param urlTemplate The URL must contain for the reference number
+     * @return the new [Autolink]
+     */
+    public suspend fun createRepositoryAutolinkReference(
+        owner: String,
+        repo: String,
+        keyPrefix: String,
+        urlTemplate: String
+    ): Autolink =
+        gitHubClient.post("repos", owner, repo, "autolinks") {
+            request {
+                contentType(ContentType.Application.Json)
+                body = CreateRepositoryAutolinkReferenceRequest(keyPrefix, urlTemplate)
+            }
+        }
 }
