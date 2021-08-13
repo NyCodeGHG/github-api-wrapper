@@ -14,12 +14,18 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.request
+plugins {
+    kotlin("multiplatform") version "1.5.21" apply false
+    kotlin("plugin.serialization") version "1.5.21" apply false
+    id("org.jetbrains.dokka") version "1.5.0" apply false
+    id("com.diffplug.spotless") version "5.14.2" apply false
+}
 
-import io.ktor.client.request.HttpRequestBuilder
+group = "de.nycode.github"
+version = "1.0.0-SNAPSHOT"
 
-public class RequestBuilder(@PublishedApi internal val requests: MutableList<HttpRequestBuilder.() -> Unit> = mutableListOf()) {
-    public fun request(builder: HttpRequestBuilder.() -> Unit) {
-        requests += builder
+allprojects {
+    repositories {
+        mavenCentral()
     }
 }

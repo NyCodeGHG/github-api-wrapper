@@ -23,7 +23,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.URLBuilder
 import io.ktor.http.takeFrom
 
-internal suspend inline fun <reified T> GitHubClient.request(
+public suspend inline fun <reified T> GitHubClient.request(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -32,7 +32,7 @@ internal suspend inline fun <reified T> GitHubClient.request(
         url.takeFrom(URLBuilder(baseUrl).path(*path))
     }
 
-internal suspend inline fun <reified T> GitHubClient.get(
+public suspend inline fun <reified T> GitHubClient.get(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -43,7 +43,7 @@ internal suspend inline fun <reified T> GitHubClient.get(
         }
     }
 
-internal suspend inline fun <reified T> GitHubClient.post(
+public suspend inline fun <reified T> GitHubClient.post(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -54,7 +54,7 @@ internal suspend inline fun <reified T> GitHubClient.post(
         }
     }
 
-internal suspend inline fun <reified T> GitHubClient.put(
+public suspend inline fun <reified T> GitHubClient.put(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -65,7 +65,7 @@ internal suspend inline fun <reified T> GitHubClient.put(
         }
     }
 
-internal suspend inline fun <reified T> GitHubClient.patch(
+public suspend inline fun <reified T> GitHubClient.patch(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -76,7 +76,7 @@ internal suspend inline fun <reified T> GitHubClient.patch(
         }
     }
 
-internal suspend inline fun <reified T> GitHubClient.delete(
+public suspend inline fun <reified T> GitHubClient.delete(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -90,7 +90,7 @@ internal suspend inline fun <reified T> GitHubClient.delete(
 /**
  * Implements parameters for [pagination](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#pagination) in the GitHub API.
  */
-internal suspend inline fun <reified T> GitHubClient.paginatedRequest(
+public suspend inline fun <reified T> GitHubClient.paginatedRequest(
     vararg path: String,
     builder: PaginatedRequestBuilder.() -> Unit
 ): T =
@@ -108,7 +108,7 @@ internal suspend inline fun <reified T> GitHubClient.paginatedRequest(
 /**
  * Performs a paginated GET Request.
  */
-internal suspend inline fun <reified T> GitHubClient.paginatedGet(
+public suspend inline fun <reified T> GitHubClient.paginatedGet(
     vararg path: String,
     builder: PaginatedRequestBuilder.() -> Unit
 ): T =

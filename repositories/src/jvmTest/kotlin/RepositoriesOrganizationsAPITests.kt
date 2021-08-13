@@ -15,6 +15,7 @@
  */
 
 import de.nycode.github.GitHubClient
+import de.nycode.github.repositories.repositories
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 
@@ -24,7 +25,7 @@ class RepositoriesOrganizationsAPITests {
 
     @Test
     fun `listOrganizationRepositories returns correct data`() = runBlocking {
-        val repos = client.repos.organizations.listOrganizationRepositories("PaperMC")
+        val repos = client.repositories.organizations.listOrganizationRepositories("PaperMC")
         println(repos.joinToString { it.name })
     }
 }

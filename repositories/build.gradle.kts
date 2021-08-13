@@ -54,11 +54,7 @@ kotlin {
         }
         commonMain {
             dependencies {
-                api(libs.ktor.client.core)
-                api(libs.ktor.client.auth)
-                api(libs.ktor.client.serialization)
-                api(libs.kotlinx.serialization.json)
-                api(libs.kotlinx.datetime)
+                implementation(project(":core"))
             }
         }
         commonTest {
@@ -66,18 +62,19 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val jvmMain by getting {
-            dependencies {
-                implementation(libs.ktor.client.java)
-            }
-        }
+        val jvmMain by getting
         val jvmTest by getting
-        val jsMain by getting {
-            dependencies {
-                implementation(libs.ktor.client.js)
-            }
-        }
+        val jsMain by getting
         val jsTest by getting
+    }
+}
+
+tasks {
+    withType<Test> {
+        val secretLoader = SecretLoader(rootProject.file("secrets.properties"))
+        environment["GITHUB_TOKEN"] = secretLoader["GH_TOKEN"]
+        environment["REPO_OWNER"] = secretLoader["REPO_OWNER"]
+        environment["REPO_NAME"] = secretLoader["REPO_NAME"]
     }
 }
 

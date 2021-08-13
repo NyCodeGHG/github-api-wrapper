@@ -17,6 +17,7 @@
 import de.nycode.github.GitHubClient
 import de.nycode.github.auth.AuthProvider
 import de.nycode.github.preview.ApiPreview
+import de.nycode.github.repositories.repositories
 import de.nycode.github.request.GitHubRequestException
 import kotlinx.coroutines.runBlocking
 import kotlin.test.*
@@ -29,7 +30,7 @@ class RepositoryTests {
 
     @Test
     fun `getRepository returns correct data`(): Unit = runBlocking {
-        val repo = client.repos.getRepository("octocat", "Spoon-Knife")
+        val repo = client.repositories.getRepository("octocat", "Spoon-Knife")
         assertEquals("octocat", repo.owner.login)
         assertEquals("Spoon-Knife", repo.name)
     }
@@ -37,7 +38,7 @@ class RepositoryTests {
     @OptIn(ApiPreview::class)
     @Test
     fun `getRepositoryTopics returns correct data`(): Unit = runBlocking {
-        val topics = client.repos.getRepositoryTopics("kordlib", "kord")
+        val topics = client.repositories.getRepositoryTopics("kordlib", "kord")
         assert(topics.isNotEmpty())
     }
 
@@ -45,17 +46,17 @@ class RepositoryTests {
     @Test
     fun `checkVulnerabilityAlertsEnabled returns correct data`(): Unit = runBlocking {
         assertTrue {
-            client.repos.checkVulnerabilityAlertsEnabled("NyCodeGHG", "github-api-wrapper")
+            client.repositories.checkVulnerabilityAlertsEnabled("NyCodeGHG", "github-api-wrapper")
         }
         assertFalse {
-            client.repos.checkVulnerabilityAlertsEnabled("NyCodeGHG", "github-api")
+            client.repositories.checkVulnerabilityAlertsEnabled("NyCodeGHG", "github-api")
         }
     }
 
     @Test
     fun `listRepositoriesForAuthenticatedUser should throw exception without authentication`(): Unit = runBlocking {
         assertFailsWith<GitHubRequestException> {
-            unauthenticatedClient.repos.listRepositoriesForAuthenticatedUser()
+            unauthenticatedClient.repositories.listRepositoriesForAuthenticatedUser()
         }
     }
 }

@@ -17,7 +17,6 @@
 package de.nycode.github
 
 import de.nycode.github.auth.AuthProvider
-import de.nycode.github.repositories.RepositoriesAPI
 import de.nycode.github.request.GitHubErrorResponse
 import de.nycode.github.request.GitHubRequestException
 import de.nycode.github.utils.receiveOrNull
@@ -49,7 +48,8 @@ public class GitHubClient(
         require(baseUrl.startsWith("https://")) { "GitHub API base url must start with https." }
     }
 
-    internal val httpClient = HttpClient() {
+    @PublishedApi
+    internal val httpClient: HttpClient = HttpClient() {
         httpBuilder()
         with(authProvider) {
             configureClient()
@@ -76,10 +76,5 @@ public class GitHubClient(
             }
         }
     }
-
-    /**
-     * Access [Repository endpoints](https://docs.github.com/en/rest/reference/repos).
-     */
-    public val repos: RepositoriesAPI = RepositoriesAPI(this)
 
 }

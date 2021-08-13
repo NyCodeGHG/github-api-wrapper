@@ -2,12 +2,11 @@ rootProject.name = "github-api-wrapper"
 
 enableFeaturePreview("VERSION_CATALOGS")
 
-include("core")
+include("core", "repositories")
 
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        mavenLocal()
     }
 }
 

@@ -16,11 +16,11 @@
 
 package de.nycode.github.preview
 
-internal object Previews {
+public object Previews {
 
-    const val BaptistePreview = "application/vnd.github.baptiste-preview+json"
-    const val DorianPreview = "application/vnd.github.dorian-preview+json"
-    const val LondonPreview = "application/vnd.github.london-preview+json"
-    const val MercyPreview = "application/vnd.github.mercy-preview+json"
+    public const val BaptistePreview: String = "application/vnd.github.baptiste-preview+json"
+    public const val DorianPreview: String = "application/vnd.github.dorian-preview+json"
+    public const val LondonPreview: String = "application/vnd.github.london-preview+json"
+    public const val MercyPreview: String = "application/vnd.github.mercy-preview+json"
 
 }

@@ -33,6 +33,12 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.jvm.JvmInline
 
+/**
+ * Access [Repository endpoints](https://docs.github.com/en/rest/reference/repos).
+ */
+public val GitHubClient.repositories: RepositoriesAPI
+    get() = RepositoriesAPI(this)
+
 @JvmInline
 public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
 
