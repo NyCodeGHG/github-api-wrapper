@@ -71,10 +71,19 @@ kotlin {
 
 tasks {
     withType<Test> {
-        val secretLoader = SecretLoader(rootProject.file("secrets.properties"))
-        environment["GITHUB_TOKEN"] = secretLoader["GH_TOKEN"]
-        environment["REPO_OWNER"] = secretLoader["REPO_OWNER"]
-        environment["REPO_NAME"] = secretLoader["REPO_NAME"]
+        val secretLoader = SecretLoader(File(rootProject.rootDir, "secrets.properties"), project)
+        secretLoader["GH_TOKEN"]?.let {
+            if (it.isBlank()) return@let
+            environment["GITHUB_TOKEN"] = it
+        }
+        secretLoader["REPO_OWNER"]?.let {
+            if (it.isBlank()) return@let
+            environment["REPO_OWNER"] = it
+        }
+        secretLoader["REPO_NAME"]?.let {
+            if (it.isBlank()) return@let
+            environment["REPO_NAME"] = it
+        }
     }
 }
 

@@ -14,26 +14,30 @@
  *    limitations under the License.
  */
 
+import org.gradle.api.Project
 import java.io.File
 import java.util.*
 
-class SecretLoader(private val file: File) {
+class SecretLoader(file: File, project: Project) {
     private val properties = Properties()
 
     init {
         if (!file.exists()) {
-            error("File doesn't exist! Check $file")
+            project.logger.warn("No secrets file was found! Checked $file")
         }
-        if (!file.canRead()) {
-            error("Unable to read file $file!")
+        if (file.exists() && !file.canRead()) {
+            project.logger.error("Unable to read file $file!")
         }
-        file.bufferedReader().use {
-            properties.load(it)
+
+        if (file.exists() && file.canRead()) {
+            file.bufferedReader().use {
+                properties.load(it)
+            }
         }
     }
 
-    operator fun get(name: String): String {
-        return properties[name].toString()
+    operator fun get(name: String): String? {
+        return properties.getProperty(name) ?: System.getenv(name)
     }
 
 }

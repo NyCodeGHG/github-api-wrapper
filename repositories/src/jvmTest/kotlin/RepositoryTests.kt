@@ -20,11 +20,20 @@ import de.nycode.github.preview.ApiPreview
 import de.nycode.github.repositories.repositories
 import de.nycode.github.request.GitHubRequestException
 import kotlinx.coroutines.runBlocking
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class RepositoryTests {
 
-    private val client = GitHubClient(authProvider = AuthProvider.Basic("nycodeghg", System.getenv("GITHUB_TOKEN")))
+    private val client =
+        GitHubClient(
+            authProvider =
+            if (System.getenv("GITHUB_TOKEN") != null)
+                AuthProvider.OAuth(System.getenv("GITHUB_TOKEN"))
+            else
+                AuthProvider.None
+        )
 
     private val unauthenticatedClient = GitHubClient()
 
@@ -40,17 +49,6 @@ class RepositoryTests {
     fun `getRepositoryTopics returns correct data`(): Unit = runBlocking {
         val topics = client.repositories.getRepositoryTopics("kordlib", "kord")
         assert(topics.isNotEmpty())
-    }
-
-    @OptIn(ApiPreview::class)
-    @Test
-    fun `checkVulnerabilityAlertsEnabled returns correct data`(): Unit = runBlocking {
-        assertTrue {
-            client.repositories.checkVulnerabilityAlertsEnabled("NyCodeGHG", "github-api-wrapper")
-        }
-        assertFalse {
-            client.repositories.checkVulnerabilityAlertsEnabled("NyCodeGHG", "github-api")
-        }
     }
 
     @Test

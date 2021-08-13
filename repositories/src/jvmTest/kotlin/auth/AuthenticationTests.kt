@@ -21,19 +21,24 @@ import de.nycode.github.auth.AuthProvider
 import de.nycode.github.repositories.repositories
 import de.nycode.github.request.GitHubRequestException
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariables
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 class AuthenticationTests {
 
-    private val authenticatedClient = GitHubClient(authProvider = AuthProvider.OAuth(System.getenv("GITHUB_TOKEN")))
-    private val client = GitHubClient()
-
     private val repoOwner: String = System.getenv("REPO_OWNER")!!
     private val repoName: String = System.getenv("REPO_NAME")!!
 
+    private val client = GitHubClient()
+
+    @EnabledIfEnvironmentVariables(
+        EnabledIfEnvironmentVariable(named = "GITHUB_TOKEN", matches = ".+")
+    )
     @Test
     fun `Authenticated Request works`(): Unit = runBlocking {
+        val authenticatedClient = GitHubClient(authProvider = AuthProvider.OAuth(System.getenv("GITHUB_TOKEN")))
         authenticatedClient.repositories.getRepository(repoOwner, repoName)
     }
 
