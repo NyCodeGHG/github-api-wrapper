@@ -7,4 +7,6 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 /discord.xml
+# Containes local developer settings
+/misc.xml
 /kotlinScripting.xml
