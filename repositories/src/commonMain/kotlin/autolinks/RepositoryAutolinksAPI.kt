@@ -19,6 +19,7 @@ package de.nycode.github.repositories.autolinks
 import de.nycode.github.GitHubClient
 import de.nycode.github.repositories.autolinks.request.CreateRepositoryAutolinkReferenceRequest
 import de.nycode.github.repositories.model.Autolink
+import de.nycode.github.request.delete
 import de.nycode.github.request.get
 import de.nycode.github.request.post
 import de.nycode.github.request.simplePaginatedGet
@@ -94,4 +95,22 @@ public value class RepositoryAutolinksAPI(private val gitHubClient: GitHubClient
         autolinkId: Int
     ): Autolink =
         gitHubClient.get("repos", owner, repo, "autolinks", autolinkId.toString())
+
+    /**
+     * Deletes a single autolink reference by ID that was configured for the given repository.
+     * Information about autolinks are only available to repository administrators.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#delete-an-autolink-reference-from-a-repository).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param autolinkId the id of the autolink
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
+    public suspend fun deleteRepositoryAutolinkReference(
+        owner: String,
+        repo: String,
+        autolinkId: Int
+    ): Unit =
+        gitHubClient.delete("repos", owner, repo, "autolinks", autolinkId.toString())
 }
