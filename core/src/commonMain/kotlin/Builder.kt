@@ -30,12 +30,19 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.http.userAgent
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 /**
  * Creates a new [GitHubClient] by applying [builder].
  */
-public inline fun GitHubClient(builder: GitHubClientBuilder.() -> Unit = {}): GitHubClient =
-    GitHubClientBuilder().apply(builder).build()
+public inline fun GitHubClient(builder: GitHubClientBuilder.() -> Unit = {}): GitHubClient {
+    contract {
+        callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return GitHubClientBuilder().apply(builder).build()
+}
 
 /**
  * Shared API of [GitHubClientBuilder] on all platforms.
