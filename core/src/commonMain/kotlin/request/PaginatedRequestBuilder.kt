@@ -16,18 +16,27 @@
 
 package de.nycode.github.request
 
-import io.ktor.client.request.*
+import io.ktor.client.request.HttpRequestBuilder
 
-public open class PaginatedRequestBuilder(
-    public var page: Int? = null,
-    public var perPage: Int? = null,
-    private val requests: MutableList<HttpRequestBuilder.() -> Unit> = mutableListOf()
+public typealias SimplePaginatedRequestBuilder<T> = PaginatedRequestBuilder<List<T>, T>
+
+public open class PaginatedRequestBuilder<T, R>(
+    public var perPage: Int = 20,
+    private val requests: MutableList<HttpRequestBuilder.() -> Unit> = mutableListOf(),
+    public var mapper: (T) -> List<R> = {
+        @Suppress("UNCHECKED_CAST") // it's fine trust me ;)
+        it as? List<R> ?: error("T has to be list for the default mapper")
+    }
 ) {
-    public operator fun component1(): Int? = page
-    public operator fun component2(): Int? = perPage
-    public operator fun component3(): List<HttpRequestBuilder.() -> Unit> = requests
+    public operator fun component1(): Int = perPage
+    public operator fun component2(): List<HttpRequestBuilder.() -> Unit> = requests
+    public operator fun component3(): (T) -> List<R> = mapper
 
     public fun request(builder: HttpRequestBuilder.() -> Unit) {
         requests += builder
+    }
+
+    public fun mapper(mapper: (T) -> List<R>) {
+        this.mapper = mapper
     }
 }

@@ -17,18 +17,40 @@
 package de.nycode.github.repositories
 
 import de.nycode.github.GitHubClient
-import de.nycode.github.model.*
+import de.nycode.github.model.Contributor
+import de.nycode.github.model.Language
+import de.nycode.github.model.Repository
+import de.nycode.github.model.Tag
+import de.nycode.github.model.Team
 import de.nycode.github.preview.ApiPreview
 import de.nycode.github.preview.Previews
 import de.nycode.github.preview.preview
 import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
-import de.nycode.github.repositories.request.*
-import de.nycode.github.request.*
+import de.nycode.github.repositories.request.CreateRepositoryDispatchEventRequestBuilder
+import de.nycode.github.repositories.request.CreateRepositoryForAuthenticatedUserRequestBuilder
+import de.nycode.github.repositories.request.CreateRepositoryFromTemplateRequestBuilder
+import de.nycode.github.repositories.request.ListPublicRepositoriesRequestBuilder
+import de.nycode.github.repositories.request.ListRepositoriesForAuthenticatedUserRequestBuilder
+import de.nycode.github.repositories.request.RepositoryTopicsRequestResponse
+import de.nycode.github.repositories.request.TransferRepositoryRequestBuilder
+import de.nycode.github.repositories.request.UpdateRepositoryRequestBuilder
+import de.nycode.github.request.GitHubRequestException
+import de.nycode.github.request.PaginatedRequestBuilder
+import de.nycode.github.request.SimplePaginatedRequestBuilder
+import de.nycode.github.request.delete
+import de.nycode.github.request.get
+import de.nycode.github.request.paginatedGet
+import de.nycode.github.request.patch
+import de.nycode.github.request.post
+import de.nycode.github.request.put
+import de.nycode.github.request.simplePaginatedGet
 import io.ktor.client.features.expectSuccess
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.jvm.JvmInline
@@ -176,16 +198,16 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
      * @return [List] of [Contributor]s
      * @throws GitHubRequestException when the request fails
      */
-    public suspend fun listRepositoryContributors(
+    public fun listRepositoryContributors(
         owner: String,
         repo: String,
         includeAnonymousContributors: Boolean? = null,
-        builder: PaginatedRequestBuilder.() -> Unit = {}
-    ): List<Contributor> {
+        builder: SimplePaginatedRequestBuilder<Contributor>.() -> Unit = {}
+    ): Flow<Contributor> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
-        return gitHubClient.paginatedGet("repos", owner, repo, "contributors") {
+        return gitHubClient.simplePaginatedGet("repos", owner, repo, "contributors") {
             builder()
             request {
                 parameter("anon", includeAnonymousContributors)
@@ -251,15 +273,15 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
      * @return [List] of [Tag]s
      * @throws GitHubRequestException when the request fails
      */
-    public suspend fun listRepositoryTags(
+    public fun listRepositoryTags(
         owner: String,
         repo: String,
-        builder: PaginatedRequestBuilder.() -> Unit = {}
-    ): List<Tag> {
+        builder: SimplePaginatedRequestBuilder<Tag>.() -> Unit = {}
+    ): Flow<Tag> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
-        return gitHubClient.paginatedGet("repos", owner, repo, "tags") {
+        return gitHubClient.simplePaginatedGet("repos", owner, repo, "tags") {
             builder()
         }
     }
@@ -275,15 +297,15 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
      * @return [List] of [Team]s
      * @throws GitHubRequestException when the request fails
      */
-    public suspend fun listRepositoryTeams(
+    public fun listRepositoryTeams(
         owner: String,
         repo: String,
-        builder: PaginatedRequestBuilder.() -> Unit = {}
-    ): List<Team> {
+        builder: SimplePaginatedRequestBuilder<Team>.() -> Unit = {}
+    ): Flow<Team> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
-        return gitHubClient.paginatedGet("repos", owner, repo, "teams") {
+        return gitHubClient.simplePaginatedGet("repos", owner, repo, "teams") {
             builder()
         }
     }
@@ -300,21 +322,24 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
      * @return [List] of [String]s
      * @throws GitHubRequestException when the request fails
      */
+    @OptIn(FlowPreview::class)
     @ApiPreview
-    public suspend fun getRepositoryTopics(
+    public fun getRepositoryTopics(
         owner: String,
         repo: String,
-        builder: PaginatedRequestBuilder.() -> Unit = {}
-    ): List<String> {
+        builder: PaginatedRequestBuilder<*, String>.() -> Unit = {}
+    ): Flow<String> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
-        return gitHubClient.paginatedGet<RepositoryTopicsRequestResponse>("repos", owner, repo, "topics") {
+        return gitHubClient.paginatedGet<RepositoryTopicsRequestResponse, String>("repos", owner, repo, "topics") {
             builder()
             request {
                 preview(Previews.MercyPreview)
             }
-        }.names
+
+            mapper { it.names }
+        }
     }
 
     /**

@@ -71,7 +71,13 @@ kotlin {
                 implementation(libs.ktor.client.java)
             }
         }
-        val jvmTest by getting
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit5"))
+                implementation(libs.ktor.client.mock)
+                runtimeOnly(test.junit5)
+            }
+        }
         val jsMain by getting {
             dependencies {
                 implementation(libs.ktor.client.js)

@@ -19,21 +19,23 @@ import de.nycode.github.auth.AuthProvider
 import de.nycode.github.preview.ApiPreview
 import de.nycode.github.repositories.repositories
 import de.nycode.github.request.GitHubRequestException
+import kotlinx.coroutines.flow.singleOrNull
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class RepositoryTests {
 
-    private val client =
-        GitHubClient(
-            authProvider =
-            if (System.getenv("GITHUB_TOKEN") != null)
-                AuthProvider.OAuth(System.getenv("GITHUB_TOKEN"))
-            else
-                AuthProvider.None
-        )
+    private val client = GitHubClient {
+        authProvider = if (System.getenv("GITHUB_TOKEN") != null)
+            AuthProvider.OAuth(System.getenv("GITHUB_TOKEN"))
+        else
+            AuthProvider.None
+    }
 
     private val unauthenticatedClient = GitHubClient()
 
@@ -48,7 +50,7 @@ class RepositoryTests {
     @Test
     fun `getRepositoryTopics returns correct data`(): Unit = runBlocking {
         val topics = client.repositories.getRepositoryTopics("kordlib", "kord")
-        assert(topics.isNotEmpty())
+        assert(topics.toList().isNotEmpty())
     }
 
     @Test

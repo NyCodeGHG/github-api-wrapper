@@ -17,11 +17,14 @@
 package de.nycode.github.request
 
 import de.nycode.github.GitHubClient
+import de.nycode.github.utils.paginate
+import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.parameter
 import io.ktor.client.request.request
 import io.ktor.http.HttpMethod
 import io.ktor.http.URLBuilder
 import io.ktor.http.takeFrom
+import kotlinx.coroutines.flow.Flow
 
 public suspend inline fun <reified T> GitHubClient.request(
     vararg path: String,
@@ -87,32 +90,62 @@ public suspend inline fun <reified T> GitHubClient.delete(
         }
     }
 
+internal typealias HttpBuilder = HttpRequestBuilder.() -> Unit
+
 /**
  * Implements parameters for [pagination](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#pagination) in the GitHub API.
+ *
+ * @param T the response type of the endpoint (See [PaginatedRequestBuilder.mapper]
+ * @param R the type of the resulting [Flow]
+ *
+ * @see paginate
+ * @see simplePaginatedGet
+ * @see paginatedGet
  */
-public suspend inline fun <reified T> GitHubClient.paginatedRequest(
+public inline fun <reified T, R> GitHubClient.paginatedRequest(
     vararg path: String,
-    builder: PaginatedRequestBuilder.() -> Unit
-): T =
-    request(*path) {
-        val (page, perPage, builders) = PaginatedRequestBuilder().apply(builder)
-        require(page == null || perPage in 1..100) { "perPage must be between 1 and 100" }
-        require(page == null || page > 0) { "page mustn't be negative" }
+    builder: PaginatedRequestBuilder<T, R>.() -> Unit
+): Flow<R> {
+    val (perPage, builders, mapper)= PaginatedRequestBuilder<T, R>().apply(builder)
+
+    return paginate(perPage) { offset, batchSize ->
+       val response = request<T>(*path) {
+            request {
+                parameter("per_page", batchSize)
+                parameter("page", offset + 1)
+
+                builders.forEach { it() }
+            }
+        }
+
+        mapper(response)
+    }
+}
+
+/**
+ * Performs a paginated GET Request.
+ *
+ * @see paginatedRequest
+ */
+public inline fun <reified T, R> GitHubClient.paginatedGet(
+    vararg path: String,
+    builder: PaginatedRequestBuilder<T, R>.() -> Unit = {}
+): Flow<R> = paginatedRequest<T, R>(*path) {
+        builder()
         request {
-            parameter("per_page", perPage)
-            parameter("page", page)
-            builders.forEach { it() }
+            method = HttpMethod.Get
         }
     }
 
 /**
- * Performs a paginated GET Request.
+ * Performs a paginated GET Request which requests a [List] of [T].
+ *
+ * @see paginatedRequest
  */
-public suspend inline fun <reified T> GitHubClient.paginatedGet(
+public inline fun <reified T> GitHubClient.simplePaginatedGet(
     vararg path: String,
-    builder: PaginatedRequestBuilder.() -> Unit
-): T =
-    paginatedRequest(*path) {
+    builder: SimplePaginatedRequestBuilder<T>.() -> Unit = {}
+): Flow<T> = paginatedRequest<List<T>, T>(*path) {
         builder()
         request {
             method = HttpMethod.Get

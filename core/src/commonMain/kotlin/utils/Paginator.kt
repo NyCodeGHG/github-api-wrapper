@@ -14,25 +14,24 @@
  *    limitations under the License.
  */
 
-package de.nycode.github
+package de.nycode.github.utils
 
-import io.ktor.client.HttpClient
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 /**
- * Represents the root implementation of the [GitHub REST API v3](https://docs.github.com/en/rest/).
- *
- * Please use the [GitHubClient] function to create an instance
- *
- * @property baseUrl the base url of the GitHub API. Most of the time, you want to leave that to the default value.
+ * Returns a flow which requests items in batches of [batchSize] items by calling [requestPaginated].
  */
-public class GitHubClient internal constructor(
-    public val baseUrl: String = "https://api.github.com",
-    @PublishedApi
-    internal val httpClient: HttpClient
-) {
-
-    init {
-        require(baseUrl.startsWith("https://")) { "GitHub API base url must start with https." }
+@PublishedApi
+internal fun <T, C : Collection<T>> paginate(
+    batchSize: Int = 20,
+    requestPaginated: suspend (offset: Int, batchSize: Int) -> C
+): Flow<T> = flow {
+    var page = 0
+    while (true) {
+        val items = requestPaginated(page, batchSize)
+        for (item in items) emit(item)
+        if (items.size < batchSize) return@flow // no more items after this
+        page++
     }
-
 }

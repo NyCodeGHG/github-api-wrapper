@@ -26,13 +26,11 @@ import de.nycode.github.request.SortDirection
  * @property type specifies the types of repositories you want returned
  * @property sort specify the sorting type
  * @property direction specify the sort direction
- * @property page specify which page you want returned
  * @property perPage specify how many items should be in a page
  */
 public data class ListOrganizationRepositoriesRequestBuilder(
     public var type: RepositoryType? = null,
     public var sort: RepositorySort? = null,
     public var direction: SortDirection? = null,
-    public var page: Int? = null,
     public var perPage: Int? = null
 )

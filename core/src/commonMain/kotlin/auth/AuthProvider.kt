@@ -16,11 +16,13 @@
 
 package de.nycode.github.auth
 
-import io.ktor.client.*
-import io.ktor.client.features.auth.*
-import io.ktor.client.features.auth.providers.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.features.auth.Auth
+import io.ktor.client.features.auth.providers.BasicAuthCredentials
+import io.ktor.client.features.auth.providers.basic
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
 
 /**
  * Abstraction of different authentication methods for authenticating with the GitHub API.
