@@ -14,17 +14,22 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.model
+package de.nycode.github.repositories.model
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-public data class Tag(
+@Serializable
+public data class BranchWithProtection(
     val name: String,
-    val commit: VerySimpleCommit,
-    @SerialName("zipball_url")
-    val zipballUrl: String,
-    @SerialName("tarball_url")
-    val tarballUrl: String,
-    @SerialName("node_id")
-    val nodeId: String
+    val commit: CommitData,
+    val _links: Map<String, String>,
+    @SerialName("protected")
+    val isProtected: Boolean,
+    val protection: BranchProtection,
+    @SerialName("protection_url")
+    val protectionUrl: String,
+    val pattern: String? = null,
+    @SerialName("required_approving_review_count")
+    val requiredApprovingReviewCount: Int? = null
 )

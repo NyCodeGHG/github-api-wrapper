@@ -14,17 +14,20 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.model
+package de.nycode.github.repositories.model
 
+import de.nycode.github.model.SimpleUser
+import de.nycode.github.model.Team
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-public data class Tag(
-    val name: String,
-    val commit: VerySimpleCommit,
-    @SerialName("zipball_url")
-    val zipballUrl: String,
-    @SerialName("tarball_url")
-    val tarballUrl: String,
-    @SerialName("node_id")
-    val nodeId: String
+@Serializable
+public data class DismissalRestrictions(
+    val url: String,
+    @SerialName("users_url")
+    val usersUrl: String,
+    @SerialName("teams_url")
+    val teamsUrl: String,
+    val users: List<SimpleUser>,
+    val teams: List<Team>
 )

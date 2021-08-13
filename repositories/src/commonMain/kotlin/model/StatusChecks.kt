@@ -14,9 +14,18 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.model
+package de.nycode.github.repositories.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class Commit(val sha: String, val url: String)
+public data class StatusChecks(
+    val url: String? = null,
+    @SerialName("enforcement_level")
+    val enforcementLevel: String? = null,
+    val contexts: List<String>,
+    @SerialName("contexts_url")
+    val contextsUrl: String? = null,
+    val strict: Boolean? = null
+)

@@ -17,14 +17,12 @@
 package de.nycode.github.model
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-public data class Tag(
-    val name: String,
-    val commit: VerySimpleCommit,
-    @SerialName("zipball_url")
-    val zipballUrl: String,
-    @SerialName("tarball_url")
-    val tarballUrl: String,
-    @SerialName("node_id")
-    val nodeId: String
+@Serializable
+public data class VerySimpleCommit(
+    val sha: String,
+    val url: String,
+    @SerialName("html_url")
+    val htmlUrl: String? = null
 )

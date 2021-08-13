@@ -16,15 +16,12 @@
 
 package de.nycode.github.model
 
-import kotlinx.serialization.SerialName
+import kotlinx.datetime.Instant
+import kotlinx.serialization.Serializable
 
-public data class Tag(
+@Serializable
+public data class GitUser(
     val name: String,
-    val commit: VerySimpleCommit,
-    @SerialName("zipball_url")
-    val zipballUrl: String,
-    @SerialName("tarball_url")
-    val tarballUrl: String,
-    @SerialName("node_id")
-    val nodeId: String
+    val email: String,
+    val date: Instant
 )

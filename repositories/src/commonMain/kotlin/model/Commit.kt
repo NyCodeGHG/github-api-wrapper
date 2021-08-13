@@ -14,17 +14,21 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.model
+package de.nycode.github.repositories.model
 
+import de.nycode.github.model.GitUser
+import de.nycode.github.model.VerySimpleCommit
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-public data class Tag(
-    val name: String,
-    val commit: VerySimpleCommit,
-    @SerialName("zipball_url")
-    val zipballUrl: String,
-    @SerialName("tarball_url")
-    val tarballUrl: String,
-    @SerialName("node_id")
-    val nodeId: String
+@Serializable
+public data class Commit(
+    val author: GitUser?,
+    val committer: GitUser?,
+    val message: String,
+    val tree: VerySimpleCommit,
+    val url: String,
+    @SerialName("comment_count")
+    val commentCount: Int,
+    val verification: CommitVerification? = null
 )

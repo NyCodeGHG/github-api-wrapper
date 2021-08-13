@@ -14,17 +14,12 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.model
+package de.nycode.github.branches.request
 
-import kotlinx.serialization.SerialName
-
-public data class Tag(
-    val name: String,
-    val commit: VerySimpleCommit,
-    @SerialName("zipball_url")
-    val zipballUrl: String,
-    @SerialName("tarball_url")
-    val tarballUrl: String,
-    @SerialName("node_id")
-    val nodeId: String
-)
+public class ListBranchesRequestBuilder internal constructor(
+    public var protected: Boolean? = null,
+    public var perPage: Int? = null
+) {
+    public operator fun component1(): Boolean? = protected
+    public operator fun component2(): Int? = perPage
+}
