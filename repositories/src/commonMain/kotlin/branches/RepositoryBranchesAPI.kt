@@ -32,6 +32,17 @@ import kotlin.jvm.JvmInline
 @JvmInline
 public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient) {
 
+    /**
+     * Lists all branches of the specified repository.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-branches).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param builder builder for configuring the request
+     * @return [Flow] of [ShortBranch]es
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
     public fun listBranches(
         owner: String,
         repo: String,
