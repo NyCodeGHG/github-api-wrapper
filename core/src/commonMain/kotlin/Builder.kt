@@ -64,7 +64,7 @@ public abstract class GitHubClientBuilderBase {
     public var authProvider: AuthProvider = AuthProvider.None
 
     /**
-     * Sets the [HttpClientEngine] used for communication with Apple.
+     * Sets the [HttpClientEngine] used for communication with the GitHub API.
      *
      * This acts as a shortcut to `httpClient = HttpClient(ENGINE)` so setting both at the same time doesn't work
      *
@@ -84,7 +84,7 @@ public abstract class GitHubClientBuilderBase {
         }
 
     /**
-     * Sets the [HttpClient] used for communication with apple.
+     * Sets the [HttpClient] used for communication with the GitHub API.
      *
      * if you just want to set the engine use [httpClientEngine]
      *
