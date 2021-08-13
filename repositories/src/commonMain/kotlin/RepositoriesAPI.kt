@@ -16,12 +16,12 @@
 
 package de.nycode.github.repositories
 
-import autolinks.RepositoryAutolinksAPI
 import de.nycode.github.GitHubClient
 import de.nycode.github.model.*
 import de.nycode.github.preview.ApiPreview
 import de.nycode.github.preview.Previews
 import de.nycode.github.preview.preview
+import de.nycode.github.repositories.autolinks.RepositoryAutolinksAPI
 import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
 import de.nycode.github.repositories.request.*
 import de.nycode.github.request.*
