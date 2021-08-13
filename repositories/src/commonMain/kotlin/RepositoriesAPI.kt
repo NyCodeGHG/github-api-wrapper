@@ -16,34 +16,15 @@
 
 package de.nycode.github.repositories
 
+import autolinks.RepositoryAutolinksAPI
 import de.nycode.github.GitHubClient
-import de.nycode.github.model.Contributor
-import de.nycode.github.model.Language
-import de.nycode.github.model.Repository
-import de.nycode.github.model.Tag
-import de.nycode.github.model.Team
+import de.nycode.github.model.*
 import de.nycode.github.preview.ApiPreview
 import de.nycode.github.preview.Previews
 import de.nycode.github.preview.preview
 import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
-import de.nycode.github.repositories.request.CreateRepositoryDispatchEventRequestBuilder
-import de.nycode.github.repositories.request.CreateRepositoryForAuthenticatedUserRequestBuilder
-import de.nycode.github.repositories.request.CreateRepositoryFromTemplateRequestBuilder
-import de.nycode.github.repositories.request.ListPublicRepositoriesRequestBuilder
-import de.nycode.github.repositories.request.ListRepositoriesForAuthenticatedUserRequestBuilder
-import de.nycode.github.repositories.request.RepositoryTopicsRequestResponse
-import de.nycode.github.repositories.request.TransferRepositoryRequestBuilder
-import de.nycode.github.repositories.request.UpdateRepositoryRequestBuilder
-import de.nycode.github.request.GitHubRequestException
-import de.nycode.github.request.PaginatedRequestBuilder
-import de.nycode.github.request.SimplePaginatedRequestBuilder
-import de.nycode.github.request.delete
-import de.nycode.github.request.get
-import de.nycode.github.request.paginatedGet
-import de.nycode.github.request.patch
-import de.nycode.github.request.post
-import de.nycode.github.request.put
-import de.nycode.github.request.simplePaginatedGet
+import de.nycode.github.repositories.request.*
+import de.nycode.github.request.*
 import io.ktor.client.features.expectSuccess
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
@@ -69,6 +50,12 @@ public value class RepositoriesAPI(private val gitHubClient: GitHubClient) {
      */
     public val organizations: RepositoriesOrganizationsAPI
         get() = RepositoriesOrganizationsAPI(gitHubClient)
+
+    /**
+     * Access APIs related to repository autolinks.
+     */
+    public val autolinks: RepositoryAutolinksAPI
+        get() = RepositoryAutolinksAPI(gitHubClient)
 
     /**
      * Get a repository by its owner and name.
