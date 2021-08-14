@@ -23,7 +23,7 @@ import kotlinx.serialization.Serializable
 public data class BranchProtection(
     val url: String? = null,
     @SerialName("enabled")
-    val isEnabled: Boolean,
+    val isEnabled: Boolean? = null,
     @SerialName("required_status_checks")
     val requiredStatusChecks: StatusChecks? = null,
     @SerialName("enforce_admins")

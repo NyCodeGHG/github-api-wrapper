@@ -40,4 +40,8 @@ class RepositoryBranchTests {
         println(client.repositories.branches.listBranches("NyCodeGHG", "github-api-wrapper").collect())
     }
 
+    @Test
+    fun `get repository protection`(): Unit = runBlocking {
+        println(client.repositories.branches.getBranchProtection("NyCodeGHG", "github-api-wrapper", "main"))
+    }
 }

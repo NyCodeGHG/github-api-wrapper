@@ -18,6 +18,7 @@ package de.nycode.github.repositories.branches
 
 import de.nycode.github.GitHubClient
 import de.nycode.github.branches.request.ListBranchesRequestBuilder
+import de.nycode.github.repositories.model.BranchProtection
 import de.nycode.github.repositories.model.BranchWithProtection
 import de.nycode.github.repositories.model.ShortBranch
 import de.nycode.github.request.get
@@ -73,4 +74,25 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
         branch: String
     ): BranchWithProtection =
         gitHubClient.get("repos", owner, repo, "branches", branch)
+
+    /**
+     * Gets protection of a branch from the specified repository.
+     * Protected branches are available in public repositories with GitHub Free and GitHub Free for organizations,
+     * and in public and private repositories with GitHub Pro, GitHub Team, GitHub Enterprise Cloud, and GitHub Enterprise Server.
+     * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-branch-protection).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch
+     * @return the branch's protection information
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
+    public suspend fun getBranchProtection(
+        owner: String,
+        repo: String,
+        branch: String
+    ): BranchProtection =
+        gitHubClient.get("repos", owner, repo, "branches", branch, "protection")
 }
