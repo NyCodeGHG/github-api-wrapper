@@ -22,10 +22,7 @@ import de.nycode.github.repositories.branches.request.RequiredPullRequestReviews
 import de.nycode.github.repositories.branches.request.RestrictionsBuilder
 import de.nycode.github.repositories.branches.request.UpdateBranchProtectionRequestBuilder
 import de.nycode.github.repositories.model.*
-import de.nycode.github.request.delete
-import de.nycode.github.request.get
-import de.nycode.github.request.put
-import de.nycode.github.request.simplePaginatedGet
+import de.nycode.github.request.*
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -193,4 +190,24 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
         branch: String
     ): UrlEnabledValue =
         gitHubClient.get("repos", owner, repo, "branches", branch, "protection", "enforce_admins")
+
+    /**
+     * Sets admin branch protection of the specified branch in the specified repository.
+     * Protected branches are available in public repositories with GitHub Free and GitHub Free for organizations,
+     * and in public and private repositories with GitHub Pro, GitHub Team, GitHub Enterprise Cloud, and GitHub Enterprise Server.
+     * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#set-admin-branch-protection).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
+    public suspend fun setAdminBranchProtection(
+        owner: String,
+        repo: String,
+        branch: String
+    ): UrlEnabledValue =
+        gitHubClient.post("repos", owner, repo, "branches", branch, "protection", "enforce_admins")
 }
