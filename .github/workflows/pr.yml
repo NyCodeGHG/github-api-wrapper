@@ -1,12 +1,8 @@
-name: Gradle CI
-on: push
-
+name: Run Gradle on PRs
+on: pull_request
 jobs:
-
   build:
-    name: Gradle Wrapper
     runs-on: ubuntu-latest
-
     steps:
       - name: Fetch Sources
         uses: actions/checkout@v2
@@ -25,7 +21,3 @@ jobs:
           arguments: build
           distributions-cache-enabled: true
           dependencies-cache-enabled: true
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          REPO_OWNER: ${{ secrets.REPO_OWNER }}
-          REPO_NAME: ${{ secrets.REPO_NAME }}
