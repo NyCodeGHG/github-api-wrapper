@@ -20,8 +20,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class RequiredPullRequestReviews(
-    val url: String,
+public data class PullRequestReviews(
+    val url: String? = null,
     @SerialName("dismissal_restrictions")
     val dismissalRestrictions: DismissalRestrictions? = null,
     @SerialName("dismiss_stale_reviews")
