@@ -20,6 +20,7 @@ import de.nycode.github.repositories.branches.branches
 import de.nycode.github.repositories.repositories
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable
 import kotlin.test.Test
 
 class RepositoryBranchTests {
@@ -41,6 +42,7 @@ class RepositoryBranchTests {
         println(client.repositories.branches.listBranches("NyCodeGHG", "github-api-wrapper").collect())
     }
 
+    @EnabledIfEnvironmentVariable(named = "GITHUB_TOKEN", matches = ".+")
     @Test
     fun `get repository protection`(): Unit = runBlocking {
         println(client.repositories.branches.getBranchProtection("NyCodeGHG", "github-api-wrapper", "main"))

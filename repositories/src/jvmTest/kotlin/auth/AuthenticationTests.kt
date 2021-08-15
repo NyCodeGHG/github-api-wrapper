@@ -22,7 +22,6 @@ import de.nycode.github.repositories.repositories
 import de.nycode.github.request.GitHubRequestException
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariables
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
@@ -33,9 +32,7 @@ class AuthenticationTests {
     private val repoOwner: String = System.getenv("REPO_OWNER") ?: "NyCodeGHG"
     private val repoName: String = System.getenv("REPO_NAME") ?: "pathfinding-plugin"
 
-    @EnabledIfEnvironmentVariables(
-        EnabledIfEnvironmentVariable(named = "GITHUB_TOKEN", matches = ".+")
-    )
+    @EnabledIfEnvironmentVariable(named = "GITHUB_TOKEN", matches = ".+")
     @Test
     fun `Authenticated Request works`(): Unit = runBlocking {
         val authenticatedClient = GitHubClient {
