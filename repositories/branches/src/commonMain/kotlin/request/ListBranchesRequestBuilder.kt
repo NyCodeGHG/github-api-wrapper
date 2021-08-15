@@ -14,16 +14,12 @@
  *    limitations under the License.
  */
 
-plugins {
-    `api-module`
-}
+package de.nycode.github.repositories.branches.request
 
-kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                api(project(":core"))
-            }
-        }
-    }
+public class ListBranchesRequestBuilder internal constructor(
+    public var protected: Boolean? = null,
+    public var perPage: Int? = null
+) {
+    public operator fun component1(): Boolean? = protected
+    public operator fun component2(): Int? = perPage
 }

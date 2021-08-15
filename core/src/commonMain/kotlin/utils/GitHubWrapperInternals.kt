@@ -14,16 +14,10 @@
  *    limitations under the License.
  */
 
-plugins {
-    `api-module`
-}
+package de.nycode.github.utils
 
-kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                api(project(":core"))
-            }
-        }
-    }
-}
+@MustBeDocumented
+@Target(AnnotationTarget.PROPERTY)
+@Retention(AnnotationRetention.BINARY)
+@RequiresOptIn(message = "This is an internal api used by the library. Don't use it when you don't know what you're doing.")
+public annotation class GitHubWrapperInternals

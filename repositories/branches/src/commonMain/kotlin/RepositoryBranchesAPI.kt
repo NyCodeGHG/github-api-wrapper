@@ -17,7 +17,8 @@
 package de.nycode.github.repositories.branches
 
 import de.nycode.github.GitHubClient
-import de.nycode.github.branches.request.ListBranchesRequestBuilder
+import de.nycode.github.repositories.RepositoriesAPI
+import de.nycode.github.repositories.branches.request.ListBranchesRequestBuilder
 import de.nycode.github.repositories.branches.request.RequiredPullRequestReviewsBuilder
 import de.nycode.github.repositories.branches.request.RestrictionsBuilder
 import de.nycode.github.repositories.branches.request.UpdateBranchProtectionRequestBuilder
@@ -28,6 +29,12 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.JvmInline
+
+/**
+ * Access APIs related to repository branches.
+ */
+public val RepositoriesAPI.branches: RepositoryBranchesAPI
+    get() = RepositoryBranchesAPI(gitHubClient)
 
 /**
  * Access [Repository branches endpoints](https://docs.github.com/en/rest/reference/repos#branches).

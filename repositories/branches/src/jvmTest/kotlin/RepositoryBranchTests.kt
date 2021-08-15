@@ -16,6 +16,7 @@
 
 import de.nycode.github.GitHubClient
 import de.nycode.github.auth.AuthProvider
+import de.nycode.github.repositories.branches.branches
 import de.nycode.github.repositories.repositories
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
