@@ -15,43 +15,11 @@
  */
 
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.serialization")
-    id("org.jetbrains.dokka")
-    id("com.diffplug.spotless")
-}
-
-group = rootProject.group
-version = rootProject.version
-
-repositories {
-    mavenCentral()
+    `api-module`
 }
 
 kotlin {
-    explicitApi()
-
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "11"
-        }
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
-    }
-
-    js(BOTH) {
-        browser()
-        nodejs()
-    }
-
     sourceSets {
-        all {
-            languageSettings {
-                useExperimentalAnnotation("kotlin.RequiresOptIn")
-                useExperimentalAnnotation("kotlin.contracts.ExperimentalContracts")
-            }
-        }
         commonMain {
             dependencies {
                 api(libs.ktor.client.core)
@@ -59,11 +27,6 @@ kotlin {
                 api(libs.ktor.client.serialization)
                 api(libs.kotlinx.serialization.json)
                 api(libs.kotlinx.datetime)
-            }
-        }
-        commonTest {
-            dependencies {
-                implementation(kotlin("test"))
             }
         }
         val jvmMain by getting {
@@ -83,12 +46,5 @@ kotlin {
                 implementation(libs.ktor.client.js)
             }
         }
-        val jsTest by getting
-    }
-}
-
-spotless {
-    kotlin {
-        ktfmt("0.27").kotlinlangStyle()
     }
 }

@@ -15,80 +15,15 @@
  */
 
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.serialization")
-    id("org.jetbrains.dokka")
-    id("com.diffplug.spotless")
-}
-
-group = rootProject.group
-version = rootProject.version
-
-repositories {
-    mavenCentral()
+    `api-module`
 }
 
 kotlin {
-    explicitApi()
-
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "11"
-        }
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
-    }
-
-    js(BOTH) {
-        browser()
-        nodejs()
-    }
-
     sourceSets {
-        all {
-            languageSettings {
-                useExperimentalAnnotation("kotlin.RequiresOptIn")
-                useExperimentalAnnotation("kotlin.contracts.ExperimentalContracts")
-            }
-        }
         commonMain {
             dependencies {
                 implementation(project(":core"))
             }
         }
-        commonTest {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
-        val jvmMain by getting
-        val jvmTest by getting
-        val jsMain by getting
-        val jsTest by getting
-    }
-}
-
-tasks {
-    withType<Test> {
-        val secretLoader = SecretLoader(File(rootProject.rootDir, "secrets.properties"), project)
-        secretLoader["GH_TOKEN"]?.let {
-            if (it.isBlank()) return@let
-            environment["GITHUB_TOKEN"] = it
-        }
-        secretLoader["REPO_OWNER"]?.let {
-            if (it.isBlank()) return@let
-            environment["REPO_OWNER"] = it
-        }
-        secretLoader["REPO_NAME"]?.let {
-            if (it.isBlank()) return@let
-            environment["REPO_NAME"] = it
-        }
-    }
-}
-
-spotless {
-    kotlin {
-        ktfmt("0.27").kotlinlangStyle()
     }
 }

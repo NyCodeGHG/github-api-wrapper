@@ -7,6 +7,7 @@ include("core", "repositories")
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        mavenCentral()
     }
 }
 
