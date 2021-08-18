@@ -20,13 +20,20 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public class RequiredPullRequestReviewsBuilder(
+public class EditPullRequestReviewsBuilder(
     @SerialName("dismissal_restrictions ")
-    public var dismissalRestrictions: DismissalRestrictionsBuilder = DismissalRestrictionsBuilder(),
+    public var dismissalRestrictions: DismissalRestrictionsBuilder? = null,
     @SerialName("dismiss_stale_reviews")
-    public var dismissStaleReviews: Boolean,
+    public var dismissStaleReviews: Boolean? = null,
     @SerialName("require_code_owner_reviews")
-    public var requireCodeOwnerReviews: Boolean,
+    public var requireCodeOwnerReviews: Boolean? = null,
     @SerialName("required_approving_review_count")
-    public var requiredApprovingReviewCount: Int
-)
+    public var requiredApprovingReviewCount: Int? = null
+) {
+    public inline fun dismissalRestrictions(builder: DismissalRestrictionsBuilder.() -> Unit) {
+        if (dismissalRestrictions == null) {
+            dismissalRestrictions = DismissalRestrictionsBuilder()
+        }
+        dismissalRestrictions?.apply(builder)
+    }
+}

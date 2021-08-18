@@ -27,7 +27,7 @@ public class UpdateBranchProtectionRequestBuilder internal constructor(
     @SerialName("enforce_admins")
     public var enforceAdmins: Boolean?,
     @SerialName("required_pull_request_rewviews")
-    internal var requiredPullRequestReviews: RequiredPullRequestReviewsBuilder?,
+    internal var requiredPullRequestReviews: PullRequestReviewsBuilder?,
     internal var restrictions: RestrictionsBuilder?,
     @SerialName("required_linear_history")
     public var requiredLinearHistory: Boolean,
@@ -42,13 +42,13 @@ public class UpdateBranchProtectionRequestBuilder internal constructor(
         dismissStaleReviews: Boolean,
         requireCodeOwnerReviews: Boolean,
         requiredApprovingReviewCount: Int,
-        builder: RequiredPullRequestReviewsBuilder.() -> Unit
+        builder: PullRequestReviewsBuilder.() -> Unit
     ) {
         contract {
             callsInPlace(builder, InvocationKind.AT_MOST_ONCE)
         }
         require(requiredApprovingReviewCount in IntRange(1, 6)) { "requiredApprovingReviewCount must be in 1..6" }
-        requiredPullRequestReviews = RequiredPullRequestReviewsBuilder(
+        requiredPullRequestReviews = PullRequestReviewsBuilder(
             dismissStaleReviews = dismissStaleReviews,
             requireCodeOwnerReviews = requireCodeOwnerReviews,
             requiredApprovingReviewCount = requiredApprovingReviewCount

@@ -14,20 +14,23 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.model
+package de.nycode.github.repositories.branches.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class PullRequestReviews(
-    val url: String? = null,
-    @SerialName("dismissal_restrictions")
-    val dismissalRestrictions: DismissalRestrictions? = null,
+public class PullRequestReviewsBuilder(
+    @SerialName("dismissal_restrictions ")
+    public var dismissalRestrictions: DismissalRestrictionsBuilder = DismissalRestrictionsBuilder(),
     @SerialName("dismiss_stale_reviews")
-    val dismissStaleReviews: Boolean,
+    public var dismissStaleReviews: Boolean,
     @SerialName("require_code_owner_reviews")
-    val requireCodeOwnerReviews: Boolean,
+    public var requireCodeOwnerReviews: Boolean,
     @SerialName("required_approving_review_count")
-    val requiredApprovingReviewCount: Int? = null
-)
+    public var requiredApprovingReviewCount: Int
+) {
+    public inline fun dismissalRestrictions(builder: DismissalRestrictionsBuilder.() -> Unit) {
+        dismissalRestrictions.apply(builder)
+    }
+}

@@ -18,10 +18,7 @@ package de.nycode.github.repositories.branches
 
 import de.nycode.github.GitHubClient
 import de.nycode.github.repositories.RepositoriesAPI
-import de.nycode.github.repositories.branches.request.ListBranchesRequestBuilder
-import de.nycode.github.repositories.branches.request.RequiredPullRequestReviewsBuilder
-import de.nycode.github.repositories.branches.request.RestrictionsBuilder
-import de.nycode.github.repositories.branches.request.UpdateBranchProtectionRequestBuilder
+import de.nycode.github.repositories.branches.request.*
 import de.nycode.github.repositories.model.*
 import de.nycode.github.request.*
 import io.ktor.client.request.parameter
@@ -134,7 +131,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
         branch: String,
         requiredStatusChecks: SimpleStatusChecks,
         enforceAdmins: Boolean,
-        requiredPullRequestReviews: RequiredPullRequestReviewsBuilder?,
+        requiredPullRequestReviews: PullRequestReviewsBuilder?,
         restrictions: RestrictionsBuilder?,
         requiredLinearHistory: Boolean,
         allowForcePushes: Boolean?,
@@ -245,6 +242,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
      *
      * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-pull-request-review-protection).
+     *
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @param branch the name of the branch
@@ -255,6 +253,34 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
         owner: String,
         repo: String,
         branch: String
-    ): PullRequestReviews =
+    ): PullRequestReviewProtection =
         gitHubClient.get("repos", owner, repo, "branches", branch, "protection", "required_pull_request_reviews")
+
+    /**
+     * Updates the pull request review protection of the specified branch in the specified repository.
+     * Protected branches are available in public repositories with GitHub Free and GitHub Free for organizations,
+     * and in public and private repositories with GitHub Pro, GitHub Team, GitHub Enterprise Cloud, and GitHub Enterprise Server.
+     * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#update-pull-request-review-protection).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch
+     * @param builder builder for updating the review protection
+     * @return the branches pull request protection
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
+    public suspend fun updatePullRequestReviewProtection(
+        owner: String,
+        repo: String,
+        branch: String,
+        builder: EditPullRequestReviewsBuilder.() -> Unit
+    ): PullRequestReviewProtection =
+        gitHubClient.patch("repos", owner, repo, "branches", branch, "protection", "required_pull_request_reviews") {
+            request {
+                contentType(ContentType.Application.Json)
+                body = EditPullRequestReviewsBuilder().apply(builder)
+            }
+        }
 }

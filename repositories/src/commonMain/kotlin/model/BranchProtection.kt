@@ -29,7 +29,7 @@ public data class BranchProtection(
     @SerialName("enforce_admins")
     val enforceAdmins: UrlEnabledValue? = null,
     @SerialName("required_pull_request_reviews")
-    val requiredPullRequestReviews: PullRequestReviews? = null,
+    val requiredPullRequestReviews: PullRequestReviewProtection? = null,
     val restrictions: DismissalRestrictions? = null,
     @SerialName("required_linear_history")
     val requiredLinearHistory: WrappedBoolean? = null,
