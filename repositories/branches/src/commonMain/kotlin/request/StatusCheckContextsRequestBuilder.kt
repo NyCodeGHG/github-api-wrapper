@@ -19,6 +19,6 @@ package de.nycode.github.repositories.branches.request
 import kotlinx.serialization.Serializable
 
 @Serializable
-public class AddStatusCheckContextsRequestBuilder(
+public class StatusCheckContextsRequestBuilder(
     public val contexts: List<String>
 )
