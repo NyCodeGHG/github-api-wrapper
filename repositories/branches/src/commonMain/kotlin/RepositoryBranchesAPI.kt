@@ -17,6 +17,9 @@
 package de.nycode.github.repositories.branches
 
 import de.nycode.github.GitHubClient
+import de.nycode.github.preview.ApiPreview
+import de.nycode.github.preview.Previews
+import de.nycode.github.preview.preview
 import de.nycode.github.repositories.RepositoriesAPI
 import de.nycode.github.repositories.branches.request.*
 import de.nycode.github.repositories.model.*
@@ -291,6 +294,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
      *
      * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#delete-pull-request-review-protection).
+     *
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @param branch the name of the branch
@@ -302,4 +306,30 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
         branch: String
     ): Unit =
         gitHubClient.delete("repos", owner, repo, "branches", branch, "protection", "required_pull_request_reviews")
+
+    /**
+     * Gets the commit signature protection of the specified branch in the specified repository.
+     * Protected branches are available in public repositories with GitHub Free and GitHub Free for organizations,
+     * and in public and private repositories with GitHub Pro, GitHub Team, GitHub Enterprise Cloud, and GitHub Enterprise Server.
+     * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-commit-signature-protection).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch
+     * @return an [UrlEnabledValue] containing the request url and the value
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
+    @ApiPreview
+    public suspend fun getCommitSignatureProtection(
+        owner: String,
+        repo: String,
+        branch: String
+    ): UrlEnabledValue =
+        gitHubClient.get("repos", owner, repo, "branches", branch, "protection", "required_signatures") {
+            request {
+                preview(Previews.ZzzaxPreview)
+            }
+        }
 }

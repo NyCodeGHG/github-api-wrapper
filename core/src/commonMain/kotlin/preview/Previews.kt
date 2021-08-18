@@ -22,5 +22,6 @@ public object Previews {
     public const val DorianPreview: String = "application/vnd.github.dorian-preview+json"
     public const val LondonPreview: String = "application/vnd.github.london-preview+json"
     public const val MercyPreview: String = "application/vnd.github.mercy-preview+json"
+    public const val ZzzaxPreview: String = "application/vnd.github.zzzax-preview+json"
 
 }
