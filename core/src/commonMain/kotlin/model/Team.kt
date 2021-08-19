@@ -30,7 +30,7 @@ public data class Team(
     val name: String,
     val slug: String,
     val description: String?,
-    val privacy: String,
+    val privacy: String? = null,
     val permission: String,
     @SerialName("members_url")
     val membersUrl: String,
