@@ -657,4 +657,33 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
         branch: String
     ): List<App> =
         gitHubClient.get("repos", owner, repo, "branches", branch, "protection", "restrictions", "apps")
+
+    /**
+     * Grants the specified apps push access for this branch.
+     * Only installed GitHub Apps with write access to the `contents` permission can be added as authorized actors on a protected branch.
+     * Protected branches are available in public repositories with GitHub Free and GitHub Free for organizations,
+     * and in public and private repositories with GitHub Pro, GitHub Team, GitHub Enterprise Cloud, and GitHub Enterprise Server.
+     * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#add-app-access-restrictions).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch
+     * @param apps The GitHub Apps that have push access to this branch. Use the app's slug. Note: The list of users, apps, and teams in total is limited to 100 items.
+     * @return [List] of [App]s
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
+    public suspend fun addAppAccessRestrictions(
+        owner: String,
+        repo: String,
+        branch: String,
+        apps: List<String>
+    ): List<App> =
+        gitHubClient.post("repos", owner, repo, "branches", branch, "protection", "restrictions", "apps") {
+            request {
+                contentType(ContentType.Application.Json)
+                body = mapOf("apps" to apps)
+            }
+        }
 }
