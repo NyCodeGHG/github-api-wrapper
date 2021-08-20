@@ -16,8 +16,10 @@
 
 package de.nycode.github.preview
 
+import de.nycode.github.utils.GitHubWrapperInternals
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 
+@GitHubWrapperInternals
 public fun HttpRequestBuilder.preview(preview: String): Unit = header(HttpHeaders.Accept, preview)

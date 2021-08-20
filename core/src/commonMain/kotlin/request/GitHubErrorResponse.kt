@@ -20,7 +20,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class GitHubErrorResponse(
+public data class GitHubErrorResponse internal constructor(
     public val message: String,
     @SerialName("documentation_url") public val documentationUrl: String
 )

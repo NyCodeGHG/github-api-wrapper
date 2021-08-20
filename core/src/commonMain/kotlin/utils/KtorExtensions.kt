@@ -19,7 +19,8 @@ package de.nycode.github.utils
 import io.ktor.client.call.receive
 import io.ktor.client.statement.HttpResponse
 
-public suspend inline fun <reified T> HttpResponse.receiveOrNull(): T? = try {
+@GitHubWrapperInternals
+internal suspend inline fun <reified T> HttpResponse.receiveOrNull(): T? = try {
     receive<T>()
 } catch (exception: Exception) {
     null

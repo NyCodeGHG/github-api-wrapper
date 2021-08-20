@@ -16,10 +16,13 @@
 
 package de.nycode.github.request
 
+import de.nycode.github.utils.GitHubWrapperInternals
 import io.ktor.client.request.HttpRequestBuilder
 
+@GitHubWrapperInternals
 public typealias SimplePaginatedRequestBuilder<T> = PaginatedRequestBuilder<List<T>, T>
 
+@GitHubWrapperInternals
 public open class PaginatedRequestBuilder<T, R>(
     public var perPage: Int = 20,
     private val requests: MutableList<HttpRequestBuilder.() -> Unit> = mutableListOf(),
