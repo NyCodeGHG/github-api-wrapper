@@ -962,4 +962,42 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
                 body = mapOf("users" to users)
             }
         }
+
+    /**
+     * Renames a branch in a repository.
+     * Note: Although the API responds immediately,
+     * the branch rename process might take some extra time to complete in the background.
+     * You won't be able to push to the old branch name while the rename process is in progress.
+     * For more information, see "[Renaming a branch](https://docs.github.com/github/administering-a-repository/renaming-a-branch)".
+     *
+     * The permissions required to use this endpoint depends on whether you are renaming the default branch.
+     *
+     * To rename a non-default branch:
+     * - Users must have push access.
+     * - GitHub Apps must have the `contents:write` repository permission.
+     * To rename the default branch:
+     * - Users must have admin or owner permissions.
+     * - GitHub Apps must have the `administration:write` repository permission.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#rename-a-branch).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch
+     * @param newName the new name of the branch
+     * @return the targeted branch
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
+    public suspend fun renameBranch(
+        owner: String,
+        repo: String,
+        branch: String,
+        newName: String
+    ): BranchWithProtection =
+        gitHubClient.post("repos", owner, repo, "branches", branch, "rename") {
+            request {
+                contentType(ContentType.Application.Json)
+                body = mapOf("new_name" to newName)
+            }
+        }
 }
