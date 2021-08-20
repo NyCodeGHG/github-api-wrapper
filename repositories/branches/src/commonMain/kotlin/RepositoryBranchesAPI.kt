@@ -17,6 +17,7 @@
 package de.nycode.github.repositories.branches
 
 import de.nycode.github.GitHubClient
+import de.nycode.github.model.SimpleUser
 import de.nycode.github.model.Team
 import de.nycode.github.preview.ApiPreview
 import de.nycode.github.preview.Previews
@@ -854,4 +855,25 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
                 body = mapOf("teams" to teams)
             }
         }
+
+    /**
+     * Lists the people who have push access to this branch.
+     * Protected branches are available in public repositories with GitHub Free and GitHub Free for organizations,
+     * and in public and private repositories with GitHub Pro, GitHub Team, GitHub Enterprise Cloud, and GitHub Enterprise Server.
+     * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-users-with-access-to-the-protected-branch).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch
+     * @return [List] of [SimpleUser]s
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
+    public suspend fun getUsersWithAccessToProtectedBranch(
+        owner: String,
+        repo: String,
+        branch: String
+    ): List<SimpleUser> =
+        gitHubClient.get("repos", owner, repo, "branches", branch, "protection", "restrictions", "users")
 }
