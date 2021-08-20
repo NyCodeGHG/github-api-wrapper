@@ -774,7 +774,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * and in public and private repositories with GitHub Pro, GitHub Team, GitHub Enterprise Cloud, and GitHub Enterprise Server.
      * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
      *
-     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#add-teams-with-access-to-the-protected-branch).
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#add-team-access-restrictions).
      *
      * @param owner the owner of the repository
      * @param repo the name of the repo
@@ -790,6 +790,36 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
         teams: List<String>
     ): List<Team> =
         gitHubClient.post("repos", owner, repo, "branches", branch, "protection", "restrictions", "teams") {
+            request {
+                contentType(ContentType.Application.Json)
+                body = mapOf("teams" to teams)
+            }
+        }
+
+    /**
+     * Replaces the list of teams that have push access to this branch.
+     * This removes all teams that previously had push access and grants push access to the new list of teams.
+     * Team restrictions include child teams.
+     * Protected branches are available in public repositories with GitHub Free and GitHub Free for organizations,
+     * and in public and private repositories with GitHub Pro, GitHub Team, GitHub Enterprise Cloud, and GitHub Enterprise Server.
+     * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#set-team-access-restrictions).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch
+     * @param teams the teams to set
+     * @return [List] of [Team]s
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
+    public suspend fun setTeamAccessRestrictions(
+        owner: String,
+        repo: String,
+        branch: String,
+        teams: List<String>
+    ): List<Team> =
+        gitHubClient.put("repos", owner, repo, "branches", branch, "protection", "restrictions", "teams") {
             request {
                 contentType(ContentType.Application.Json)
                 body = mapOf("teams" to teams)
