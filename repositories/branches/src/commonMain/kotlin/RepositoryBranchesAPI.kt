@@ -825,4 +825,33 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
                 body = mapOf("teams" to teams)
             }
         }
+
+    /**
+     * Removes the ability of a team to push to this branch.
+     * You can also remove push access for child teams.
+     * Protected branches are available in public repositories with GitHub Free and GitHub Free for organizations,
+     * and in public and private repositories with GitHub Pro, GitHub Team, GitHub Enterprise Cloud, and GitHub Enterprise Server.
+     * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#remove-team-access-restrictions).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch
+     * @param teams the teams to remove
+     * @return [List] of [Team]s
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
+    public suspend fun removeTeamAccessRestrictions(
+        owner: String,
+        repo: String,
+        branch: String,
+        teams: List<String>
+    ): List<Team> =
+        gitHubClient.delete("repos", owner, repo, "branches", branch, "protection", "restrictions", "teams") {
+            request {
+                contentType(ContentType.Application.Json)
+                body = mapOf("teams" to teams)
+            }
+        }
 }
