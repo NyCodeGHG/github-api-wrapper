@@ -17,8 +17,8 @@
 package de.nycode.github.request
 
 import de.nycode.github.GitHubClient
+import de.nycode.github.utils.GitHubWrapperInternals
 import de.nycode.github.utils.paginate
-import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.parameter
 import io.ktor.client.request.request
 import io.ktor.http.HttpMethod
@@ -26,6 +26,7 @@ import io.ktor.http.URLBuilder
 import io.ktor.http.takeFrom
 import kotlinx.coroutines.flow.Flow
 
+@GitHubWrapperInternals
 public suspend inline fun <reified T> GitHubClient.request(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
@@ -35,6 +36,7 @@ public suspend inline fun <reified T> GitHubClient.request(
         url.takeFrom(URLBuilder(baseUrl).path(*path))
     }
 
+@GitHubWrapperInternals
 public suspend inline fun <reified T> GitHubClient.get(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
@@ -46,6 +48,7 @@ public suspend inline fun <reified T> GitHubClient.get(
         }
     }
 
+@GitHubWrapperInternals
 public suspend inline fun <reified T> GitHubClient.post(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
@@ -57,6 +60,7 @@ public suspend inline fun <reified T> GitHubClient.post(
         }
     }
 
+@GitHubWrapperInternals
 public suspend inline fun <reified T> GitHubClient.put(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
@@ -68,6 +72,7 @@ public suspend inline fun <reified T> GitHubClient.put(
         }
     }
 
+@GitHubWrapperInternals
 public suspend inline fun <reified T> GitHubClient.patch(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
@@ -79,6 +84,7 @@ public suspend inline fun <reified T> GitHubClient.patch(
         }
     }
 
+@GitHubWrapperInternals
 public suspend inline fun <reified T> GitHubClient.delete(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
@@ -90,8 +96,6 @@ public suspend inline fun <reified T> GitHubClient.delete(
         }
     }
 
-internal typealias HttpBuilder = HttpRequestBuilder.() -> Unit
-
 /**
  * Implements parameters for [pagination](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#pagination) in the GitHub API.
  *
@@ -102,14 +106,15 @@ internal typealias HttpBuilder = HttpRequestBuilder.() -> Unit
  * @see simplePaginatedGet
  * @see paginatedGet
  */
+@GitHubWrapperInternals
 public inline fun <reified T, R> GitHubClient.paginatedRequest(
     vararg path: String,
     builder: PaginatedRequestBuilder<T, R>.() -> Unit
 ): Flow<R> {
-    val (perPage, builders, mapper)= PaginatedRequestBuilder<T, R>().apply(builder)
+    val (perPage, builders, mapper) = PaginatedRequestBuilder<T, R>().apply(builder)
 
     return paginate(perPage) { offset, batchSize ->
-       val response = request<T>(*path) {
+        val response = request<T>(*path) {
             request {
                 parameter("per_page", batchSize)
                 parameter("page", offset + 1)
@@ -127,27 +132,29 @@ public inline fun <reified T, R> GitHubClient.paginatedRequest(
  *
  * @see paginatedRequest
  */
+@GitHubWrapperInternals
 public inline fun <reified T, R> GitHubClient.paginatedGet(
     vararg path: String,
     builder: PaginatedRequestBuilder<T, R>.() -> Unit = {}
 ): Flow<R> = paginatedRequest<T, R>(*path) {
-        builder()
-        request {
-            method = HttpMethod.Get
-        }
+    builder()
+    request {
+        method = HttpMethod.Get
     }
+}
 
 /**
  * Performs a paginated GET Request which requests a [List] of [T].
  *
  * @see paginatedRequest
  */
+@GitHubWrapperInternals
 public inline fun <reified T> GitHubClient.simplePaginatedGet(
     vararg path: String,
     builder: SimplePaginatedRequestBuilder<T>.() -> Unit = {}
 ): Flow<T> = paginatedRequest<List<T>, T>(*path) {
-        builder()
-        request {
-            method = HttpMethod.Get
-        }
+    builder()
+    request {
+        method = HttpMethod.Get
     }
+}

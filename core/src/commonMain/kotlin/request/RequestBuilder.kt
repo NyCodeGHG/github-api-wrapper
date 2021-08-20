@@ -16,8 +16,10 @@
 
 package de.nycode.github.request
 
+import de.nycode.github.utils.GitHubWrapperInternals
 import io.ktor.client.request.HttpRequestBuilder
 
+@GitHubWrapperInternals
 public class RequestBuilder(@PublishedApi internal val requests: MutableList<HttpRequestBuilder.() -> Unit> = mutableListOf()) {
     public fun request(builder: HttpRequestBuilder.() -> Unit) {
         requests += builder
