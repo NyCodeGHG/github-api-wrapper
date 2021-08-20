@@ -933,4 +933,33 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
                 body = mapOf("users" to users)
             }
         }
+
+    /**
+     * Removes the ability of a user to push to this branch.
+     * This removes all people that previously had push access and grants push access to the new list of people.
+     * Protected branches are available in public repositories with GitHub Free and GitHub Free for organizations,
+     * and in public and private repositories with GitHub Pro, GitHub Team, GitHub Enterprise Cloud, and GitHub Enterprise Server.
+     * For more information, see [GitHub's products](https://help.github.com/github/getting-started-with-github/githubs-products) in the GitHub Help documentation.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#remove-user-access-restrictions).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch
+     * @param users the users from whose push access will be revoked
+     * @return [SimpleUser]s which are having push access
+     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     */
+    public suspend fun removeUserAccessRestrictions(
+        owner: String,
+        repo: String,
+        branch: String,
+        users: List<String>
+    ): List<SimpleUser> =
+        gitHubClient.delete("repos", owner, repo, "branches", branch, "protection", "restrictions", "users") {
+            request {
+                contentType(ContentType.Application.Json)
+                body = mapOf("users" to users)
+            }
+        }
 }
