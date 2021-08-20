@@ -29,3 +29,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           REPO_OWNER: ${{ secrets.REPO_OWNER }}
           REPO_NAME: ${{ secrets.REPO_NAME }}
+
+      - uses: gradle/gradle-build-action@v1
+        if: github.ref == 'refs/heads/dev'
+        with:
+          arguments: publish -PossrhUsername=${{ secrets.SONATYPE_USERNAME }} -PossrhPassword=${{ secrets.SONATYPE_PASSWORD }} -PsigningKey=${{ secrets.SIGNING_KEY }} -PsigningPassword=${{ secrets.SIGNING_PASSWORD }}

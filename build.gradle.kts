@@ -18,6 +18,9 @@ plugins {
     id("org.jetbrains.dokka")
 }
 
+group = "de.nycode.github"
+version = "1.0.0-SNAPSHOT"
+
 repositories {
     mavenCentral()
 }

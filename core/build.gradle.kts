@@ -16,6 +16,7 @@
 
 plugins {
     `api-module`
+    `api-publishing`
 }
 
 kotlin {

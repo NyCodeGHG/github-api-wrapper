@@ -14,17 +14,7 @@
  *    limitations under the License.
  */
 
-plugins {
-    `api-module`
-    `api-publishing`
-}
-
-kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                api(project(":repositories"))
-            }
-        }
-    }
+enum class PublishingType(val repositoryUrl: String, val repositoryName: String) {
+    SNAPSHOT("https://s01.oss.sonatype.org/content/repositories/snapshots/", "ossrh"),
+    RELEASE("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/", "central")
 }
