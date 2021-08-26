@@ -37,7 +37,7 @@ val isCi = System.getenv("GITHUB_ACTIONS") == "true"
 
 buildCache {
     remote<HttpBuildCache> {
-        url = uri("https://gradle-cache.nycode.de/")
+        url = uri("https://gradle-cache.nycode.de/cache/")
         isPush = isCi
         credentials {
             username = System.getenv("GRADLE_CACHE_USER")
