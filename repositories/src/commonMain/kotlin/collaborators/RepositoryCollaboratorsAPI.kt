@@ -19,7 +19,10 @@ package de.nycode.github.repositories.collaborators
 import de.nycode.github.GitHubClient
 import de.nycode.github.repositories.model.Collaborator
 import de.nycode.github.request.GitHubRequestException
+import de.nycode.github.request.get
 import de.nycode.github.request.simplePaginatedGet
+import io.ktor.client.features.expectSuccess
+import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.JvmInline
 
@@ -55,4 +58,38 @@ public value class RepositoryCollaboratorsAPI(private val gitHubClient: GitHubCl
                 this.perPage = perPage
             }
         }
+
+    /**
+     * Checks if a user is a collaborator in the specified repository.
+     * For organization-owned repositories,
+     * the list of collaborators includes outside collaborators,
+     * organization members that are direct collaborators,
+     * organization members with access through team memberships,
+     * organization members with access through default organization permissions,
+     * and organization owners.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#check-if-a-user-is-a-repository-collaborator).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param username the user to check
+     * @return true if the user is a collaborator, otherwise false
+     * @throws GitHubRequestException when the request fails
+     */
+    public suspend fun isUserRepositoryCollaborator(
+        owner: String,
+        repo: String,
+        username: String
+    ): Boolean {
+        val response = gitHubClient.get<HttpResponse>("repos", owner, repo, "collaborators", username) {
+            request {
+                expectSuccess = false
+            }
+        }
+        return when (response.status.value) {
+            204 -> true
+            404 -> false
+            else -> error("Invalid response")
+        }
+    }
 }
