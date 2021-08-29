@@ -14,6 +14,6 @@
  *    limitations under the License.
  */
 
-package de.nycode.github
+package dev.nycode.github
 
 public actual class GitHubClientBuilder : GitHubClientBuilderBase()

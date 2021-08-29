@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.preview
+package dev.nycode.github.preview
 
 @RequiresOptIn(message = "This endpoint is under preview. GitHub could change it anytime.")
 @Retention(AnnotationRetention.BINARY)

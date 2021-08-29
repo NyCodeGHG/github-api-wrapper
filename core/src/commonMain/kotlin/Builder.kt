@@ -14,12 +14,12 @@
  *    limitations under the License.
  */
 
-package de.nycode.github
+package dev.nycode.github
 
-import de.nycode.github.auth.AuthProvider
-import de.nycode.github.request.GitHubErrorResponse
-import de.nycode.github.request.GitHubRequestException
-import de.nycode.github.utils.receiveOrNull
+import dev.nycode.github.auth.AuthProvider
+import dev.nycode.github.request.GitHubErrorResponse
+import dev.nycode.github.request.GitHubRequestException
+import dev.nycode.github.utils.receiveOrNull
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.features.ClientRequestException

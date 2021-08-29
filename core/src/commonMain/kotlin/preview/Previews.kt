@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.preview
+package dev.nycode.github.preview
 
 public object Previews {
 

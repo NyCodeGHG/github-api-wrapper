@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.organizations.request
+package dev.nycode.github.repositories.organizations.request
 
-import de.nycode.github.request.RepositorySort
-import de.nycode.github.request.RepositoryType
-import de.nycode.github.request.SortDirection
+import dev.nycode.github.request.RepositorySort
+import dev.nycode.github.request.RepositoryType
+import dev.nycode.github.request.SortDirection
 
 /**
  * Builder for configuring the [List organization repositories endpoint](https://docs.github.com/en/rest/reference/repos#list-organization-repositories).

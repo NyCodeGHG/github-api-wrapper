@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.request
+package dev.nycode.github.request
 
-import de.nycode.github.utils.GitHubWrapperInternals
+import dev.nycode.github.utils.GitHubWrapperInternals
 import io.ktor.client.request.HttpRequestBuilder
 
 @GitHubWrapperInternals

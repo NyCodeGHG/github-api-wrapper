@@ -14,15 +14,15 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.autolinks
+package dev.nycode.github.repositories.autolinks
 
-import de.nycode.github.GitHubClient
-import de.nycode.github.repositories.autolinks.request.CreateRepositoryAutolinkReferenceRequest
-import de.nycode.github.repositories.model.Autolink
-import de.nycode.github.request.delete
-import de.nycode.github.request.get
-import de.nycode.github.request.post
-import de.nycode.github.request.simplePaginatedGet
+import dev.nycode.github.GitHubClient
+import dev.nycode.github.repositories.autolinks.request.CreateRepositoryAutolinkReferenceRequest
+import dev.nycode.github.repositories.model.Autolink
+import dev.nycode.github.request.delete
+import dev.nycode.github.request.get
+import dev.nycode.github.request.post
+import dev.nycode.github.request.simplePaginatedGet
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +43,7 @@ public value class RepositoryAutolinksAPI(private val gitHubClient: GitHubClient
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @return [Flow] of [Autolink]s
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public fun listRepositoryAutolinks(
         owner: String,
@@ -62,7 +62,7 @@ public value class RepositoryAutolinksAPI(private val gitHubClient: GitHubClient
      * @param keyPrefix The prefix appended by a number will generate a link any time it is found in an issue, pull request, or commit
      * @param urlTemplate The URL must contain for the reference number
      * @return the new [Autolink]
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun createRepositoryAutolinkReference(
         owner: String,
@@ -87,7 +87,7 @@ public value class RepositoryAutolinksAPI(private val gitHubClient: GitHubClient
      * @param repo the name of the repo
      * @param autolinkId the id of the autolink
      * @return the autolink
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun getRepositoryAutolinkReference(
         owner: String,
@@ -105,7 +105,7 @@ public value class RepositoryAutolinksAPI(private val gitHubClient: GitHubClient
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @param autolinkId the id of the autolink
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun deleteRepositoryAutolinkReference(
         owner: String,

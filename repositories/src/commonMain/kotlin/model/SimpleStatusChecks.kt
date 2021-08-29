@@ -1,4 +1,4 @@
-package de.nycode.github.repositories.model
+package dev.nycode.github.repositories.model
 
 import kotlinx.serialization.Serializable
 

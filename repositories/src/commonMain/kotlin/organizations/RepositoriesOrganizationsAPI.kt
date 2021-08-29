@@ -14,16 +14,16 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.organizations
+package dev.nycode.github.repositories.organizations
 
-import de.nycode.github.GitHubClient
-import de.nycode.github.model.MinimalRepository
-import de.nycode.github.model.Repository
-import de.nycode.github.repositories.organizations.request.CreateOrganizationRepositoryRequestBuilder
-import de.nycode.github.repositories.organizations.request.ListOrganizationRepositoriesRequestBuilder
-import de.nycode.github.request.paginatedGet
-import de.nycode.github.request.request
-import de.nycode.github.request.simplePaginatedGet
+import dev.nycode.github.GitHubClient
+import dev.nycode.github.model.MinimalRepository
+import dev.nycode.github.model.Repository
+import dev.nycode.github.repositories.organizations.request.CreateOrganizationRepositoryRequestBuilder
+import dev.nycode.github.repositories.organizations.request.ListOrganizationRepositoriesRequestBuilder
+import dev.nycode.github.request.paginatedGet
+import dev.nycode.github.request.request
+import dev.nycode.github.request.simplePaginatedGet
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -44,7 +44,7 @@ public value class RepositoriesOrganizationsAPI internal constructor(private val
      * @param organization the organization to list the repos from
      * @param block builder for configuring list and pagination options
      * @return [List] of the organizations repositories
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public fun listOrganizationRepositories(
         organization: String,
@@ -72,7 +72,7 @@ public value class RepositoriesOrganizationsAPI internal constructor(private val
      * @param name the name of the new repository
      * @param block builder for configuring options of the new repo
      * @return the new [Repository]
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun createOrganizationRepository(
         organization: String,

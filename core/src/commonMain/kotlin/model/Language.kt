@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.model
+package dev.nycode.github.model
 
 /**
  * Represents a language response of the /repos/{owner}/{repo}/languages endpoint.

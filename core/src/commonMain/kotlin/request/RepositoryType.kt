@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.request
+package dev.nycode.github.request
 
 public enum class RepositoryType {
     ALL,

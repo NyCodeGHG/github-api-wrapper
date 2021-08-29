@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.nycode.github
+package dev.nycode.github
 
 import io.ktor.client.HttpClient
 

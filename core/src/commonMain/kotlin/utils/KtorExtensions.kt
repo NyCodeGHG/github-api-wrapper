@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.utils
+package dev.nycode.github.utils
 
 import io.ktor.client.call.receive
 import io.ktor.client.statement.HttpResponse

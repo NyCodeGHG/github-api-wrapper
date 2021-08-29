@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.request
+package dev.nycode.github.request
 
 public class GitHubRequestException internal constructor(errorResponse: GitHubErrorResponse) : Exception(
     "Request failed. Reason: \"${errorResponse.message}\". View documentation at: ${

@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
-import de.nycode.github.GitHubClient
-import de.nycode.github.auth.AuthProvider
-import de.nycode.github.repositories.branches.branches
-import de.nycode.github.repositories.repositories
+import dev.nycode.github.GitHubClient
+import dev.nycode.github.auth.AuthProvider
+import dev.nycode.github.repositories.branches.branches
+import dev.nycode.github.repositories.repositories
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable

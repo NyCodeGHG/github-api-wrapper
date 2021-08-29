@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.branches.model
+package dev.nycode.github.repositories.branches.model
 
-import de.nycode.github.model.SimpleUser
-import de.nycode.github.model.Team
+import dev.nycode.github.model.SimpleUser
+import dev.nycode.github.model.Team
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

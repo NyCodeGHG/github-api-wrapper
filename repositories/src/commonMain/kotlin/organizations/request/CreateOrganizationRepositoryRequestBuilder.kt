@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.organizations.request
+package dev.nycode.github.repositories.organizations.request
 
-import de.nycode.github.model.Visibility
+import dev.nycode.github.model.Visibility
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

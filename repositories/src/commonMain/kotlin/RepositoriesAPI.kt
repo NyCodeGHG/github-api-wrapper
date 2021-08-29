@@ -14,18 +14,18 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories
+package dev.nycode.github.repositories
 
-import de.nycode.github.GitHubClient
-import de.nycode.github.model.*
-import de.nycode.github.preview.ApiPreview
-import de.nycode.github.preview.Previews
-import de.nycode.github.preview.preview
-import de.nycode.github.repositories.autolinks.RepositoryAutolinksAPI
-import de.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
-import de.nycode.github.repositories.request.*
-import de.nycode.github.request.*
-import de.nycode.github.utils.GitHubWrapperInternals
+import dev.nycode.github.GitHubClient
+import dev.nycode.github.model.*
+import dev.nycode.github.preview.ApiPreview
+import dev.nycode.github.preview.Previews
+import dev.nycode.github.preview.preview
+import dev.nycode.github.repositories.autolinks.RepositoryAutolinksAPI
+import dev.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
+import dev.nycode.github.repositories.request.*
+import dev.nycode.github.request.*
+import dev.nycode.github.utils.GitHubWrapperInternals
 import io.ktor.client.features.expectSuccess
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType

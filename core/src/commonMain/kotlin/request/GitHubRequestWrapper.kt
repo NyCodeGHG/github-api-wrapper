@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.request
+package dev.nycode.github.request
 
-import de.nycode.github.GitHubClient
-import de.nycode.github.utils.GitHubWrapperInternals
-import de.nycode.github.utils.paginate
+import dev.nycode.github.GitHubClient
+import dev.nycode.github.utils.GitHubWrapperInternals
+import dev.nycode.github.utils.paginate
 import io.ktor.client.request.parameter
 import io.ktor.client.request.request
 import io.ktor.http.HttpMethod

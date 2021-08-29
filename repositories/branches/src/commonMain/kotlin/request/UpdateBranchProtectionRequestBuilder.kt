@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.branches.request
+package dev.nycode.github.repositories.branches.request
 
-import de.nycode.github.repositories.model.SimpleStatusChecks
+import dev.nycode.github.repositories.model.SimpleStatusChecks
 import kotlinx.serialization.SerialName
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract

@@ -14,20 +14,20 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.branches
+package dev.nycode.github.repositories.branches
 
-import de.nycode.github.GitHubClient
-import de.nycode.github.model.SimpleUser
-import de.nycode.github.model.Team
-import de.nycode.github.preview.ApiPreview
-import de.nycode.github.preview.Previews
-import de.nycode.github.preview.preview
-import de.nycode.github.repositories.RepositoriesAPI
-import de.nycode.github.repositories.branches.model.AccessRestrictions
-import de.nycode.github.repositories.branches.model.App
-import de.nycode.github.repositories.branches.request.*
-import de.nycode.github.repositories.model.*
-import de.nycode.github.request.*
+import dev.nycode.github.GitHubClient
+import dev.nycode.github.model.SimpleUser
+import dev.nycode.github.model.Team
+import dev.nycode.github.preview.ApiPreview
+import dev.nycode.github.preview.Previews
+import dev.nycode.github.preview.preview
+import dev.nycode.github.repositories.RepositoriesAPI
+import dev.nycode.github.repositories.branches.model.AccessRestrictions
+import dev.nycode.github.repositories.branches.model.App
+import dev.nycode.github.repositories.branches.request.*
+import dev.nycode.github.repositories.model.*
+import dev.nycode.github.request.*
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -55,7 +55,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param builder builder for configuring the request
      * @return [Flow] of [ShortBranch]es
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public fun listBranches(
         owner: String,
@@ -79,7 +79,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return the branch with its protection data
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun getBranch(
         owner: String,
@@ -100,7 +100,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return the branch's protection information
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun getBranchProtection(
         owner: String,
@@ -130,7 +130,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param requiredConversationResolution Requires all conversations on code to be resolved before a pull request can be merged into a branch that matches this rule. Set to false to disable. Default: false.
      * @param builder builder for configuring the request
      * @return the updated [BranchProtection]
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun updateBranchProtection(
         owner: String,
@@ -173,7 +173,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @param branch the name of the branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun deleteBranchProtection(
         owner: String,
@@ -193,7 +193,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @param branch the name of the branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun getAdminBranchProtection(
         owner: String,
@@ -213,7 +213,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @param branch the name of the branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun setAdminBranchProtection(
         owner: String,
@@ -233,7 +233,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @param branch the name of the branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun deleteAdminBranchProtection(
         owner: String,
@@ -254,7 +254,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return the branches pull request protection
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun getPullRequestReviewProtection(
         owner: String,
@@ -276,7 +276,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param builder builder for updating the review protection
      * @return the branches pull request protection
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun updatePullRequestReviewProtection(
         owner: String,
@@ -302,7 +302,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @param branch the name of the branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun deletePullRequestReviewProtection(
         owner: String,
@@ -328,7 +328,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return an [UrlEnabledValue] containing the request url and the value
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     @ApiPreview
     public suspend fun getCommitSignatureProtection(
@@ -358,7 +358,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return an [UrlEnabledValue] containing the request url and the value
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     @ApiPreview
     public suspend fun createCommitSignatureProtection(
@@ -387,7 +387,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @param branch the name of the branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     @ApiPreview
     public suspend fun deleteCommitSignatureProtection(
@@ -413,7 +413,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return the status checks protection of the branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun getStatusChecksProtection(
         owner: String,
@@ -434,7 +434,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return the status checks protection of the branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun updateStatusCheckProtection(
         owner: String,
@@ -460,7 +460,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @param branch the name of the branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun removeStatusCheckProtection(
         owner: String,
@@ -481,7 +481,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return [List] containing all check contexts
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun getStatusCheckContexts(
         owner: String,
@@ -503,7 +503,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param contexts the list of contexts to add
      * @return [List] containing all check contexts
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun addStatusCheckContexts(
         owner: String,
@@ -540,7 +540,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param contexts the list of contexts to set to
      * @return [List] containing all check contexts
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun setStatusCheckContexts(
         owner: String,
@@ -568,7 +568,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param contexts the list of contexts to remove
      * @return [List] containing all check contexts
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun removeStatusCheckContexts(
         owner: String,
@@ -606,7 +606,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return the access restriction of the branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun getAccessRestrictions(
         owner: String,
@@ -628,7 +628,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param owner the owner of the repository
      * @param repo the name of the repo
      * @param branch the name of the branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun deleteAccessRestrictions(
         owner: String,
@@ -651,7 +651,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return [List] of [App]s
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun getAppsWithAccessToProtectedBranch(
         owner: String,
@@ -674,7 +674,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param apps The GitHub Apps that have push access to this branch. Use the app's slug. Note: The list of users, apps, and teams in total is limited to 100 items.
      * @return [List] of [App]s
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun addAppAccessRestrictions(
         owner: String,
@@ -704,7 +704,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param apps The GitHub Apps that have push access to this branch. Use the app's slug. Note: The list of users, apps, and teams in total is limited to 100 items.
      * @return [List] of [App]s
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun setAppAccessRestrictions(
         owner: String,
@@ -733,7 +733,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param apps The GitHub Apps that have push access to this branch. Use the app's slug. Note: The list of users, apps, and teams in total is limited to 100 items.
      * @return [List] of [App]s
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun removeAppAccessRestrictions(
         owner: String,
@@ -760,7 +760,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return [List] of [Team]s
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun getTeamsWithAccessToProtectedBranch(
         owner: String,
@@ -782,7 +782,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param teams the teams to add
      * @return [List] of [Team]s
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun addTeamAccessRestrictions(
         owner: String,
@@ -812,7 +812,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param teams the teams to set
      * @return [List] of [Team]s
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun setTeamAccessRestrictions(
         owner: String,
@@ -841,7 +841,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param teams the teams to remove
      * @return [List] of [Team]s
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun removeTeamAccessRestrictions(
         owner: String,
@@ -868,7 +868,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param repo the name of the repo
      * @param branch the name of the branch
      * @return [List] of [SimpleUser]s
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun getUsersWithAccessToProtectedBranch(
         owner: String,
@@ -890,7 +890,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param users the users to grant push access
      * @return [SimpleUser]s which are having push access
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun addUserAccessRestrictions(
         owner: String,
@@ -919,7 +919,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param users the users to replace previous users with push access with
      * @return [SimpleUser]s which are having push access
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun setUserAccessRestrictions(
         owner: String,
@@ -948,7 +948,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param users the users from whose push access will be revoked
      * @return [SimpleUser]s which are having push access
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun removeUserAccessRestrictions(
         owner: String,
@@ -986,7 +986,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient)
      * @param branch the name of the branch
      * @param newName the new name of the branch
      * @return the targeted branch
-     * @throws de.nycode.github.request.GitHubRequestException when the request fails
+     * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
     public suspend fun renameBranch(
         owner: String,
