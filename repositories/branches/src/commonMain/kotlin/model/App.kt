@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.branches.model
+package dev.nycode.github.repositories.branches.model
 
-import de.nycode.github.model.SimpleUser
+import dev.nycode.github.model.SimpleUser
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

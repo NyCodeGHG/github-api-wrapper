@@ -18,7 +18,7 @@ plugins {
     id("org.jetbrains.dokka")
 }
 
-group = "de.nycode.github"
+group = "dev.nycode.github"
 version = "1.0.0-SNAPSHOT"
 
 repositories {

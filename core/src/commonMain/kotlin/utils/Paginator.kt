@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.utils
+package dev.nycode.github.utils
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.model
+package dev.nycode.github.repositories.model
 
-import de.nycode.github.model.VerySimpleCommit
+import dev.nycode.github.model.VerySimpleCommit
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.branches.request
+package dev.nycode.github.repositories.branches.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

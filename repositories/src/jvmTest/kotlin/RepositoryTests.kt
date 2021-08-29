@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 
-import de.nycode.github.GitHubClient
-import de.nycode.github.auth.AuthProvider
-import de.nycode.github.preview.ApiPreview
-import de.nycode.github.repositories.repositories
-import de.nycode.github.request.GitHubRequestException
+import dev.nycode.github.GitHubClient
+import dev.nycode.github.auth.AuthProvider
+import dev.nycode.github.preview.ApiPreview
+import dev.nycode.github.repositories.repositories
+import dev.nycode.github.request.GitHubRequestException
 import kotlinx.coroutines.flow.singleOrNull
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking

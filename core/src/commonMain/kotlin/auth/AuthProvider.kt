@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.auth
+package dev.nycode.github.auth
 
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.features.auth.Auth

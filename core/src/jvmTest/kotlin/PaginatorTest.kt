@@ -1,7 +1,7 @@
-import de.nycode.github.GitHubClient
-import de.nycode.github.request.paginatedGet
-import de.nycode.github.request.simplePaginatedGet
-import de.nycode.github.utils.paginate
+import dev.nycode.github.GitHubClient
+import dev.nycode.github.request.paginatedGet
+import dev.nycode.github.request.simplePaginatedGet
+import dev.nycode.github.utils.paginate
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond

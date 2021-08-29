@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.securityandanalysis
+package dev.nycode.github.repositories.securityandanalysis
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
