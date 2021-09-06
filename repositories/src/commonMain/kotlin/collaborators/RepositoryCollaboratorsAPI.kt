@@ -19,6 +19,7 @@ package dev.nycode.github.repositories.collaborators
 import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.repositories.collaborators.request.AddRepositoryCollaboratorRequestBuilder
 import dev.nycode.github.repositories.model.Collaborator
+import dev.nycode.github.request.delete
 import dev.nycode.github.request.get
 import dev.nycode.github.request.put
 import dev.nycode.github.request.simplePaginatedGet
@@ -133,4 +134,20 @@ public value class RepositoryCollaboratorsAPI(private val gitHubClient: GitHubCl
             }
         }
     }
+
+    /**
+     * Removes a repository collaborator.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#remove-a-repository-collaborator).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param username the user to remove
+     * @throws GitHubRequestException when the request fails
+     */
+    public suspend fun removeRepositoryCollaborator(
+        owner: String,
+        repo: String,
+        username: String
+    ): Unit = gitHubClient.delete("repos", owner, repo, "collaborators", username)
 }
