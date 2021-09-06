@@ -47,9 +47,9 @@ kotlin {
     sourceSets {
         all {
             languageSettings {
-                useExperimentalAnnotation("kotlin.RequiresOptIn")
-                useExperimentalAnnotation("kotlin.contracts.ExperimentalContracts")
-                useExperimentalAnnotation("dev.nycode.github.utils.GitHubWrapperInternals")
+                optIn("kotlin.RequiresOptIn")
+                optIn("kotlin.contracts.ExperimentalContracts")
+                optIn("dev.nycode.github.utils.GitHubWrapperInternals")
             }
         }
         commonTest {
