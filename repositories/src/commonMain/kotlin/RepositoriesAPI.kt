@@ -44,7 +44,7 @@ public val GitHubClient.repositories: RepositoriesAPI
     get() = RepositoriesAPI(this)
 
 @JvmInline
-public value class RepositoriesAPI(@GitHubWrapperInternals public val gitHubClient: GitHubClient) {
+public value class RepositoriesAPI(public val gitHubClient: GitHubClient) {
 
     /**
      * Access APIs related to organization repositories.
