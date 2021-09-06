@@ -16,12 +16,17 @@
 
 package dev.nycode.github.repositories.collaborators
 
-import dev.nycode.github.GitHubClient
+import dev.nycode.github.GitHubClientImpl
+import dev.nycode.github.repositories.collaborators.request.AddRepositoryCollaboratorRequestBuilder
 import dev.nycode.github.repositories.model.Collaborator
 import dev.nycode.github.request.get
+import dev.nycode.github.request.put
 import dev.nycode.github.request.simplePaginatedGet
 import io.ktor.client.features.expectSuccess
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.contentLength
+import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.JvmInline
 
@@ -29,7 +34,7 @@ import kotlin.jvm.JvmInline
  * Provides APIs regarding repository collaborators.
  */
 @JvmInline
-public value class RepositoryCollaboratorsAPI(private val gitHubClient: GitHubClient) {
+public value class RepositoryCollaboratorsAPI(private val gitHubClient: GitHubClientImpl) {
     /**
      * Lists all collaborators of the specified repository.
      * For organization-owned repositories,
@@ -89,6 +94,43 @@ public value class RepositoryCollaboratorsAPI(private val gitHubClient: GitHubCl
             204 -> true
             404 -> false
             else -> error("Invalid response")
+        }
+    }
+
+    /**
+     * Invites a repository collaborator.
+     * This endpoint triggers [notifications](https://docs.github.com/en/github/managing-subscriptions-and-notifications-on-github/about-notifications).
+     * Creating content too quickly using this endpoint may result in secondary rate limiting.
+     * See "[Secondary rate limits](https://docs.github.com/rest/overview/resources-in-the-rest-api#secondary-rate-limits)" and "[Dealing with secondary rate limits](https://docs.github.com/rest/guides/best-practices-for-integrators#dealing-with-secondary-rate-limits)" for details.
+     *
+     * For more information the permission levels, see "[Repository permission levels for an organization](https://help.github.com/en/github/setting-up-and-managing-organizations-and-teams/repository-permission-levels-for-an-organization#permission-levels-for-repositories-owned-by-an-organization)".
+     *
+     * The invitee will receive a notification that they have been invited to the repository,
+     * which they must accept or decline.
+     * They may do this via the notifications page, the email they receive, or by using the [repository invitations API endpoints](https://docs.github.com/rest/reference/repos#invitations).
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#add-a-repository-collaborator).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param username the user to invite
+     * @param builder builder for settings permissions in an organization repository
+     * @throws GitHubRequestException when the request fails
+     */
+    public suspend fun addRepositoryCollaborator(
+        owner: String,
+        repo: String,
+        username: String,
+        builder: AddRepositoryCollaboratorRequestBuilder.() -> Unit = {}
+    ): Unit = gitHubClient.put("repos", owner, repo, "collaborators", username) {
+        request {
+            contentType(ContentType.Application.Json)
+            val requestBody = AddRepositoryCollaboratorRequestBuilder().apply(builder)
+            body = if (requestBody.permissions != null || requestBody.permission != null) {
+                requestBody
+            } else {
+                ""
+            }
         }
     }
 }
