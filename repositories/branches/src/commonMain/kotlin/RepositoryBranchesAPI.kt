@@ -16,7 +16,7 @@
 
 package dev.nycode.github.repositories.branches
 
-import dev.nycode.github.GitHubClient
+import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.model.SimpleUser
 import dev.nycode.github.model.Team
 import dev.nycode.github.preview.ApiPreview
@@ -44,7 +44,7 @@ public val RepositoriesAPI.branches: RepositoryBranchesAPI
  * Access [Repository branches endpoints](https://docs.github.com/en/rest/reference/repos#branches).
  */
 @JvmInline
-public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClient) {
+public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClientImpl) {
 
     /**
      * Lists all branches of the specified repository.

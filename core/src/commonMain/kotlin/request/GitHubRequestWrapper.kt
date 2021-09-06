@@ -16,7 +16,7 @@
 
 package dev.nycode.github.request
 
-import dev.nycode.github.GitHubClient
+import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.utils.GitHubWrapperInternals
 import dev.nycode.github.utils.paginate
 import io.ktor.client.request.parameter
@@ -27,7 +27,7 @@ import io.ktor.http.takeFrom
 import kotlinx.coroutines.flow.Flow
 
 @GitHubWrapperInternals
-public suspend inline fun <reified T> GitHubClient.request(
+public suspend inline fun <reified T> GitHubClientImpl.request(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -37,7 +37,7 @@ public suspend inline fun <reified T> GitHubClient.request(
     }
 
 @GitHubWrapperInternals
-public suspend inline fun <reified T> GitHubClient.get(
+public suspend inline fun <reified T> GitHubClientImpl.get(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -49,7 +49,7 @@ public suspend inline fun <reified T> GitHubClient.get(
     }
 
 @GitHubWrapperInternals
-public suspend inline fun <reified T> GitHubClient.post(
+public suspend inline fun <reified T> GitHubClientImpl.post(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -61,7 +61,7 @@ public suspend inline fun <reified T> GitHubClient.post(
     }
 
 @GitHubWrapperInternals
-public suspend inline fun <reified T> GitHubClient.put(
+public suspend inline fun <reified T> GitHubClientImpl.put(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -73,7 +73,7 @@ public suspend inline fun <reified T> GitHubClient.put(
     }
 
 @GitHubWrapperInternals
-public suspend inline fun <reified T> GitHubClient.patch(
+public suspend inline fun <reified T> GitHubClientImpl.patch(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -85,7 +85,7 @@ public suspend inline fun <reified T> GitHubClient.patch(
     }
 
 @GitHubWrapperInternals
-public suspend inline fun <reified T> GitHubClient.delete(
+public suspend inline fun <reified T> GitHubClientImpl.delete(
     vararg path: String,
     builder: RequestBuilder.() -> Unit = {}
 ): T =
@@ -107,7 +107,7 @@ public suspend inline fun <reified T> GitHubClient.delete(
  * @see paginatedGet
  */
 @GitHubWrapperInternals
-public inline fun <reified T, R> GitHubClient.paginatedRequest(
+public inline fun <reified T, R> GitHubClientImpl.paginatedRequest(
     vararg path: String,
     builder: PaginatedRequestBuilder<T, R>.() -> Unit
 ): Flow<R> {
@@ -133,7 +133,7 @@ public inline fun <reified T, R> GitHubClient.paginatedRequest(
  * @see paginatedRequest
  */
 @GitHubWrapperInternals
-public inline fun <reified T, R> GitHubClient.paginatedGet(
+public inline fun <reified T, R> GitHubClientImpl.paginatedGet(
     vararg path: String,
     builder: PaginatedRequestBuilder<T, R>.() -> Unit = {}
 ): Flow<R> = paginatedRequest<T, R>(*path) {
@@ -149,7 +149,7 @@ public inline fun <reified T, R> GitHubClient.paginatedGet(
  * @see paginatedRequest
  */
 @GitHubWrapperInternals
-public inline fun <reified T> GitHubClient.simplePaginatedGet(
+public inline fun <reified T> GitHubClientImpl.simplePaginatedGet(
     vararg path: String,
     builder: SimplePaginatedRequestBuilder<T>.() -> Unit = {}
 ): Flow<T> = paginatedRequest<List<T>, T>(*path) {

@@ -17,6 +17,7 @@
 package dev.nycode.github.repositories
 
 import dev.nycode.github.GitHubClient
+import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.model.*
 import dev.nycode.github.preview.ApiPreview
 import dev.nycode.github.preview.Previews
@@ -41,10 +42,10 @@ import kotlin.jvm.JvmInline
  * Access [Repository endpoints](https://docs.github.com/en/rest/reference/repos).
  */
 public val GitHubClient.repositories: RepositoriesAPI
-    get() = RepositoriesAPI(this)
+    get() = RepositoriesAPI(this as GitHubClientImpl)
 
 @JvmInline
-public value class RepositoriesAPI(public val gitHubClient: GitHubClient) {
+public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
 
     /**
      * Access APIs related to organization repositories.
