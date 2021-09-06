@@ -14,13 +14,12 @@
  *    limitations under the License.
  */
 
-package de.nycode.github.repositories.collaborators
+package dev.nycode.github.repositories.collaborators
 
-import de.nycode.github.GitHubClient
-import de.nycode.github.repositories.model.Collaborator
-import de.nycode.github.request.GitHubRequestException
-import de.nycode.github.request.get
-import de.nycode.github.request.simplePaginatedGet
+import dev.nycode.github.GitHubClient
+import dev.nycode.github.repositories.model.Collaborator
+import dev.nycode.github.request.get
+import dev.nycode.github.request.simplePaginatedGet
 import io.ktor.client.features.expectSuccess
 import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.flow.Flow
