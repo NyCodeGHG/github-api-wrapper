@@ -17,17 +17,20 @@
 package dev.nycode.github.repositories.collaborators
 
 import dev.nycode.github.GitHubClientImpl
+import dev.nycode.github.repositories.collaborators.model.RepositoryPermissionReponse
 import dev.nycode.github.repositories.collaborators.request.AddRepositoryCollaboratorRequestBuilder
 import dev.nycode.github.repositories.model.Collaborator
 import dev.nycode.github.request.delete
 import dev.nycode.github.request.get
 import dev.nycode.github.request.put
 import dev.nycode.github.request.simplePaginatedGet
+import io.ktor.client.call.receive
 import io.ktor.client.features.expectSuccess
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentLength
 import io.ktor.http.contentType
+import io.ktor.http.isSuccess
 import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.JvmInline
 
@@ -150,4 +153,31 @@ public value class RepositoryCollaboratorsAPI(private val gitHubClient: GitHubCl
         repo: String,
         username: String
     ): Unit = gitHubClient.delete("repos", owner, repo, "collaborators", username)
+
+    /**
+     * Gets the permissions of a user in a repository.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-repository-permissions-for-a-user).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param username the user to check
+     * @throws GitHubRequestException when the request fails
+     */
+    public suspend fun getRepositoryPermissions(
+        owner: String,
+        repo: String,
+        username: String
+    ): RepositoryPermissionReponse? {
+        val response = gitHubClient.get<HttpResponse>("repos", owner, repo, "collaborators", username, "permission") {
+            request {
+                expectSuccess = false
+            }
+        }
+        if (response.status.isSuccess()) {
+            return response.receive()
+        }
+
+        return null
+    }
 }
