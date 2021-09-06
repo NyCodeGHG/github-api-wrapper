@@ -1,5 +1,5 @@
 import dev.nycode.github.GitHubClient
-import dev.nycode.github.request.paginatedGet
+import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.request.simplePaginatedGet
 import dev.nycode.github.utils.paginate
 import io.ktor.client.HttpClient
@@ -35,14 +35,19 @@ class PaginatorTest {
 
     // Requests to paginated endpoint
     private var batchRequests = 0
+
     // baseURL domain
     private val paginatedDomain = "https://schlau.bi/"
+
     // endpoint for paginated requests
     private val paginatedEndpoint = "pagination-in-kotlin-is-cool"
+
     // generator for paginated numbers
     private val content = generateSequence(1) { prev -> prev + 1 }
+
     // batchSize used for requests
     private val batchSize = 20
+
     // custom client
     private val client = GitHubClient {
         baseUrl = paginatedDomain
@@ -63,7 +68,7 @@ class PaginatorTest {
                 }
             }
         }
-    }
+    } as GitHubClientImpl
 
     @Test
     fun `paginate one batch`() = runBlocking {

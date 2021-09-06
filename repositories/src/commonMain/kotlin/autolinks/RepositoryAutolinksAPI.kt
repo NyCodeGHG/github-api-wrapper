@@ -16,7 +16,7 @@
 
 package dev.nycode.github.repositories.autolinks
 
-import dev.nycode.github.GitHubClient
+import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.repositories.autolinks.request.CreateRepositoryAutolinkReferenceRequest
 import dev.nycode.github.repositories.model.Autolink
 import dev.nycode.github.request.delete
@@ -32,7 +32,7 @@ import kotlin.jvm.JvmInline
  * Access [Repository autolink endpoints](https://docs.github.com/en/rest/reference/repos#autolinks).
  */
 @JvmInline
-public value class RepositoryAutolinksAPI(private val gitHubClient: GitHubClient) {
+public value class RepositoryAutolinksAPI(private val gitHubClient: GitHubClientImpl) {
 
     /**
      * Lists all autolinks configured for the given repository.

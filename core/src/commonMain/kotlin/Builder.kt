@@ -146,7 +146,7 @@ public abstract class GitHubClientBuilderBase {
     /**
      * Creates a new [GitHubClient] with the specified options.
      */
-    public open fun build(): GitHubClient = GitHubClient(baseUrl, decideOnClient())
+    public open fun build(): GitHubClient = GitHubClientImpl(baseUrl, decideOnClient())
 }
 
 /**

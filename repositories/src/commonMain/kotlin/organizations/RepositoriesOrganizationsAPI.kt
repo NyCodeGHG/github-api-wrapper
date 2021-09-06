@@ -16,12 +16,11 @@
 
 package dev.nycode.github.repositories.organizations
 
-import dev.nycode.github.GitHubClient
+import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.model.MinimalRepository
 import dev.nycode.github.model.Repository
 import dev.nycode.github.repositories.organizations.request.CreateOrganizationRepositoryRequestBuilder
 import dev.nycode.github.repositories.organizations.request.ListOrganizationRepositoriesRequestBuilder
-import dev.nycode.github.request.paginatedGet
 import dev.nycode.github.request.request
 import dev.nycode.github.request.simplePaginatedGet
 import io.ktor.client.request.parameter
@@ -34,7 +33,7 @@ import kotlin.jvm.JvmInline
  * Provides APIs regarding repositories in organizations.
  */
 @JvmInline
-public value class RepositoriesOrganizationsAPI internal constructor(private val gitHubClient: GitHubClient) {
+public value class RepositoriesOrganizationsAPI internal constructor(private val gitHubClient: GitHubClientImpl) {
 
     /**
      * Lists repositories for the specified organization.
