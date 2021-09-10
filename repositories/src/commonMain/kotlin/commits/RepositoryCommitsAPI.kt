@@ -17,8 +17,15 @@
 package dev.nycode.github.repositories.commits
 
 import dev.nycode.github.GitHubClientImpl
+import dev.nycode.github.model.SimpleCommit
+import dev.nycode.github.preview.ApiPreview
+import dev.nycode.github.preview.Previews
+import dev.nycode.github.preview.preview
 import dev.nycode.github.repositories.commits.request.ListCommitsRequestBuilder
+import dev.nycode.github.repositories.model.Commit
 import dev.nycode.github.repositories.model.CommitData
+import dev.nycode.github.repositories.model.ShortBranch
+import dev.nycode.github.request.get
 import dev.nycode.github.request.simplePaginatedGet
 import io.ktor.client.request.parameter
 import kotlinx.coroutines.flow.Flow
@@ -44,7 +51,7 @@ public value class RepositoryCommitsAPI internal constructor(private val gitHubC
         repo: String,
         builder: ListCommitsRequestBuilder.() -> Unit = {}
     ): Flow<CommitData> =
-        gitHubClient.simplePaginatedGet<CommitData>("repos", owner, repo, "commits") {
+        gitHubClient.simplePaginatedGet("repos", owner, repo, "commits") {
             val requestBuilder = ListCommitsRequestBuilder().apply(builder)
             requestBuilder.perPage?.let {
                 perPage = it
@@ -55,6 +62,28 @@ public value class RepositoryCommitsAPI internal constructor(private val gitHubC
                 parameter("author", requestBuilder.author)
                 parameter("since", requestBuilder.since)
                 parameter("until", requestBuilder.until)
+            }
+        }
+
+    /**
+     * Returns all branches where the given commit SHA is the HEAD, or latest commit for the branch.
+     * Note: This API is in preview. It could change anytime.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-branches-for-head-commit).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param commitSha the commit to get the branches for
+     */
+    @ApiPreview
+    public suspend fun listBranchesForHeadCommit(
+        owner: String,
+        repo: String,
+        commitSha: String
+    ): List<ShortBranch> =
+        gitHubClient.get("repos", owner, repo, "commits", commitSha, "branches-where-head") {
+            request {
+                preview(Previews.GrootPreview)
             }
         }
 
