@@ -18,6 +18,7 @@ package dev.nycode.github.repositories.commits
 
 import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.model.SimpleCommit
+import dev.nycode.github.model.SimplePullRequest
 import dev.nycode.github.preview.ApiPreview
 import dev.nycode.github.preview.Previews
 import dev.nycode.github.preview.preview
@@ -25,10 +26,11 @@ import dev.nycode.github.repositories.commits.request.ListCommitsRequestBuilder
 import dev.nycode.github.repositories.model.Commit
 import dev.nycode.github.repositories.model.CommitData
 import dev.nycode.github.repositories.model.ShortBranch
-import dev.nycode.github.request.get
-import dev.nycode.github.request.simplePaginatedGet
+import dev.nycode.github.request.*
 import io.ktor.client.request.parameter
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.reduce
+import kotlinx.coroutines.flow.toList
 import kotlin.jvm.JvmInline
 
 /**
@@ -86,5 +88,49 @@ public value class RepositoryCommitsAPI internal constructor(private val gitHubC
                 preview(Previews.GrootPreview)
             }
         }
+
+    /**
+     * Lists the merged pull request that introduced the commit to the repository.
+     * If the commit is not present in the default branch,
+     * additionally returns open pull requests associated with the commit.
+     * The results may include open and closed pull requests.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-pull-requests-associated-with-a-commit).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param commitSha the commit to get the pull requests for
+     * @param perPage how many entries should be requested in pagination per page
+     */
+    @ApiPreview
+    public fun listPullRequestsAssociatedWithCommit(
+        owner: String,
+        repo: String,
+        commitSha: String,
+        perPage: Int? = null
+    ): Flow<SimplePullRequest> =
+        gitHubClient.simplePaginatedGet("repos", owner, repo, "commits", commitSha, "pulls") {
+            if (perPage != null) {
+                this.perPage = perPage
+            }
+            request {
+                preview(Previews.GrootPreview)
+            }
+        }
+
+    /**
+     * Returns the contents of a single commit reference.
+     * You must have read access for the repository to use this endpoint.
+     * Note: If there are more than 300 files in the commit diff, the response will include pagination link headers for the remaining files,
+     * up to a limit of 3000 files.
+     * Each page contains the static commit information,
+     * and the only changes are to the file listing.
+     */
+    public suspend fun getCommit(
+        owner: String,
+        repo: String,
+        commitSha: String
+    ): CommitData =
+        gitHubClient.get("repos", owner, repo, "commits", commitSha)
 
 }

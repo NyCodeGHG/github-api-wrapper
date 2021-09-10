@@ -49,6 +49,7 @@ kotlin {
             languageSettings {
                 optIn("kotlin.RequiresOptIn")
                 optIn("kotlin.contracts.ExperimentalContracts")
+                optIn("kotlin.time.ExperimentalTime")
                 optIn("dev.nycode.github.utils.GitHubWrapperInternals")
             }
         }
