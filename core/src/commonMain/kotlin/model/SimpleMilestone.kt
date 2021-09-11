@@ -14,27 +14,37 @@
  *    limitations under the License.
  */
 
-package dev.nycode.github.repositories.model
+package dev.nycode.github.model
 
-import dev.nycode.github.model.SimpleUser
-import dev.nycode.github.model.VerySimpleCommit
-import kotlinx.serialization.SerialName
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 
 @Serializable
-public data class CommitData(
-    val sha: String,
-    @SerialName("node_id")
-    val nodeId: String,
-    val commit: Commit,
+public data class SimpleMilestone(
     val url: String,
     @SerialName("html_url")
     val htmlUrl: String,
-    @SerialName("comments_url")
-    val commentsUrl: String,
-    val author: SimpleUser,
-    val committer: SimpleUser,
-    val parents: List<VerySimpleCommit>,
-    val stats: CommitStats? = null,
-    val files: List<CommitFile>? = null
+    @SerialName("lablels_url")
+    val labelsUrl: String,
+    val id: Int,
+    @SerialName("node_id")
+    val nodeId: String,
+    val number: Int,
+    val state: MilestoneState,
+    val title: String,
+    val description: String?,
+    val creator: SimpleUser?,
+    @SerialName("open_issues")
+    val openIssues: Int,
+    @SerialName("closed_issues")
+    val closedIssues: Int,
+    @SerialName("created_at")
+    val createdAt: Instant,
+    @SerialName("updated_at")
+    val updatedAt: Instant,
+    @SerialName("closed_at")
+    val closedAt: Instant?,
+    @SerialName("due_on")
+    val dueOn: Instant?
 )

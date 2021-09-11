@@ -14,15 +14,21 @@
  *    limitations under the License.
  */
 
-package dev.nycode.github.preview
+package dev.nycode.github.model
 
-public object Previews {
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-    public const val BaptistePreview: String = "application/vnd.github.baptiste-preview+json"
-    public const val DorianPreview: String = "application/vnd.github.dorian-preview+json"
-    public const val GrootPreview: String = "application/vnd.github.groot-preview+json"
-    public const val LondonPreview: String = "application/vnd.github.london-preview+json"
-    public const val MercyPreview: String = "application/vnd.github.mercy-preview+json"
-    public const val ZzzaxPreview: String = "application/vnd.github.zzzax-preview+json"
-
-}
+@Serializable
+public data class SimplePullRequestLinks(
+    val comments: Link,
+    val commits: Link,
+    val statuses: Link,
+    val html: Link,
+    val issue: Link,
+    @SerialName("review_comments")
+    val reviewComments: Link,
+    @SerialName("review_comment")
+    val reviewComment: Link,
+    val self: Link
+)

@@ -14,27 +14,35 @@
  *    limitations under the License.
  */
 
-package dev.nycode.github.repositories.model
+package dev.nycode.github.repositories.commits.model
 
-import dev.nycode.github.model.SimpleUser
-import dev.nycode.github.model.VerySimpleCommit
+import dev.nycode.github.repositories.model.CommitData
+import dev.nycode.github.repositories.model.CommitFile
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class CommitData(
-    val sha: String,
-    @SerialName("node_id")
-    val nodeId: String,
-    val commit: Commit,
+public data class CommitComparison(
     val url: String,
     @SerialName("html_url")
     val htmlUrl: String,
-    @SerialName("comments_url")
-    val commentsUrl: String,
-    val author: SimpleUser,
-    val committer: SimpleUser,
-    val parents: List<VerySimpleCommit>,
-    val stats: CommitStats? = null,
+    @SerialName("permalink_url")
+    val permalinkUrl: String,
+    @SerialName("diff_url")
+    val diffUrl: String,
+    @SerialName("patch_url")
+    val patchUrl: String,
+    @SerialName("base_commit")
+    val baseCommit: CommitData,
+    @SerialName("merge_base_commit")
+    val mergeBaseCommit: CommitData,
+    val status: CommitStatus,
+    @SerialName("ahead_by")
+    val aheadBy: Int,
+    @SerialName("behind_by")
+    val behindBy: Int,
+    @SerialName("total_commits")
+    val totalCommits: Int,
+    val commits: List<CommitData>,
     val files: List<CommitFile>? = null
 )

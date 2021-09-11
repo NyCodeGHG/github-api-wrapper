@@ -14,15 +14,15 @@
  *    limitations under the License.
  */
 
-package dev.nycode.github.preview
+package dev.nycode.github.repositories.commits.request
 
-public object Previews {
+import kotlinx.datetime.Instant
 
-    public const val BaptistePreview: String = "application/vnd.github.baptiste-preview+json"
-    public const val DorianPreview: String = "application/vnd.github.dorian-preview+json"
-    public const val GrootPreview: String = "application/vnd.github.groot-preview+json"
-    public const val LondonPreview: String = "application/vnd.github.london-preview+json"
-    public const val MercyPreview: String = "application/vnd.github.mercy-preview+json"
-    public const val ZzzaxPreview: String = "application/vnd.github.zzzax-preview+json"
-
-}
+public class ListCommitsRequestBuilder internal constructor(
+    public var sha: String? = null,
+    public var path: String? = null,
+    public var author: String? = null,
+    public var since: Instant? = null,
+    public var until: Instant? = null,
+    public var perPage: Int? = null
+)

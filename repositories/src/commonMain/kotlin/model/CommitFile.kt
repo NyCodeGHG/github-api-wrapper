@@ -14,15 +14,26 @@
  *    limitations under the License.
  */
 
-package dev.nycode.github.preview
+package dev.nycode.github.repositories.model
 
-public object Previews {
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-    public const val BaptistePreview: String = "application/vnd.github.baptiste-preview+json"
-    public const val DorianPreview: String = "application/vnd.github.dorian-preview+json"
-    public const val GrootPreview: String = "application/vnd.github.groot-preview+json"
-    public const val LondonPreview: String = "application/vnd.github.london-preview+json"
-    public const val MercyPreview: String = "application/vnd.github.mercy-preview+json"
-    public const val ZzzaxPreview: String = "application/vnd.github.zzzax-preview+json"
-
-}
+@Serializable
+public data class CommitFile(
+    val filename: String,
+    val additions: Int,
+    val deletions: Int,
+    val changes: Int,
+    val status: String,
+    @SerialName("raw_url")
+    val rawUrl: String,
+    @SerialName("blob_url")
+    val blobUrl: String,
+    val patch: String? = null,
+    val sha: String,
+    @SerialName("contents_url")
+    val contentsUrl: String,
+    @SerialName("previous_filename")
+    val previousFilename: String? = null
+)
