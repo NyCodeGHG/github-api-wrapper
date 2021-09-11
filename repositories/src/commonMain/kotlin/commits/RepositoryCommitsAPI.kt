@@ -125,6 +125,13 @@ public value class RepositoryCommitsAPI internal constructor(private val gitHubC
      * up to a limit of 3000 files.
      * Each page contains the static commit information,
      * and the only changes are to the file listing.
+     * Note: This endpoint only returns file modification data for up to 300 files.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-a-commit).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param commitSha the hash of the commit
      */
     public suspend fun getCommit(
         owner: String,

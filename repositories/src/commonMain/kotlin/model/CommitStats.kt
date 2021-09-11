@@ -16,25 +16,11 @@
 
 package dev.nycode.github.repositories.model
 
-import dev.nycode.github.model.SimpleUser
-import dev.nycode.github.model.VerySimpleCommit
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class CommitData(
-    val sha: String,
-    @SerialName("node_id")
-    val nodeId: String,
-    val commit: Commit,
-    val url: String,
-    @SerialName("html_url")
-    val htmlUrl: String,
-    @SerialName("comments_url")
-    val commentsUrl: String,
-    val author: SimpleUser,
-    val committer: SimpleUser,
-    val parents: List<VerySimpleCommit>,
-    val stats: CommitStats? = null,
-    val files: List<CommitFile>? = null
+public data class CommitStats(
+    val additions: Int,
+    val deletions: Int,
+    val total: Int
 )

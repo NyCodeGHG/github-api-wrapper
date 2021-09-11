@@ -23,10 +23,10 @@ import dev.nycode.github.preview.ApiPreview
 import dev.nycode.github.preview.Previews
 import dev.nycode.github.preview.preview
 import dev.nycode.github.repositories.autolinks.RepositoryAutolinksAPI
+import dev.nycode.github.repositories.commits.RepositoryCommitsAPI
 import dev.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
 import dev.nycode.github.repositories.request.*
 import dev.nycode.github.request.*
-import dev.nycode.github.utils.GitHubWrapperInternals
 import io.ktor.client.features.expectSuccess
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
@@ -58,6 +58,12 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      */
     public val autolinks: RepositoryAutolinksAPI
         get() = RepositoryAutolinksAPI(gitHubClient)
+
+    /**
+     * Access APIs related to repository commits.
+     */
+    public val commits: RepositoryCommitsAPI
+        get() = RepositoryCommitsAPI(gitHubClient)
 
     /**
      * Get a repository by its owner and name.
