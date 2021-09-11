@@ -22,6 +22,7 @@ import dev.nycode.github.model.SimplePullRequest
 import dev.nycode.github.preview.ApiPreview
 import dev.nycode.github.preview.Previews
 import dev.nycode.github.preview.preview
+import dev.nycode.github.repositories.commits.model.CommitComparison
 import dev.nycode.github.repositories.commits.request.ListCommitsRequestBuilder
 import dev.nycode.github.repositories.model.Commit
 import dev.nycode.github.repositories.model.CommitData
@@ -139,5 +140,20 @@ public value class RepositoryCommitsAPI internal constructor(private val gitHubC
         commitSha: String
     ): CommitData =
         gitHubClient.get("repos", owner, repo, "commits", commitSha)
+
+    /**
+     * Compares two commits.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#compare-two-commits).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     */
+    public suspend fun compareCommits(
+        owner: String,
+        repo: String,
+        basehead: String
+    ): CommitComparison =
+        gitHubClient.get("repos", owner, repo, "commits", "compare", basehead)
 
 }
