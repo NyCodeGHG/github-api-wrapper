@@ -32,7 +32,7 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation(libs.ktor.client.java)
+                implementation(libs.ktor.client.okhttp)
             }
         }
         val jvmTest by getting {

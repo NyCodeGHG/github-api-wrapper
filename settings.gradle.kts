@@ -16,7 +16,7 @@ dependencyResolutionManagement {
         create("libs") {
             version("ktor", "1.6.3")
             alias("ktor-client-core").to("io.ktor", "ktor-client-core").versionRef("ktor")
-            alias("ktor-client-java").to("io.ktor", "ktor-client-java").versionRef("ktor")
+            alias("ktor-client-okhttp").to("io.ktor", "ktor-client-okhttp").versionRef("ktor")
             alias("ktor-client-js").to("io.ktor", "ktor-client-js").versionRef("ktor")
             alias("ktor-client-auth").to("io.ktor", "ktor-client-auth").versionRef("ktor")
             alias("ktor-client-mock").to("io.ktor", "ktor-client-mock").versionRef("ktor")
