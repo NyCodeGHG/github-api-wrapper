@@ -154,6 +154,6 @@ public value class RepositoryCommitsAPI internal constructor(private val gitHubC
         repo: String,
         basehead: String
     ): CommitComparison =
-        gitHubClient.get("repos", owner, repo, "commits", "compare", basehead)
+        gitHubClient.get("repos", owner, repo, "compare", basehead)
 
 }
