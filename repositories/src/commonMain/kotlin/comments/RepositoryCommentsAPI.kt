@@ -18,6 +18,7 @@ package dev.nycode.github.repositories.comments
 
 import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.repositories.comments.model.CommitComment
+import dev.nycode.github.request.get
 import dev.nycode.github.request.simplePaginatedGet
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
@@ -100,4 +101,19 @@ public value class RepositoryCommentsAPI internal constructor(
             mediaType(mediaType)
         }
     }
+
+    /**
+     * Gets a specific commit comment.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-a-commit-comment).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param commentId the id of the commit comment
+     */
+    public suspend fun getCommitComment(
+        owner: String,
+        repo: String,
+        commentId: String
+    ): CommitComment = gitHubClient.get("repos", owner, repo, "comments", commentId)
 }
