@@ -23,30 +23,25 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public sealed class CommitComment {
-
+public class HtmlCommitComment(
+    @SerialName("body_html")
+    public val bodyHtml: String,
     @SerialName("html_url")
-    public abstract val htmlUrl: String
-    public abstract val url: String
-    public abstract val id: Int
-
+    override val htmlUrl: String,
+    override val url: String,
+    override val id: Int,
     @SerialName("node_id")
-    public abstract val nodeId: String
-    public abstract val path: String?
-    public abstract val position: Int?
-    public abstract val line: Int?
-
+    override val nodeId: String,
+    override val path: String?,
+    override val position: Int?,
+    override val line: Int?,
     @SerialName("commit_id")
-    public abstract val commitId: String
-    public abstract val user: SimpleUser?
-
+    override val commitId: String,
+    override val user: SimpleUser?,
     @SerialName("created_at")
-    public abstract val createdAt: Instant
-
+    override val createdAt: Instant,
     @SerialName("updated_at")
-    public abstract val updatedAt: Instant
-
+    override val updatedAt: Instant,
     @SerialName("author_association")
-    public abstract val authorAssociation: AuthorAssociation
-
-}
+    override val authorAssociation: AuthorAssociation
+) : CommitComment()
