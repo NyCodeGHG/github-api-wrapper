@@ -30,6 +30,7 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.http.userAgent
+import kotlinx.serialization.json.Json
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
@@ -121,7 +122,9 @@ public abstract class GitHubClientBuilderBase {
             configureClient()
         }
         install(JsonFeature) {
-            serializer = KotlinxSerializer()
+            serializer = KotlinxSerializer(Json {
+                ignoreUnknownKeys = true
+            })
         }
         defaultRequest {
             with(authProvider) {
