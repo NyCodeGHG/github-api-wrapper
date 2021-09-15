@@ -62,6 +62,21 @@ public value class RepositoryCommentsAPIWrapper internal constructor(private val
      */
     public val full: RepositoryCommentsAPI<FullCommitComment>
         get() = FullRepositoryCommentsAPI(gitHubClientImpl)
+
+    /**
+     * Deletes a specific commit comment
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#delete-a-commit-comment).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param commentId the id of the commit comment
+     */
+    public suspend fun deleteCommitComment(
+        owner: String,
+        repo: String,
+        commentId: String
+    ): Unit = gitHubClientImpl.deleteCommitComment(owner, repo, commentId)
 }
 
 internal fun HttpRequestBuilder.mediaType(mediaType: CommentMediaType) {
@@ -126,21 +141,6 @@ public sealed interface RepositoryCommentsAPI<T : CommitComment> {
         commentId: String,
         body: String
     ): T
-
-    /**
-     * Deletes a specific commit comment
-     *
-     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#delete-a-commit-comment).
-     *
-     * @param owner the owner of the repository
-     * @param repo the name of the repo
-     * @param commentId the id of the commit comment
-     */
-    public suspend fun deleteCommitComment(
-        owner: String,
-        repo: String,
-        commentId: String
-    )
 }
 
 private inline fun <reified T> GitHubClientImpl.listRepositoryCommitComments(
@@ -213,9 +213,6 @@ internal value class FullRepositoryCommentsAPI internal constructor(
         commentId: String,
         body: String
     ): FullCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
-
-    override suspend fun deleteCommitComment(owner: String, repo: String, commentId: String): Unit =
-        gitHubClient.deleteCommitComment(owner, repo, commentId)
 }
 
 @JvmInline
@@ -244,9 +241,6 @@ internal value class HtmlRepositoryCommentsAPI internal constructor(
         commentId: String,
         body: String
     ): HtmlCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
-
-    override suspend fun deleteCommitComment(owner: String, repo: String, commentId: String): Unit =
-        gitHubClient.deleteCommitComment(owner, repo, commentId)
 }
 
 @JvmInline
@@ -275,9 +269,6 @@ internal value class TextRepositoryCommentsAPI internal constructor(
         commentId: String,
         body: String
     ): TextCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
-
-    override suspend fun deleteCommitComment(owner: String, repo: String, commentId: String): Unit =
-        gitHubClient.deleteCommitComment(owner, repo, commentId)
 }
 
 @JvmInline
@@ -306,7 +297,4 @@ internal value class RawRepositoryCommentsAPI internal constructor(
         commentId: String,
         body: String
     ): RawCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
-
-    override suspend fun deleteCommitComment(owner: String, repo: String, commentId: String): Unit =
-        gitHubClient.deleteCommitComment(owner, repo, commentId)
 }
