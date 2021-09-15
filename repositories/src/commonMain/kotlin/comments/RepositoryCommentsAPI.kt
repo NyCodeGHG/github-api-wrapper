@@ -108,6 +108,31 @@ public sealed interface RepositoryCommentsAPI<T : CommitComment> {
     ): T
 }
 
+private inline fun <reified T> GitHubClientImpl.listRepositoryCommitComments(
+    owner: String,
+    repo: String,
+    perPage: Int? = null,
+    mediaType: CommentMediaType
+): Flow<T> = simplePaginatedGet("repos", owner, repo, "comments") {
+    if (perPage != null) {
+        this.perPage = perPage
+    }
+    request {
+        mediaType(mediaType)
+    }
+}
+
+private suspend inline fun <reified T> GitHubClientImpl.getCommitComment(
+    owner: String,
+    repo: String,
+    commentId: String,
+    mediaType: CommentMediaType
+): T = get("repos", owner, repo, "comments", commentId) {
+    request {
+        mediaType(mediaType)
+    }
+}
+
 @JvmInline
 internal value class FullRepositoryCommentsAPI internal constructor(
     private val gitHubClient: GitHubClientImpl
@@ -116,28 +141,17 @@ internal value class FullRepositoryCommentsAPI internal constructor(
     override val mediaType: CommentMediaType
         get() = CommentMediaType.FULL
 
-    override fun listCommitComments(
+    override fun listRepositoryCommitComments(
         owner: String,
         repo: String,
         perPage: Int?
-    ): Flow<FullCommitComment> = gitHubClient.simplePaginatedGet("repos", owner, repo, "comments") {
-        if (perPage != null) {
-            this.perPage = perPage
-        }
-        request {
-            mediaType(mediaType)
-        }
-    }
+    ): Flow<FullCommitComment> = gitHubClient.listRepositoryCommitComments(owner, repo, perPage, mediaType)
 
     override suspend fun getCommitComment(
         owner: String,
         repo: String,
         commentId: String
-    ): FullCommitComment = gitHubClient.get("repos", owner, repo, "comments", commentId) {
-        request {
-            mediaType(mediaType)
-        }
-    }
+    ): FullCommitComment = gitHubClient.getCommitComment(owner, repo, commentId, mediaType)
 }
 
 @JvmInline
@@ -148,28 +162,17 @@ internal value class HtmlRepositoryCommentsAPI internal constructor(
     override val mediaType: CommentMediaType
         get() = CommentMediaType.HTML
 
-    override fun listCommitComments(
+    override fun listRepositoryCommitComments(
         owner: String,
         repo: String,
         perPage: Int?
-    ): Flow<HtmlCommitComment> = gitHubClient.simplePaginatedGet("repos", owner, repo, "comments") {
-        if (perPage != null) {
-            this.perPage = perPage
-        }
-        request {
-            mediaType(mediaType)
-        }
-    }
+    ): Flow<HtmlCommitComment> = gitHubClient.listRepositoryCommitComments(owner, repo, perPage, mediaType)
 
     override suspend fun getCommitComment(
         owner: String,
         repo: String,
         commentId: String
-    ): HtmlCommitComment = gitHubClient.get("repos", owner, repo, "comments", commentId) {
-        request {
-            mediaType(mediaType)
-        }
-    }
+    ): HtmlCommitComment = gitHubClient.getCommitComment(owner, repo, commentId, mediaType)
 }
 
 @JvmInline
@@ -180,28 +183,17 @@ internal value class TextRepositoryCommentsAPI internal constructor(
     override val mediaType: CommentMediaType
         get() = CommentMediaType.TEXT
 
-    override fun listCommitComments(
+    override fun listRepositoryCommitComments(
         owner: String,
         repo: String,
         perPage: Int?
-    ): Flow<TextCommitComment> = gitHubClient.simplePaginatedGet("repos", owner, repo, "comments") {
-        if (perPage != null) {
-            this.perPage = perPage
-        }
-        request {
-            mediaType(mediaType)
-        }
-    }
+    ): Flow<TextCommitComment> = gitHubClient.listRepositoryCommitComments(owner, repo, perPage, mediaType)
 
     override suspend fun getCommitComment(
         owner: String,
         repo: String,
         commentId: String
-    ): TextCommitComment = gitHubClient.get("repos", owner, repo, "comments", commentId) {
-        request {
-            mediaType(mediaType)
-        }
-    }
+    ): TextCommitComment = gitHubClient.getCommitComment(owner, repo, commentId, mediaType)
 }
 
 @JvmInline
@@ -212,26 +204,15 @@ internal value class RawRepositoryCommentsAPI internal constructor(
     override val mediaType: CommentMediaType
         get() = CommentMediaType.RAW
 
-    override fun listCommitComments(
+    override fun listRepositoryCommitComments(
         owner: String,
         repo: String,
         perPage: Int?
-    ): Flow<RawCommitComment> = gitHubClient.simplePaginatedGet("repos", owner, repo, "comments") {
-        if (perPage != null) {
-            this.perPage = perPage
-        }
-        request {
-            mediaType(mediaType)
-        }
-    }
+    ): Flow<RawCommitComment> = gitHubClient.listRepositoryCommitComments(owner, repo, perPage, mediaType)
 
     override suspend fun getCommitComment(
         owner: String,
         repo: String,
         commentId: String
-    ): RawCommitComment = gitHubClient.get("repos", owner, repo, "comments", commentId) {
-        request {
-            mediaType(mediaType)
-        }
-    }
+    ): RawCommitComment = gitHubClient.getCommitComment(owner, repo, commentId, mediaType)
 }
