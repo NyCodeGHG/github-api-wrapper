@@ -28,6 +28,15 @@ import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.JvmInline
 
+/**
+ * Provides APIs for reading, updating and deleting commits comments.
+ * Some endpoints have variants for the text format.
+ * To get the comments in the specific format use the according property in this class.
+ * e.g. for comments formatted in html, use [html].
+ * The endpoint functions in this class behave the same no matter which format is used, that's why they are in this class.
+ * Endpoints for creating and updating are delivering different results based on the formatting,
+ * but the text posted to the endpoints should always be raw text.
+ */
 @JvmInline
 public value class RepositoryCommentsAPIWrapper internal constructor(private val gitHubClientImpl: GitHubClientImpl) {
 
@@ -144,6 +153,13 @@ public sealed interface RepositoryCommentsAPI<T : CommitComment> {
 
     /**
      * Lists comments for a specific commit.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-commit-comments).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param commitSha the hash of the commit
+     * @param perPage pagination items fetched per page
      */
     public fun listCommitComments(
         owner: String,
