@@ -18,13 +18,13 @@ package dev.nycode.github.repositories.comments
 
 import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.repositories.comments.model.*
-import dev.nycode.github.request.delete
-import dev.nycode.github.request.get
-import dev.nycode.github.request.patch
-import dev.nycode.github.request.simplePaginatedGet
+import dev.nycode.github.repositories.comments.request.CreateCommitCommentRequestBuilder
+import dev.nycode.github.request.*
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
+import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.JvmInline
 
@@ -167,6 +167,26 @@ public sealed interface RepositoryCommentsAPI<T : CommitComment> {
         commitSha: String,
         perPage: Int? = null
     ): Flow<T>
+
+    /**
+     * Creates a new commit comment.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#create-a-commit-comment).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param commitSha the hash of the commit
+     * @param body the body of the new comment
+     * @param builder builder for additional options
+     * @return thew newly created comment
+     */
+    public suspend fun createCommitComment(
+        owner: String,
+        repo: String,
+        commitSha: String,
+        body: String,
+        builder: CreateCommitCommentRequestBuilder.() -> Unit
+    ): T
 }
 
 private inline fun <reified T> GitHubClientImpl.listRepositoryCommitComments(
@@ -228,6 +248,19 @@ private inline fun <reified T> GitHubClientImpl.listCommitComments(
     }
 }
 
+private suspend inline fun <reified T> GitHubClientImpl.createCommitComment(
+    owner: String,
+    repo: String,
+    commitSha: String,
+    body: String,
+    crossinline builder: CreateCommitCommentRequestBuilder.() -> Unit
+): T = post("repos", owner, repo, "commits", commitSha, "comments") {
+    request {
+        contentType(ContentType.Application.Json)
+        this.body = CreateCommitCommentRequestBuilder(body).apply(builder)
+    }
+}
+
 @JvmInline
 internal value class FullRepositoryCommentsAPI internal constructor(
     private val gitHubClient: GitHubClientImpl
@@ -261,6 +294,14 @@ internal value class FullRepositoryCommentsAPI internal constructor(
         commitSha: String,
         perPage: Int?
     ): Flow<FullCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
+
+    override suspend fun createCommitComment(
+        owner: String,
+        repo: String,
+        commitSha: String,
+        body: String,
+        builder: CreateCommitCommentRequestBuilder.() -> Unit
+    ): FullCommitComment = gitHubClient.createCommitComment(owner, repo, commitSha, body, builder)
 }
 
 @JvmInline
@@ -296,6 +337,14 @@ internal value class HtmlRepositoryCommentsAPI internal constructor(
         commitSha: String,
         perPage: Int?
     ): Flow<HtmlCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
+
+    override suspend fun createCommitComment(
+        owner: String,
+        repo: String,
+        commitSha: String,
+        body: String,
+        builder: CreateCommitCommentRequestBuilder.() -> Unit
+    ): HtmlCommitComment = gitHubClient.createCommitComment(owner, repo, commitSha, body, builder)
 }
 
 @JvmInline
@@ -331,6 +380,14 @@ internal value class TextRepositoryCommentsAPI internal constructor(
         commitSha: String,
         perPage: Int?
     ): Flow<TextCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
+
+    override suspend fun createCommitComment(
+        owner: String,
+        repo: String,
+        commitSha: String,
+        body: String,
+        builder: CreateCommitCommentRequestBuilder.() -> Unit
+    ): TextCommitComment = gitHubClient.createCommitComment(owner, repo, commitSha, body, builder)
 }
 
 @JvmInline
@@ -366,4 +423,12 @@ internal value class RawRepositoryCommentsAPI internal constructor(
         commitSha: String,
         perPage: Int?
     ): Flow<RawCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
+
+    override suspend fun createCommitComment(
+        owner: String,
+        repo: String,
+        commitSha: String,
+        body: String,
+        builder: CreateCommitCommentRequestBuilder.() -> Unit
+    ): RawCommitComment = gitHubClient.createCommitComment(owner, repo, commitSha, body, builder)
 }
