@@ -125,7 +125,7 @@ public sealed interface RepositoryCommentsAPI<T : CommitComment> {
     ): T
 
     /**
-     * Updates a specific commit comment
+     * Updates a specific commit comment.
      *
      * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#update-a-commit-comment).
      *
@@ -141,6 +141,16 @@ public sealed interface RepositoryCommentsAPI<T : CommitComment> {
         commentId: String,
         body: String
     ): T
+
+    /**
+     * Lists comments for a specific commit.
+     */
+    public fun listCommitComments(
+        owner: String,
+        repo: String,
+        commitSha: String,
+        perPage: Int? = null
+    ): Flow<T>
 }
 
 private inline fun <reified T> GitHubClientImpl.listRepositoryCommitComments(
@@ -187,6 +197,21 @@ private suspend inline fun <reified T> GitHubClientImpl.deleteCommitComment(
     commentId: String
 ): T = delete("repos", owner, repo, "comments", commentId)
 
+private inline fun <reified T> GitHubClientImpl.listCommitComments(
+    owner: String,
+    repo: String,
+    commitSha: String,
+    perPage: Int?,
+    mediaType: CommentMediaType
+): Flow<T> = simplePaginatedGet("repos", owner, repo, "commits", commitSha, "comments") {
+    if (perPage != null) {
+        this.perPage = perPage
+    }
+    request {
+        mediaType(mediaType)
+    }
+}
+
 @JvmInline
 internal value class FullRepositoryCommentsAPI internal constructor(
     private val gitHubClient: GitHubClientImpl
@@ -213,6 +238,13 @@ internal value class FullRepositoryCommentsAPI internal constructor(
         commentId: String,
         body: String
     ): FullCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
+
+    override fun listCommitComments(
+        owner: String,
+        repo: String,
+        commitSha: String,
+        perPage: Int?
+    ): Flow<FullCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
 }
 
 @JvmInline
@@ -241,6 +273,13 @@ internal value class HtmlRepositoryCommentsAPI internal constructor(
         commentId: String,
         body: String
     ): HtmlCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
+
+    override fun listCommitComments(
+        owner: String,
+        repo: String,
+        commitSha: String,
+        perPage: Int?
+    ): Flow<HtmlCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
 }
 
 @JvmInline
@@ -269,6 +308,13 @@ internal value class TextRepositoryCommentsAPI internal constructor(
         commentId: String,
         body: String
     ): TextCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
+
+    override fun listCommitComments(
+        owner: String,
+        repo: String,
+        commitSha: String,
+        perPage: Int?
+    ): Flow<TextCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
 }
 
 @JvmInline
@@ -297,4 +343,11 @@ internal value class RawRepositoryCommentsAPI internal constructor(
         commentId: String,
         body: String
     ): RawCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
+
+    override fun listCommitComments(
+        owner: String,
+        repo: String,
+        commitSha: String,
+        perPage: Int?
+    ): Flow<RawCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
 }
