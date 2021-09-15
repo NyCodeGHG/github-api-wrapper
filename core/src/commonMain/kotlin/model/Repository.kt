@@ -168,6 +168,8 @@ public data class Repository(
     val allowRebaseMerge: Boolean? = null,
     @SerialName("allow_auto_merge")
     val allowAutoMerge: Boolean? = null,
+    @SerialName("allow_forking")
+    val allowForking: Boolean? = null,
     @SerialName("delete_branch_on_merge")
     val deleteBranchOnMerge: Boolean? = null,
     val parent: MinimalRepository? = null,
