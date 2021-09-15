@@ -19,6 +19,7 @@ package dev.nycode.github.repositories.comments
 import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.repositories.comments.model.*
 import dev.nycode.github.request.get
+import dev.nycode.github.request.patch
 import dev.nycode.github.request.simplePaginatedGet
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
@@ -106,6 +107,24 @@ public sealed interface RepositoryCommentsAPI<T : CommitComment> {
         repo: String,
         commentId: String
     ): T
+
+    /**
+     * Updates a specific commit comment
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#update-a-commit-comment).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param commentId the id of the commit comment
+     * @param body the new body
+     * @return the updated comment
+     */
+    public suspend fun updateCommitComment(
+        owner: String,
+        repo: String,
+        commentId: String,
+        body: String
+    ): T
 }
 
 private inline fun <reified T> GitHubClientImpl.listRepositoryCommitComments(
@@ -133,6 +152,19 @@ private suspend inline fun <reified T> GitHubClientImpl.getCommitComment(
     }
 }
 
+private suspend inline fun <reified T> GitHubClientImpl.updateCommitComment(
+    owner: String,
+    repo: String,
+    commentId: String,
+    body: String,
+    mediaType: CommentMediaType
+): T = patch("repos", owner, repo, "comments", commentId) {
+    request {
+        mediaType(mediaType)
+        this.body = body
+    }
+}
+
 @JvmInline
 internal value class FullRepositoryCommentsAPI internal constructor(
     private val gitHubClient: GitHubClientImpl
@@ -152,6 +184,13 @@ internal value class FullRepositoryCommentsAPI internal constructor(
         repo: String,
         commentId: String
     ): FullCommitComment = gitHubClient.getCommitComment(owner, repo, commentId, mediaType)
+
+    override suspend fun updateCommitComment(
+        owner: String,
+        repo: String,
+        commentId: String,
+        body: String
+    ): FullCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
 }
 
 @JvmInline
@@ -173,6 +212,13 @@ internal value class HtmlRepositoryCommentsAPI internal constructor(
         repo: String,
         commentId: String
     ): HtmlCommitComment = gitHubClient.getCommitComment(owner, repo, commentId, mediaType)
+
+    override suspend fun updateCommitComment(
+        owner: String,
+        repo: String,
+        commentId: String,
+        body: String
+    ): HtmlCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
 }
 
 @JvmInline
@@ -194,6 +240,13 @@ internal value class TextRepositoryCommentsAPI internal constructor(
         repo: String,
         commentId: String
     ): TextCommitComment = gitHubClient.getCommitComment(owner, repo, commentId, mediaType)
+
+    override suspend fun updateCommitComment(
+        owner: String,
+        repo: String,
+        commentId: String,
+        body: String
+    ): TextCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
 }
 
 @JvmInline
@@ -215,4 +268,11 @@ internal value class RawRepositoryCommentsAPI internal constructor(
         repo: String,
         commentId: String
     ): RawCommitComment = gitHubClient.getCommitComment(owner, repo, commentId, mediaType)
+
+    override suspend fun updateCommitComment(
+        owner: String,
+        repo: String,
+        commentId: String,
+        body: String
+    ): RawCommitComment = gitHubClient.updateCommitComment(owner, repo, commentId, body, mediaType)
 }
