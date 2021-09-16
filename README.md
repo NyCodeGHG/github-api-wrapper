@@ -21,9 +21,10 @@ repositories {
 
 dependencies {
     // Use the modules you need
-    implementation("dev.nycode.github:core:1.0.0-SNAPSHOT")
-    implementation("dev.nycode.github:repositories:1.0.0-SNAPSHOT")
-    implementation("dev.nycode.github:branches:1.0.0-SNAPSHOT")
+    implementation(platform("dev.nycode.github:bom:1.0.0-SNAPSHOT"))
+    implementation("dev.nycode.github:core")
+    implementation("dev.nycode.github:repositories")
+    implementation("dev.nycode.github:branches")
 }
 ```
 
@@ -41,9 +42,10 @@ repositories {
 
 dependencies {
     // Use the modules you need
-    implementation 'dev.nycode.github:core:1.0.0-SNAPSHOT'
-    implementation 'dev.nycode.github:repositories:1.0.0-SNAPSHOT'
-    implementation 'dev.nycode.github:branches:1.0.0-SNAPSHOT'
+    implementation platform('dev.nycode.github:bom:1.0.0-SNAPSHOT')
+    implementation 'dev.nycode.github:core'
+    implementation 'dev.nycode.github:repositories'
+    implementation 'dev.nycode.github:branches'
 }
 ```
 
@@ -60,22 +62,31 @@ dependencies {
     </repository>
 </repositories>
 
+<dependencyManagement>
+<dependencies>
+    <dependency>
+        <groupId>dev.nycode.github</groupId>
+        <artifactId>bom</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
+    </dependency>
+</dependencies>
+</dependencyManagement>
+
 <dependencies>
     <!-- Use the modules you need -->
     <dependency>
         <groupId>dev.nycode.github</groupId>
         <artifactId>core</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>dev.nycode.github</groupId>
         <artifactId>repositories</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>dev.nycode.github</groupId>
         <artifactId>branches</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
