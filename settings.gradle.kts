@@ -11,7 +11,8 @@ include(
     "repositories:autolinks",
     "repositories:collaborators",
     "repositories:comments",
-    "repositories:commits"
+    "repositories:commits",
+    "repositories:community"
 )
 
 pluginManagement {
