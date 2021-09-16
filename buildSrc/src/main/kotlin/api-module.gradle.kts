@@ -18,10 +18,8 @@ plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("org.jetbrains.dokka")
+    `maven-publish`
 }
-
-group = rootProject.group
-version = rootProject.version
 
 repositories {
     mavenCentral()

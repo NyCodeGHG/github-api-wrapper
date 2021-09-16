@@ -15,54 +15,22 @@
  */
 
 plugins {
-    id("org.jetbrains.dokka")
     `maven-publish`
     signing
 }
+
+group = rootProject.group
+version = rootProject.version
 
 val publishingType = if (project.version.toString().endsWith("SNAPSHOT"))
     PublishingType.SNAPSHOT
 else
     PublishingType.RELEASE
 
-val dokkaJar by tasks.registering(Jar::class) {
-    group = JavaBasePlugin.DOCUMENTATION_GROUP
-    description = "Assembles Kotlin docs with Dokka"
-    archiveClassifier.set("javadoc")
-    from(tasks.dokkaHtml)
-    dependsOn(tasks.dokkaHtml)
-}
-
 publishing {
     publications.filterIsInstance<MavenPublication>().forEach { publication ->
         publication.apply {
-            artifact(dokkaJar.get())
-            pom {
-                name.set(project.name)
-                description.set(project.description)
-                url.set("https://github.com/NyCodeGHG/github-api-wrapper")
-
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-
-                developers {
-                    developer {
-                        name.set("NyCode")
-                        email.set("nico@nycode.de")
-                        url.set("https://nycode.de")
-                    }
-                }
-
-                scm {
-                    connection.set("scm:git:git://github.com/NyCodeGHG/github-api-wrapper.git")
-                    developerConnection.set("scm:git:ssh://github.com/NyCodeGHG/github-api-wrapper.git")
-                    url.set("https://github.com/NyCodeGHG/github-api-wrapper")
-                }
-            }
+            pom.configurePom(project)
         }
     }
     repositories {
