@@ -3,7 +3,7 @@ rootProject.name = "github-api-wrapper"
 enableFeaturePreview("VERSION_CATALOGS")
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-include("core", "repositories", "repositories:branches", "bom", "repositories:autolinks")
+include("core", "repositories", "repositories:branches", "bom", "repositories:autolinks", "repositories:collaborators")
 
 pluginManagement {
     repositories {
