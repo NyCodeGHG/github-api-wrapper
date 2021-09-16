@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package dev.nycode.github.repositories.model
+package dev.nycode.github.repositories.autolinks.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

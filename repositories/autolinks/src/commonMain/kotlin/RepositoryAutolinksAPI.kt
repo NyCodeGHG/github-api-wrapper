@@ -18,7 +18,7 @@ package dev.nycode.github.repositories.autolinks
 
 import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.repositories.autolinks.request.CreateRepositoryAutolinkReferenceRequest
-import dev.nycode.github.repositories.model.Autolink
+import dev.nycode.github.repositories.autolinks.model.Autolink
 import dev.nycode.github.request.delete
 import dev.nycode.github.request.get
 import dev.nycode.github.request.post

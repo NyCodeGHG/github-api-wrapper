@@ -23,7 +23,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                api(project(":repositories"))
+                api(projects.repositories)
             }
         }
     }
