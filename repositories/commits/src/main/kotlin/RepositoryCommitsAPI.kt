@@ -17,22 +17,24 @@
 package dev.nycode.github.repositories.commits
 
 import dev.nycode.github.GitHubClientImpl
-import dev.nycode.github.model.SimpleCommit
 import dev.nycode.github.model.SimplePullRequest
 import dev.nycode.github.preview.ApiPreview
 import dev.nycode.github.preview.Previews
 import dev.nycode.github.preview.preview
 import dev.nycode.github.repositories.commits.model.CommitComparison
 import dev.nycode.github.repositories.commits.request.ListCommitsRequestBuilder
-import dev.nycode.github.repositories.model.Commit
 import dev.nycode.github.repositories.model.CommitData
 import dev.nycode.github.repositories.model.ShortBranch
 import dev.nycode.github.request.*
 import io.ktor.client.request.parameter
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.reduce
-import kotlinx.coroutines.flow.toList
 import kotlin.jvm.JvmInline
+
+/**
+ * Access APIs related to repository commits.
+ */
+public val RepositoriesAPI.commits: RepositoryCommitsAPI
+    get() = RepositoryCommitsAPI(gitHubClient)
 
 /**
  * Provides APIs regarding repository commits.

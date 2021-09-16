@@ -22,8 +22,6 @@ import dev.nycode.github.model.*
 import dev.nycode.github.preview.ApiPreview
 import dev.nycode.github.preview.Previews
 import dev.nycode.github.preview.preview
-import dev.nycode.github.repositories.autolinks.RepositoryAutolinksAPI
-import dev.nycode.github.repositories.commits.RepositoryCommitsAPI
 import dev.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
 import dev.nycode.github.repositories.request.*
 import dev.nycode.github.request.*
@@ -52,18 +50,6 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      */
     public val organizations: RepositoriesOrganizationsAPI
         get() = RepositoriesOrganizationsAPI(gitHubClient)
-
-    /**
-     * Access APIs related to repository autolinks.
-     */
-    public val autolinks: RepositoryAutolinksAPI
-        get() = RepositoryAutolinksAPI(gitHubClient)
-
-    /**
-     * Access APIs related to repository commits.
-     */
-    public val commits: RepositoryCommitsAPI
-        get() = RepositoryCommitsAPI(gitHubClient)
 
     /**
      * Get a repository by its owner and name.
