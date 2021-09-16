@@ -8,6 +8,7 @@ include(
     "repositories",
     "repositories:branches",
     "bom",
+    "full",
     "repositories:autolinks",
     "repositories:collaborators",
     "repositories:comments",
