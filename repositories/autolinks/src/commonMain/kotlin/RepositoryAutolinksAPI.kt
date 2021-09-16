@@ -17,8 +17,9 @@
 package dev.nycode.github.repositories.autolinks
 
 import dev.nycode.github.GitHubClientImpl
+import dev.nycode.github.repositories.RepositoriesAPI
 import dev.nycode.github.repositories.autolinks.request.CreateRepositoryAutolinkReferenceRequest
-import dev.nycode.github.repositories.model.Autolink
+import dev.nycode.github.repositories.autolinks.model.Autolink
 import dev.nycode.github.request.delete
 import dev.nycode.github.request.get
 import dev.nycode.github.request.post
@@ -27,6 +28,12 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.JvmInline
+
+/**
+ * Access APIs related to repository autolinks.
+ */
+public val RepositoriesAPI.autolinks: RepositoryAutolinksAPI
+    get() = RepositoryAutolinksAPI(gitHubClient)
 
 /**
  * Access [Repository autolink endpoints](https://docs.github.com/en/rest/reference/repos#autolinks).

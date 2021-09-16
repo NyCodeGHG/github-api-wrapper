@@ -14,16 +14,17 @@
  *    limitations under the License.
  */
 
-package dev.nycode.github.repositories.model
+plugins {
+    `api-module`
+    `api-publishing`
+}
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
-public data class Autolink(
-    val id: Int,
-    @SerialName("key_prefix")
-    val keyPrefix: String,
-    @SerialName("url_template")
-    val urlTemplate: String
-)
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(projects.repositories)
+            }
+        }
+    }
+}
