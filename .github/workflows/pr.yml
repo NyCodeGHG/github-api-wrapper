@@ -16,7 +16,7 @@ jobs:
           distribution: 'adopt'
           java-version: 16
 
-      - uses: gradle/gradle-build-action@v1
+      - uses: gradle/gradle-build-action@v2
         with:
           arguments: build
           distributions-cache-enabled: true
