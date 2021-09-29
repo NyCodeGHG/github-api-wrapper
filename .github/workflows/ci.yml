@@ -19,7 +19,7 @@ jobs:
           distribution: 'adopt'
           java-version: 16
 
-      - uses: gradle/gradle-build-action@v1
+      - uses: gradle/gradle-build-action@v2
         with:
           arguments: build
           distributions-cache-enabled: true
@@ -31,7 +31,7 @@ jobs:
           GRADLE_CACHE_USER: ${{ secrets.GRADLE_CACHE_USER }}
           GRADLE_CACHE_PASSWORD: ${{ secrets.GRADLE_CACHE_PASSWORD }}
 
-      - uses: gradle/gradle-build-action@v1
+      - uses: gradle/gradle-build-action@v2
         if: github.ref == 'refs/heads/dev'
         with:
           arguments: publish -PossrhUsername=${{ secrets.SONATYPE_USERNAME }} -PossrhPassword=${{ secrets.SONATYPE_PASSWORD }} -PsigningKey=${{ secrets.SIGNING_KEY }} -PsigningPassword=${{ secrets.SIGNING_PASSWORD }}
