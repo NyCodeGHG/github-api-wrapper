@@ -573,4 +573,34 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
             }
         }
     }
+
+    /**
+     * Lists public repositories for the specified user.
+     * Note: For GitHub AE, this endpoint will list internal repositories for the specified user.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-repositories-for-a-user).
+     *
+     * @param username username of user to list repositories
+     * @param builder builder for configuring the request
+     * @return [Flow] of the users repositories
+     */
+    public fun listRepositoriesForUser(
+        username: String,
+        builder: ListRepositoriesForUserRequestBuilder.() -> Unit = {}
+    ): Flow<Repository> {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return gitHubClient.simplePaginatedGet("users", username, "repos") {
+            val (type, sort, direction, perPage) = ListRepositoriesForUserRequestBuilder().apply(builder)
+            if (perPage != null) {
+                this.perPage = perPage
+            }
+            request {
+                parameter("type", type)
+                parameter("sort", sort)
+                parameter("direction", direction)
+            }
+        }
+    }
 }
