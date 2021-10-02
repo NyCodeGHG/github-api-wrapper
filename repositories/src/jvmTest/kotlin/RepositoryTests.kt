@@ -19,6 +19,7 @@ import dev.nycode.github.auth.AuthProvider
 import dev.nycode.github.preview.ApiPreview
 import dev.nycode.github.repositories.repositories
 import dev.nycode.github.request.GitHubRequestException
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.singleOrNull
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
@@ -56,7 +57,7 @@ class RepositoryTests {
     @Test
     fun `listRepositoriesForAuthenticatedUser should throw exception without authentication`(): Unit = runBlocking {
         assertFailsWith<GitHubRequestException> {
-            unauthenticatedClient.repositories.listRepositoriesForAuthenticatedUser()
+            unauthenticatedClient.repositories.listRepositoriesForAuthenticatedUser().collect()
         }
     }
 }

@@ -521,24 +521,25 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-repositories-for-the-authenticated-user).
      *
      * @param builder builder for configuring the request
-     * @return [List] of repositories
+     * @return [Flow] of the users repositories
      * @throws GitHubRequestException when the request fails.
      */
-    public suspend fun listRepositoriesForAuthenticatedUser(builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit = {}): List<Repository> {
+    public fun listRepositoriesForAuthenticatedUser(builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit = {}): Flow<Repository> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
-        return gitHubClient.get("user", "repos") {
+        return gitHubClient.simplePaginatedGet("user", "repos") {
+            val (visibility, affiliation, type, sort, direction, perPage, since, before)
+                = ListRepositoriesForAuthenticatedUserRequestBuilder().apply(builder)
+            if (perPage != null) {
+                this.perPage = perPage
+            }
             request {
-                val (visibility, affiliation, type, sort, direction, page, perPage, since, before)
-                    = ListRepositoriesForAuthenticatedUserRequestBuilder().apply(builder)
                 parameter("visibility", visibility)
                 parameter("affiliation", affiliation)
                 parameter("type", type)
                 parameter("sort", sort)
                 parameter("direction", direction)
-                parameter("per_page", perPage)
-                parameter("page", page)
                 parameter("since", since)
                 parameter("before", before)
             }

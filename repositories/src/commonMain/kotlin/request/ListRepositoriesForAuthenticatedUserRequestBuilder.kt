@@ -28,7 +28,6 @@ public data class ListRepositoriesForAuthenticatedUserRequestBuilder(
     public var type: Type? = null,
     public var sort: RepositorySort? = null,
     public var direction: SortDirection? = null,
-    public var page: Int? = null,
     public var perPage: Int? = null,
     public var since: Instant? = null,
     public var before: Instant? = null
