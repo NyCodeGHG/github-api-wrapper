@@ -25,10 +25,14 @@ import dev.nycode.github.preview.preview
 import dev.nycode.github.repositories.RepositoriesAPI
 import dev.nycode.github.repositories.branches.model.AccessRestrictions
 import dev.nycode.github.repositories.branches.model.App
+import dev.nycode.github.repositories.branches.model.BranchSyncResult
 import dev.nycode.github.repositories.branches.request.*
 import dev.nycode.github.repositories.model.*
 import dev.nycode.github.request.*
+import io.ktor.client.call.receive
+import io.ktor.client.features.expectSuccess
 import io.ktor.client.request.parameter
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
@@ -1000,4 +1004,48 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClientI
                 body = mapOf("new_name" to newName)
             }
         }
+
+    /**
+     * Syncs a forks branch with the upstream repository.
+     * Note: This endpoint is currently in beta and subject to change.
+     *
+     * This functions returns a subclass of [BranchSyncResult] depending on the result of the request.
+     * You can check if the result was successful using a simple `is`.
+     * ```
+     * val result = github.repositories.branches.syncForkBranchWithUpstreamRepo("hello", "world")
+     * // check if the branch got updated successfully
+     * when (result) {
+     *     is BranchSyncResult.Success -> println("Successfully updated branch")
+     *     is BranchSyncResult.Conflict -> println("Merge conflict")
+     *     else -> println("Cannot update")
+     * }
+     * ```
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#sync-a-fork-branch-with-the-upstream-repository).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param branch the name of the branch which should be updated
+     * @return a subclass of [BranchSyncResult]
+     */
+    @ApiPreview
+    public suspend fun syncForkBranchWithUpstreamRepo(
+        owner: String,
+        repo: String,
+        branch: String
+    ): BranchSyncResult {
+        val response: HttpResponse = gitHubClient.post("repos", owner, repo, "merge-upstream") {
+            request {
+                expectSuccess = false
+                contentType(ContentType.Application.Json)
+                body = mapOf("branch" to branch)
+            }
+        }
+        return when (response.status.value) {
+            200 -> response.receive<BranchSyncResult.Success>()
+            409 -> BranchSyncResult.Conflict
+            422 -> BranchSyncResult.Unprocessable
+            else -> BranchSyncResult.Unknown
+        }
+    }
 }
