@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+@file:Suppress("NAME_SHADOWING")
 
 package dev.nycode.github.repositories
 
@@ -100,7 +101,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @return the edited repository
      * @throws GitHubRequestException when the request fails
      */
-    public suspend fun updateRepository(
+    public suspend inline fun updateRepository(
         owner: String,
         repo: String,
         builder: UpdateRepositoryRequestBuilder.() -> Unit = {}
@@ -108,10 +109,11 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
+        val builder = UpdateRepositoryRequestBuilder().apply(builder)
         return gitHubClient.patch("repos", owner, repo) {
             request {
                 contentType(ContentType.Application.Json)
-                body = UpdateRepositoryRequestBuilder().apply(builder)
+                body = builder
             }
         }
     }
@@ -200,7 +202,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @return [List] of [Contributor]s
      * @throws GitHubRequestException when the request fails
      */
-    public fun listRepositoryContributors(
+    public inline fun listRepositoryContributors(
         owner: String,
         repo: String,
         includeAnonymousContributors: Boolean? = null,
@@ -231,7 +233,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @param builder optional builder for providing the client payload
      * @throws GitHubRequestException when the request fails
      */
-    public suspend fun createRepositoryDispatchEvent(
+    public suspend inline fun createRepositoryDispatchEvent(
         owner: String,
         repo: String,
         eventType: String,
@@ -240,10 +242,11 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
+        val builder = CreateRepositoryDispatchEventRequestBuilder(eventType).apply(builder)
         return gitHubClient.post("repos", owner, repo, "dispatches") {
             request {
                 contentType(ContentType.Application.Json)
-                body = CreateRepositoryDispatchEventRequestBuilder(eventType).apply(builder)
+                body = builder
             }
         }
     }
@@ -275,7 +278,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @return [List] of [Tag]s
      * @throws GitHubRequestException when the request fails
      */
-    public fun listRepositoryTags(
+    public inline fun listRepositoryTags(
         owner: String,
         repo: String,
         builder: SimplePaginatedRequestBuilder<Tag>.() -> Unit = {}
@@ -299,7 +302,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @return [List] of [Team]s
      * @throws GitHubRequestException when the request fails
      */
-    public fun listRepositoryTeams(
+    public inline fun listRepositoryTeams(
         owner: String,
         repo: String,
         builder: SimplePaginatedRequestBuilder<Team>.() -> Unit = {}
@@ -326,7 +329,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      */
     @OptIn(FlowPreview::class)
     @ApiPreview
-    public fun getRepositoryTopics(
+    public inline fun getRepositoryTopics(
         owner: String,
         repo: String,
         builder: PaginatedRequestBuilder<*, String>.() -> Unit = {}
@@ -385,7 +388,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @return the current state of the repository.
      * @throws GitHubRequestException when the request fails.
      */
-    public suspend fun transferRepository(
+    public suspend inline fun transferRepository(
         owner: String,
         repo: String,
         newOwner: String,
@@ -395,9 +398,10 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
         return gitHubClient.post("repos", owner, repo, "transfer") {
+            val builder = TransferRepositoryRequestBuilder(newOwner).apply(builder)
             request {
                 contentType(ContentType.Application.Json)
-                body = TransferRepositoryRequestBuilder(newOwner).apply(builder)
+                body = builder
             }
         }
     }
@@ -492,7 +496,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @throws GitHubRequestException when the request fails.
      */
     @ApiPreview
-    public suspend fun createRepositoryFromTemplate(
+    public suspend inline fun createRepositoryFromTemplate(
         templateOwner: String,
         templateRepo: String,
         name: String,
@@ -501,11 +505,12 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
+        val builder = CreateRepositoryFromTemplateRequestBuilder(name).apply(builder)
         return gitHubClient.post("repos", templateOwner, templateRepo, "generate") {
             request {
                 preview(Previews.BaptistePreview)
                 contentType(ContentType.Application.Json)
-                body = CreateRepositoryFromTemplateRequestBuilder(name).apply(builder)
+                body = builder
             }
         }
     }
@@ -520,15 +525,16 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @return [List] of the found repositories.
      * @throws GitHubRequestException when the request fails.
      */
-    public suspend fun listPublicRepositories(
+    public suspend inline fun listPublicRepositories(
         builder: ListPublicRepositoriesRequestBuilder.() -> Unit = {}
     ): List<Repository> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
+        val (since) = ListPublicRepositoriesRequestBuilder().apply(builder)
         return gitHubClient.get("repositories") {
             request {
-                parameter("since", ListPublicRepositoriesRequestBuilder().apply(builder).since)
+                parameter("since", since)
             }
         }
     }
@@ -545,7 +551,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @return [Flow] of the users repositories
      * @throws GitHubRequestException when the request fails.
      */
-    public fun listRepositoriesForAuthenticatedUser(
+    public inline fun listRepositoriesForAuthenticatedUser(
         builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit = {}
     ): Flow<Repository> {
         contract {
@@ -591,17 +597,18 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @return the new [Repository]
      * @throws GitHubRequestException when the request fails.
      */
-    public suspend fun createRepositoryForAuthenticatedUser(
+    public suspend inline fun createRepositoryForAuthenticatedUser(
         name: String,
         builder: CreateRepositoryForAuthenticatedUserRequestBuilder.() -> Unit
     ): Repository {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
+        val builder = CreateRepositoryForAuthenticatedUserRequestBuilder(name).apply(builder)
         return gitHubClient.post("user", "repos") {
             request {
                 contentType(ContentType.Application.Json)
-                body = CreateRepositoryForAuthenticatedUserRequestBuilder(name).apply(builder)
+                body = builder
             }
         }
     }
@@ -616,7 +623,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @param builder builder for configuring the request
      * @return [Flow] of the users repositories
      */
-    public fun listRepositoriesForUser(
+    public inline fun listRepositoriesForUser(
         username: String,
         builder: ListRepositoriesForUserRequestBuilder.() -> Unit = {}
     ): Flow<Repository> {
