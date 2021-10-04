@@ -17,8 +17,8 @@
 package dev.nycode.github.model
 
 import kotlinx.datetime.Instant
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Serializable
 public data class SimpleMilestone(

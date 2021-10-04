@@ -56,5 +56,4 @@ public sealed interface BranchSyncResult {
     public object Unprocessable : BranchSyncResult
 
     public object Unknown : BranchSyncResult
-
 }

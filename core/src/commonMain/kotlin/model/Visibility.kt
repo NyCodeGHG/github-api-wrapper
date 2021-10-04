@@ -34,5 +34,4 @@ public enum class Visibility {
 
     @SerialName("internal")
     INTERNAL
-
 }

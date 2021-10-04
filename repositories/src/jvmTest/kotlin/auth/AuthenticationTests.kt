@@ -47,5 +47,4 @@ class AuthenticationTests {
             client.repositories.getRepository(repoOwner, repoName)
         }
     }
-
 }

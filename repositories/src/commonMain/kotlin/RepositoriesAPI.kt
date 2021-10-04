@@ -18,13 +18,34 @@ package dev.nycode.github.repositories
 
 import dev.nycode.github.GitHubClient
 import dev.nycode.github.GitHubClientImpl
-import dev.nycode.github.model.*
+import dev.nycode.github.model.Contributor
+import dev.nycode.github.model.Language
+import dev.nycode.github.model.Repository
+import dev.nycode.github.model.Tag
+import dev.nycode.github.model.Team
 import dev.nycode.github.preview.ApiPreview
 import dev.nycode.github.preview.Previews
 import dev.nycode.github.preview.preview
 import dev.nycode.github.repositories.organizations.RepositoriesOrganizationsAPI
-import dev.nycode.github.repositories.request.*
-import dev.nycode.github.request.*
+import dev.nycode.github.repositories.request.CreateRepositoryDispatchEventRequestBuilder
+import dev.nycode.github.repositories.request.CreateRepositoryForAuthenticatedUserRequestBuilder
+import dev.nycode.github.repositories.request.CreateRepositoryFromTemplateRequestBuilder
+import dev.nycode.github.repositories.request.ListPublicRepositoriesRequestBuilder
+import dev.nycode.github.repositories.request.ListRepositoriesForAuthenticatedUserRequestBuilder
+import dev.nycode.github.repositories.request.ListRepositoriesForUserRequestBuilder
+import dev.nycode.github.repositories.request.RepositoryTopicsRequestResponse
+import dev.nycode.github.repositories.request.TransferRepositoryRequestBuilder
+import dev.nycode.github.repositories.request.UpdateRepositoryRequestBuilder
+import dev.nycode.github.request.GitHubRequestException
+import dev.nycode.github.request.PaginatedRequestBuilder
+import dev.nycode.github.request.SimplePaginatedRequestBuilder
+import dev.nycode.github.request.delete
+import dev.nycode.github.request.get
+import dev.nycode.github.request.paginatedGet
+import dev.nycode.github.request.patch
+import dev.nycode.github.request.post
+import dev.nycode.github.request.put
+import dev.nycode.github.request.simplePaginatedGet
 import io.ktor.client.features.expectSuccess
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
@@ -524,13 +545,23 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @return [Flow] of the users repositories
      * @throws GitHubRequestException when the request fails.
      */
-    public fun listRepositoriesForAuthenticatedUser(builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit = {}): Flow<Repository> {
+    public fun listRepositoriesForAuthenticatedUser(
+        builder: ListRepositoriesForAuthenticatedUserRequestBuilder.() -> Unit = {}
+    ): Flow<Repository> {
         contract {
             callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
         }
         return gitHubClient.simplePaginatedGet("user", "repos") {
-            val (visibility, affiliation, type, sort, direction, perPage, since, before)
-                = ListRepositoriesForAuthenticatedUserRequestBuilder().apply(builder)
+            val (
+                visibility,
+                affiliation,
+                type,
+                sort,
+                direction,
+                perPage,
+                since,
+                before
+            ) = ListRepositoriesForAuthenticatedUserRequestBuilder().apply(builder)
             if (perPage != null) {
                 this.perPage = perPage
             }
