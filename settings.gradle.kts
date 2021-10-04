@@ -26,7 +26,7 @@ pluginManagement {
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            version("ktor", "1.6.3")
+            version("ktor", "1.6.4")
             alias("ktor-client-core").to("io.ktor", "ktor-client-core").versionRef("ktor")
             alias("ktor-client-okhttp").to("io.ktor", "ktor-client-okhttp").versionRef("ktor")
             alias("ktor-client-js").to("io.ktor", "ktor-client-js").versionRef("ktor")
@@ -34,12 +34,12 @@ dependencyResolutionManagement {
             alias("ktor-client-mock").to("io.ktor", "ktor-client-mock").versionRef("ktor")
             alias("ktor-client-serialization").to("io.ktor", "ktor-client-serialization").versionRef("ktor")
             alias("kotlinx-serialization-json").to("org.jetbrains.kotlinx", "kotlinx-serialization-json")
-                .version("1.2.2")
+                .version("1.3.0")
             alias("kotlinx-datetime").to("org.jetbrains.kotlinx", "kotlinx-datetime").version("0.2.1")
         }
 
         create("test") {
-            version("junit", "5.7.2")
+            version("junit", "5.8.1")
             alias("junit5").to("org.junit.jupiter", "junit-jupiter-engine").versionRef("junit")
         }
     }
