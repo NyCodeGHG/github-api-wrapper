@@ -21,7 +21,7 @@ import kotlinx.serialization.SerialName
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-public class UpdateBranchProtectionRequestBuilder internal constructor(
+public class UpdateBranchProtectionRequestBuilder(
     @SerialName("required_status_checks")
     public var requiredStatusChecks: SimpleStatusChecks?,
     @SerialName("enforce_admins")
