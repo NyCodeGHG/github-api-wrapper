@@ -2,6 +2,8 @@
 
 [![Gradle CI](https://github.com/NyCodeGHG/github-api-wrapper/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/NyCodeGHG/github-api-wrapper/actions/workflows/ci.yml)
 ![GitHub](https://img.shields.io/github/license/NyCodeGHG/github-api-wrapper?color=067abd&style=flat-square)
+[![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
+[![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin-multiplatform-7d23eb?logo=kotlin&style=flat-square)](https://kotlinlang.org)
 
 This is a [Kotlin](https://kotlinlang.org) wrapper for the [GitHub REST API v3](https://docs.github.com/rest/).
 
