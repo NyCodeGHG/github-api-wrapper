@@ -122,9 +122,10 @@ public abstract class GitHubClientBuilderBase {
             configureClient()
         }
         install(JsonFeature) {
-            serializer = KotlinxSerializer(Json {
+            val json = Json {
                 ignoreUnknownKeys = true
-            })
+            }
+            serializer = KotlinxSerializer(json)
         }
         defaultRequest {
             with(authProvider) {

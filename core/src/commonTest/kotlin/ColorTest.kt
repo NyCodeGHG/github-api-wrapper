@@ -45,5 +45,4 @@ internal class ColorTest {
         val serializedColor = """"8328eb""""
         assertEquals(Color(0x8328eb), Json.decodeFromString(serializedColor))
     }
-
 }

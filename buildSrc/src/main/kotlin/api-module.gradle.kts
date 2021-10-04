@@ -18,6 +18,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("org.jetbrains.dokka")
+    id("org.jlleitschuh.gradle.ktlint")
     `maven-publish`
 }
 

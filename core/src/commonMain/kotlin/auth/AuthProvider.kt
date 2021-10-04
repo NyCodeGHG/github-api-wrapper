@@ -52,7 +52,6 @@ public sealed interface AuthProvider {
                 }
             }
         }
-
     }
 
     /**
@@ -63,7 +62,5 @@ public sealed interface AuthProvider {
         override fun HttpRequestBuilder.configureAuth() {
             header(HttpHeaders.Authorization, "token $token")
         }
-
     }
-
 }

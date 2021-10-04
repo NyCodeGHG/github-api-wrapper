@@ -20,14 +20,11 @@ import dev.nycode.github.preview.ApiPreview
 import dev.nycode.github.repositories.repositories
 import dev.nycode.github.request.GitHubRequestException
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.singleOrNull
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class RepositoryTests {
 

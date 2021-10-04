@@ -16,6 +16,7 @@
 
 plugins {
     id("org.jetbrains.dokka")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 group = "dev.nycode.github"

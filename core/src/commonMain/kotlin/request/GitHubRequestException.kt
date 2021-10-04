@@ -17,7 +17,5 @@
 package dev.nycode.github.request
 
 public class GitHubRequestException internal constructor(errorResponse: GitHubErrorResponse) : Exception(
-    "Request failed. Reason: \"${errorResponse.message}\". View documentation at: ${
-        errorResponse.documentationUrl
-    }"
+    "Request failed. Reason: \"${errorResponse.message}\". View documentation at: ${errorResponse.documentationUrl}"
 )

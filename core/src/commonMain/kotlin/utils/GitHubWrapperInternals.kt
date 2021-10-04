@@ -22,5 +22,7 @@ package dev.nycode.github.utils
     AnnotationTarget.TYPEALIAS
 )
 @Retention(AnnotationRetention.BINARY)
-@RequiresOptIn(message = "This is an internal api used by the library. Don't use it when you don't know what you're doing.")
+@RequiresOptIn(
+    message = "This is an internal api used by the library. Don't use it when you don't know what you're doing."
+)
 public annotation class GitHubWrapperInternals
