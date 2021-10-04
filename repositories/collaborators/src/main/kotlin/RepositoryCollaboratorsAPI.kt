@@ -38,7 +38,7 @@ import kotlin.jvm.JvmInline
  * Provides APIs regarding repository collaborators.
  */
 @JvmInline
-public value class RepositoryCollaboratorsAPI(private val gitHubClient: GitHubClientImpl) {
+public value class RepositoryCollaboratorsAPI(@PublishedApi internal val gitHubClient: GitHubClientImpl) {
     /**
      * Lists all collaborators of the specified repository.
      * For organization-owned repositories,
@@ -121,19 +121,17 @@ public value class RepositoryCollaboratorsAPI(private val gitHubClient: GitHubCl
      * @param builder builder for settings permissions in an organization repository
      * @throws GitHubRequestException when the request fails
      */
-    public suspend fun addRepositoryCollaborator(
+    public suspend inline fun addRepositoryCollaborator(
         owner: String,
         repo: String,
         username: String,
         builder: AddRepositoryCollaboratorRequestBuilder.() -> Unit = {}
     ): Unit = gitHubClient.put("repos", owner, repo, "collaborators", username) {
         request {
-            contentType(ContentType.Application.Json)
-            val requestBody = AddRepositoryCollaboratorRequestBuilder().apply(builder)
-            body = if (requestBody.permissions != null || requestBody.permission != null) {
-                requestBody
-            } else {
-                ""
+            val builder = AddRepositoryCollaboratorRequestBuilder().apply(builder)
+            if (builder.permissions != null || builder.permission != null) {
+                contentType(ContentType.Application.Json)
+                body = builder
             }
         }
     }
