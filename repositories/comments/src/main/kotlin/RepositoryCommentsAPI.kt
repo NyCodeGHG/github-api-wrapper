@@ -180,7 +180,7 @@ public sealed interface RepositoryCommentsAPI<T : CommitComment> {
      * @param builder builder for additional options
      * @return thew newly created comment
      */
-    public suspend fun createCommitComment(
+    public suspend inline fun createCommitComment(
         owner: String,
         repo: String,
         commitSha: String,
@@ -295,7 +295,7 @@ internal value class FullRepositoryCommentsAPI internal constructor(
         perPage: Int?
     ): Flow<FullCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
 
-    override suspend fun createCommitComment(
+    override suspend inline fun createCommitComment(
         owner: String,
         repo: String,
         commitSha: String,
@@ -338,7 +338,7 @@ internal value class HtmlRepositoryCommentsAPI internal constructor(
         perPage: Int?
     ): Flow<HtmlCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
 
-    override suspend fun createCommitComment(
+    override suspend inline fun createCommitComment(
         owner: String,
         repo: String,
         commitSha: String,
@@ -381,7 +381,7 @@ internal value class TextRepositoryCommentsAPI internal constructor(
         perPage: Int?
     ): Flow<TextCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
 
-    override suspend fun createCommitComment(
+    override suspend inline fun createCommitComment(
         owner: String,
         repo: String,
         commitSha: String,
@@ -424,7 +424,7 @@ internal value class RawRepositoryCommentsAPI internal constructor(
         perPage: Int?
     ): Flow<RawCommitComment> = gitHubClient.listCommitComments(owner, repo, commitSha, perPage, mediaType)
 
-    override suspend fun createCommitComment(
+    override suspend inline fun createCommitComment(
         owner: String,
         repo: String,
         commitSha: String,
