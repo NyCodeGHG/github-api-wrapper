@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+@file:Suppress("NAME_SHADOWING")
 
 package dev.nycode.github.repositories.organizations
 
@@ -33,7 +34,9 @@ import kotlin.jvm.JvmInline
  * Provides APIs regarding repositories in organizations.
  */
 @JvmInline
-public value class RepositoriesOrganizationsAPI internal constructor(private val gitHubClient: GitHubClientImpl) {
+public value class RepositoriesOrganizationsAPI internal constructor(
+    @PublishedApi internal val gitHubClient: GitHubClientImpl
+) {
 
     /**
      * Lists repositories for the specified organization.
@@ -41,16 +44,16 @@ public value class RepositoriesOrganizationsAPI internal constructor(private val
      * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#list-organization-repositories).
      *
      * @param organization the organization to list the repos from
-     * @param block builder for configuring list and pagination options
+     * @param builder builder for configuring list and pagination options
      * @return [List] of the organizations repositories
      * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
-    public fun listOrganizationRepositories(
+    public inline fun listOrganizationRepositories(
         organization: String,
-        block: ListOrganizationRepositoriesRequestBuilder.() -> Unit = {}
+        builder: ListOrganizationRepositoriesRequestBuilder.() -> Unit = {}
     ): Flow<MinimalRepository> =
         gitHubClient.simplePaginatedGet("orgs", organization, "repos") {
-            val (type, sort, direction, perPage) = ListOrganizationRepositoriesRequestBuilder().apply(block)
+            val (type, sort, direction, perPage) = ListOrganizationRepositoriesRequestBuilder().apply(builder)
             perPage?.let {
                 this.perPage = it
             }
@@ -69,18 +72,18 @@ public value class RepositoriesOrganizationsAPI internal constructor(private val
      *
      * @param organization the organization to create the repo in
      * @param name the name of the new repository
-     * @param block builder for configuring options of the new repo
+     * @param builder builder for configuring options of the new repo
      * @return the new [Repository]
      * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
-    public suspend fun createOrganizationRepository(
+    public suspend inline fun createOrganizationRepository(
         organization: String,
         name: String,
-        block: CreateOrganizationRepositoryRequestBuilder.() -> Unit
+        builder: CreateOrganizationRepositoryRequestBuilder.() -> Unit
     ): Repository =
         gitHubClient.request("orgs", organization, "repos") {
+            val builder = CreateOrganizationRepositoryRequestBuilder(name).apply(builder)
             request {
-                val builder = CreateOrganizationRepositoryRequestBuilder(name).apply(block)
                 contentType(ContentType.Application.Json)
                 body = builder
             }

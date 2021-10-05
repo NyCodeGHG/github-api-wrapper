@@ -16,7 +16,7 @@
 
 package dev.nycode.github.repositories.branches.request
 
-public class ListBranchesRequestBuilder internal constructor(
+public class ListBranchesRequestBuilder(
     public var protected: Boolean? = null,
     public var perPage: Int? = null
 ) {

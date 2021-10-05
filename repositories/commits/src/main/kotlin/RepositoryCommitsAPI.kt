@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+@file:Suppress("NAME_SHADOWING")
 
 package dev.nycode.github.repositories.commits
 
@@ -40,7 +41,7 @@ public val RepositoriesAPI.commits: RepositoryCommitsAPI
  * Provides APIs regarding repository commits.
  */
 @JvmInline
-public value class RepositoryCommitsAPI internal constructor(private val gitHubClient: GitHubClientImpl) {
+public value class RepositoryCommitsAPI internal constructor(@PublishedApi internal val gitHubClient: GitHubClientImpl) {
 
     /**
      * Lists commits of a repository.
@@ -51,22 +52,22 @@ public value class RepositoryCommitsAPI internal constructor(private val gitHubC
      * @param repo the name of the repo
      * @param builder builder for further specification of request filter options.
      */
-    public fun listCommits(
+    public inline fun listCommits(
         owner: String,
         repo: String,
         builder: ListCommitsRequestBuilder.() -> Unit = {}
     ): Flow<CommitData> =
         gitHubClient.simplePaginatedGet("repos", owner, repo, "commits") {
-            val requestBuilder = ListCommitsRequestBuilder().apply(builder)
-            requestBuilder.perPage?.let {
-                perPage = it
+            val builder = ListCommitsRequestBuilder().apply(builder)
+            if (builder.perPage != null) {
+                perPage = builder.perPage
             }
             request {
-                parameter("sha", requestBuilder.sha)
-                parameter("path", requestBuilder.path)
-                parameter("author", requestBuilder.author)
-                parameter("since", requestBuilder.since)
-                parameter("until", requestBuilder.until)
+                parameter("sha", builder.sha)
+                parameter("path", builder.path)
+                parameter("author", builder.author)
+                parameter("since", builder.since)
+                parameter("until", builder.until)
             }
         }
 

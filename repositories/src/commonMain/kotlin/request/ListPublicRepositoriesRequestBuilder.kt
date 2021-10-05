@@ -19,6 +19,6 @@ package dev.nycode.github.repositories.request
 import kotlinx.serialization.Serializable
 
 @Serializable
-public class ListPublicRepositoriesRequestBuilder(
+public data class ListPublicRepositoriesRequestBuilder(
     public var since: Int? = null
 )

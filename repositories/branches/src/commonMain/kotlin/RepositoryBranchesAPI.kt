@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+@file:Suppress("NAME_SHADOWING")
 
 package dev.nycode.github.repositories.branches
 
@@ -65,7 +66,7 @@ public val RepositoriesAPI.branches: RepositoryBranchesAPI
  * Access [Repository branches endpoints](https://docs.github.com/en/rest/reference/repos#branches).
  */
 @JvmInline
-public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClientImpl) {
+public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient: GitHubClientImpl) {
 
     /**
      * Lists all branches of the specified repository.
@@ -78,14 +79,15 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClientI
      * @return [Flow] of [ShortBranch]es
      * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
-    public fun listBranches(
+    public inline fun listBranches(
         owner: String,
         repo: String,
         builder: ListBranchesRequestBuilder.() -> Unit = {}
     ): Flow<ShortBranch> =
         gitHubClient.simplePaginatedGet("repos", owner, repo, "branches") {
+            val builder = ListBranchesRequestBuilder().apply(builder)
             request {
-                val (protected, perPage) = ListBranchesRequestBuilder().apply(builder)
+                val (protected, perPage) = builder
                 parameter("protected", protected)
                 parameter("per_page", perPage)
             }
@@ -153,7 +155,7 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClientI
      * @return the updated [BranchProtection]
      * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
-    public suspend fun updateBranchProtection(
+    public suspend inline fun updateBranchProtection(
         owner: String,
         repo: String,
         branch: String,
@@ -168,18 +170,19 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClientI
         builder: UpdateBranchProtectionRequestBuilder.() -> Unit = {}
     ): BranchProtection =
         gitHubClient.put("repos", owner, repo, "branches", branch, "protection") {
+            val builder = UpdateBranchProtectionRequestBuilder(
+                requiredStatusChecks,
+                enforceAdmins,
+                requiredPullRequestReviews,
+                restrictions,
+                requiredLinearHistory,
+                allowForcePushes,
+                allowDeletions,
+                requiredConversationResolution
+            ).apply(builder)
             request {
                 contentType(ContentType.Application.Json)
-                body = UpdateBranchProtectionRequestBuilder(
-                    requiredStatusChecks,
-                    enforceAdmins,
-                    requiredPullRequestReviews,
-                    restrictions,
-                    requiredLinearHistory,
-                    allowForcePushes,
-                    allowDeletions,
-                    requiredConversationResolution
-                ).apply(builder)
+                body = builder
             }
         }
 
@@ -299,16 +302,17 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClientI
      * @return the branches pull request protection
      * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
-    public suspend fun updatePullRequestReviewProtection(
+    public suspend inline fun updatePullRequestReviewProtection(
         owner: String,
         repo: String,
         branch: String,
         builder: EditPullRequestReviewsBuilder.() -> Unit
     ): PullRequestReviewProtection =
         gitHubClient.patch("repos", owner, repo, "branches", branch, "protection", "required_pull_request_reviews") {
+            val builder = EditPullRequestReviewsBuilder().apply(builder)
             request {
                 contentType(ContentType.Application.Json)
-                body = EditPullRequestReviewsBuilder().apply(builder)
+                body = builder
             }
         }
 
@@ -457,16 +461,17 @@ public value class RepositoryBranchesAPI(private val gitHubClient: GitHubClientI
      * @return the status checks protection of the branch
      * @throws dev.nycode.github.request.GitHubRequestException when the request fails
      */
-    public suspend fun updateStatusCheckProtection(
+    public suspend inline fun updateStatusCheckProtection(
         owner: String,
         repo: String,
         branch: String,
         builder: StatusChecksBuilder.() -> Unit
     ): StatusChecks =
         gitHubClient.patch("repos", owner, repo, "branches", branch, "protection", "required_status_checks") {
+            val builder = StatusChecksBuilder().apply(builder)
             request {
                 contentType(ContentType.Application.Json)
-                body = StatusChecksBuilder().apply(builder)
+                body = builder
             }
         }
 
