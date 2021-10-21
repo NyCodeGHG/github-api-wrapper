@@ -13,7 +13,8 @@ include(
     "repositories:collaborators",
     "repositories:comments",
     "repositories:commits",
-    "repositories:community"
+    "repositories:community",
+    "repositories:contents"
 )
 
 pluginManagement {
