@@ -22,8 +22,10 @@ import dev.nycode.github.repositories.RepositoriesAPI
 import dev.nycode.github.repositories.contents.model.FileCommit
 import dev.nycode.github.repositories.contents.model.RepositoryContent
 import dev.nycode.github.repositories.contents.request.CreateFileContentsRequestBuilder
+import dev.nycode.github.repositories.contents.request.DeleteFileContentsRequestBuilder
 import dev.nycode.github.repositories.contents.request.UpdateFileContentsRequestBuilder
 import dev.nycode.github.repositories.contents.request.GetRepositoryContentRequestBuilder
+import dev.nycode.github.request.delete
 import dev.nycode.github.request.get
 import dev.nycode.github.request.put
 import io.ktor.client.request.header
@@ -138,6 +140,38 @@ public value class RepositoryContentsAPI(@PublishedApi internal val gitHubClient
         }
         val builder = UpdateFileContentsRequestBuilder(message, content, sha).apply(builder)
         return gitHubClient.put("repos", owner, repo, "contents", path) {
+            request {
+                contentType(ContentType.Application.Json)
+                body = builder
+            }
+        }
+    }
+
+    /**
+     * Deletes a file in a GitHub repository.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#delete-a-file).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param path the path of the file to delete
+     * @param message the commit message
+     * @param sha the blob SHA of the file being replaced
+     * @param builder builder for additional optional parameters
+     */
+    public suspend inline fun deleteFile(
+        owner: String,
+        repo: String,
+        path: String,
+        message: String,
+        sha: String,
+        builder: DeleteFileContentsRequestBuilder.() -> Unit = {}
+    ): FileCommit {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        val builder = DeleteFileContentsRequestBuilder(message, sha).apply(builder)
+        return gitHubClient.delete("repos", owner, repo, "contents", path) {
             request {
                 contentType(ContentType.Application.Json)
                 body = builder
