@@ -13,17 +13,24 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+@file:Suppress("NAME_SHADOWING")
 
 package dev.nycode.github.repositories.contents
 
 import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.repositories.RepositoriesAPI
+import dev.nycode.github.repositories.contents.model.FileCommit
 import dev.nycode.github.repositories.contents.model.RepositoryContent
+import dev.nycode.github.repositories.contents.request.CreateFileContentsRequestBuilder
+import dev.nycode.github.repositories.contents.request.UpdateFileContentsRequestBuilder
 import dev.nycode.github.repositories.contents.request.GetRepositoryContentRequestBuilder
 import dev.nycode.github.request.get
+import dev.nycode.github.request.put
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
+import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.contentType
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.jvm.JvmInline
@@ -64,6 +71,76 @@ public value class RepositoryContentsAPI(@PublishedApi internal val gitHubClient
             request {
                 parameter("ref", ref)
                 header(HttpHeaders.Accept, "application/vnd.github.v3.object")
+            }
+        }
+    }
+
+    /**
+     * Creates a new file in a GitHub repository.
+     * Internally this speaks to the `Create or update file contents` endpoint,
+     * but it's implemented as 2 different functions because so we are able to have strongly typed requests.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param path the path of the file to create
+     * @param message the commit message
+     * @param content the new content in Base64 encoding
+     * @param builder builder for additional optional parameters
+     */
+    public suspend inline fun createFileContents(
+        owner: String,
+        repo: String,
+        path: String,
+        message: String,
+        content: String,
+        builder: CreateFileContentsRequestBuilder.() -> Unit = {}
+    ): FileCommit {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        val builder = CreateFileContentsRequestBuilder(message, content).apply(builder)
+        return gitHubClient.put("repos", owner, repo, "contents", path) {
+            request {
+                contentType(ContentType.Application.Json)
+                body = builder
+            }
+        }
+    }
+
+    /**
+     * Updates a file in a GitHub repository.
+     * Internally this speaks to the `Create or update file contents` endpoint,
+     * but it's implemented as 2 different functions because so we are able to have strongly typed requests.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param path the path of the file to update
+     * @param message the commit message
+     * @param content the new content in Base64 encoding
+     * @param sha the blob SHA of the file being replaced
+     * @param builder builder for additional optional parameters
+     */
+    public suspend inline fun updateFileContents(
+        owner: String,
+        repo: String,
+        path: String,
+        message: String,
+        content: String,
+        sha: String,
+        builder: UpdateFileContentsRequestBuilder.() -> Unit = {}
+    ): FileCommit {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        val builder = UpdateFileContentsRequestBuilder(message, content, sha).apply(builder)
+        return gitHubClient.put("repos", owner, repo, "contents", path) {
+            request {
+                contentType(ContentType.Application.Json)
+                body = builder
             }
         }
     }
