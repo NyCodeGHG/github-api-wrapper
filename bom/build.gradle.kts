@@ -19,10 +19,6 @@ plugins {
     `api-publishing`
 }
 
-javaPlatform {
-    allowDependencies()
-}
-
 val me = project
 rootProject.subprojects {
     if (name != me.name) {
@@ -36,8 +32,10 @@ dependencies {
             if (plugins.hasPlugin("maven-publish") && name != me.name) {
                 publishing.publications.withType<MavenPublication> {
                     if (!artifactId.endsWith("-metadata") &&
-                        !artifactId.endsWith("-kotlinMultiplatform")) {
-                        api(groupId, artifactId, version)
+                        !artifactId.endsWith("-kotlinMultiplatform") &&
+                        !artifactId.endsWith("-jvm") &&
+                        !artifactId.endsWith("-js")) {
+                        api("$groupId:$artifactId:$version")
                     }
                 }
             }
