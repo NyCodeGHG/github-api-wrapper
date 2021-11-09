@@ -26,4 +26,6 @@ public class RequestBuilder(
     public fun request(builder: HttpRequestBuilder.() -> Unit) {
         requests += builder
     }
+
+    public operator fun component1(): MutableList<HttpRequestBuilder.() -> Unit> = requests
 }

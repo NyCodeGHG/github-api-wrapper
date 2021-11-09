@@ -28,8 +28,8 @@ import io.ktor.client.features.HttpResponseValidator
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.request.header
-import io.ktor.http.HttpHeaders
+import io.ktor.client.request.accept
+import io.ktor.http.ContentType
 import io.ktor.http.userAgent
 import kotlinx.serialization.json.Json
 import kotlin.contracts.InvocationKind
@@ -135,7 +135,7 @@ public abstract class GitHubClientBuilderBase {
             }
             // Set the Accept Header according to
             // https://docs.github.com/en/rest/overview/resources-in-the-rest-api#current-version
-            header(HttpHeaders.Accept, "application/vnd.github.v3+json")
+            accept(ContentType("application", "vnd.github.v3+json"))
             userAgent("NyCodeGHG/github-api-wrapper") // TODO: replace hardcoded repo with build variable
         }
         HttpResponseValidator {
