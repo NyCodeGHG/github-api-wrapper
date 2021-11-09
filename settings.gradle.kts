@@ -27,7 +27,7 @@ pluginManagement {
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            version("ktor", "1.6.4")
+            version("ktor", "1.6.5")
             alias("ktor-client-core").to("io.ktor", "ktor-client-core").versionRef("ktor")
             alias("ktor-client-okhttp").to("io.ktor", "ktor-client-okhttp").versionRef("ktor")
             alias("ktor-client-js").to("io.ktor", "ktor-client-js").versionRef("ktor")
