@@ -13,25 +13,23 @@ jobs:
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1
 
-      - name: Setup JDK
+      - name: Setup JDK 17
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: 16
+          distribution: 'temurin'
+          java-version: '17'
 
-      - uses: gradle/gradle-build-action@v2
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: build
-          distributions-cache-enabled: true
-          dependencies-cache-enabled: true
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           REPO_OWNER: ${{ secrets.REPO_OWNER }}
           REPO_NAME: ${{ secrets.REPO_NAME }}
-          GRADLE_CACHE_USER: ${{ secrets.GRADLE_CACHE_USER }}
-          GRADLE_CACHE_PASSWORD: ${{ secrets.GRADLE_CACHE_PASSWORD }}
 
-      - uses: gradle/gradle-build-action@v2
+      - name: Publish Snapshot
+        uses: gradle/gradle-build-action@v2
         if: github.ref == 'refs/heads/dev'
         with:
           arguments: publish -PossrhUsername=${{ secrets.SONATYPE_USERNAME }} -PossrhPassword=${{ secrets.SONATYPE_PASSWORD }} -PsigningKey=${{ secrets.SIGNING_KEY }} -PsigningPassword=${{ secrets.SIGNING_PASSWORD }}

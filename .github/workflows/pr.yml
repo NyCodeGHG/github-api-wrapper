@@ -10,14 +10,13 @@ jobs:
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1
 
-      - name: Setup JDK
+      - name: Setup JDK 17
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: 16
+          distribution: 'temurin'
+          java-version: '17'
 
-      - uses: gradle/gradle-build-action@v2
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: build
-          distributions-cache-enabled: true
-          dependencies-cache-enabled: true
