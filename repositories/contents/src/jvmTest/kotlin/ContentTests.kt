@@ -32,4 +32,10 @@ internal class ContentTests {
         assertIs<SubmoduleRepositoryContent>(response)
         println(response)
     }
+
+    @Test
+    fun readme(): Unit = runBlocking {
+        val readme = client.repositories.contents.getRepositoryReadMe("PaperMC", "Paper")
+        println(readme.html())
+    }
 }

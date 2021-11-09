@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 @file:Suppress("NAME_SHADOWING")
 
 package dev.nycode.github.repositories.contents
@@ -23,15 +24,16 @@ import dev.nycode.github.repositories.contents.model.FileCommit
 import dev.nycode.github.repositories.contents.model.RepositoryContent
 import dev.nycode.github.repositories.contents.request.CreateFileContentsRequestBuilder
 import dev.nycode.github.repositories.contents.request.DeleteFileContentsRequestBuilder
-import dev.nycode.github.repositories.contents.request.UpdateFileContentsRequestBuilder
 import dev.nycode.github.repositories.contents.request.GetRepositoryContentRequestBuilder
+import dev.nycode.github.repositories.contents.request.GetRepositoryReadMeRequestBuilder
+import dev.nycode.github.repositories.contents.request.ReadMeRequest
+import dev.nycode.github.repositories.contents.request.UpdateFileContentsRequestBuilder
 import dev.nycode.github.request.delete
 import dev.nycode.github.request.get
 import dev.nycode.github.request.put
-import io.ktor.client.request.header
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -72,7 +74,7 @@ public value class RepositoryContentsAPI(@PublishedApi internal val gitHubClient
             val (ref) = GetRepositoryContentRequestBuilder().apply(builder)
             request {
                 parameter("ref", ref)
-                header(HttpHeaders.Accept, "application/vnd.github.v3.object")
+                accept(ContentType("application", "vnd.github.v3.object"))
             }
         }
     }
@@ -177,5 +179,30 @@ public value class RepositoryContentsAPI(@PublishedApi internal val gitHubClient
                 body = builder
             }
         }
+    }
+
+    /**
+     * Gets the preferred README for a repository.
+     *
+     * The actual request happens when you call a function on the returned object.
+     * You can choose between different formats like [ReadMeRequest.raw], [ReadMeRequest.html] and [ReadMeRequest.regular].
+     *
+     * Represents [this](https://docs.github.com/en/rest/reference/repos#get-a-repository-readme) and [this](https://docs.github.com/en/rest/reference/repos#get-a-repository-readme-for-a-directory) endpoint.
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param builder builder for specifying optional parameters e.g. the path
+     * @return a wrapper object around the request.
+     */
+    public inline fun getRepositoryReadMe(
+        owner: String,
+        repo: String,
+        builder: GetRepositoryReadMeRequestBuilder.() -> Unit = {}
+    ): ReadMeRequest {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        val (ref, path) = GetRepositoryReadMeRequestBuilder().apply(builder)
+        return ReadMeRequest(gitHubClient, owner, repo, path, ref)
     }
 }
