@@ -17,6 +17,7 @@
 package dev.nycode.github
 
 import dev.nycode.github.auth.AuthProvider
+import dev.nycode.github.ktor.GitHubApiWrapperPlugin
 import dev.nycode.github.request.GitHubErrorResponse
 import dev.nycode.github.request.GitHubRequestException
 import dev.nycode.github.utils.receiveOrNull
@@ -127,6 +128,7 @@ public abstract class GitHubClientBuilderBase {
             }
             serializer = KotlinxSerializer(json)
         }
+        install(GitHubApiWrapperPlugin)
         defaultRequest {
             with(authProvider) {
                 configureAuth()
