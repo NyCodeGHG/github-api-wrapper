@@ -16,9 +16,14 @@
 
 import dev.nycode.github.GitHubClient
 import dev.nycode.github.repositories.contents.contents
+import dev.nycode.github.repositories.contents.model.ArchiveFormat
 import dev.nycode.github.repositories.contents.model.SubmoduleRepositoryContent
 import dev.nycode.github.repositories.repositories
+import io.ktor.utils.io.jvm.javaio.copyTo
 import kotlinx.coroutines.runBlocking
+import kotlin.io.path.Path
+import kotlin.io.path.createFile
+import kotlin.io.path.outputStream
 import kotlin.test.Test
 import kotlin.test.assertIs
 
@@ -37,5 +42,15 @@ internal class ContentTests {
     fun readme(): Unit = runBlocking {
         val readme = client.repositories.contents.getRepositoryReadMe("PaperMC", "Paper")
         println(readme.html())
+    }
+
+    @Test
+    fun download(): Unit = runBlocking {
+        val content =
+            client.repositories.contents.downloadRepositoryArchive("techtoto", "mandelbrot", ArchiveFormat.ZIP)
+        Path("mandelbrot.zip").createFile()
+            .outputStream().use {
+                content.copyTo(it)
+            }
     }
 }

@@ -20,10 +20,12 @@ package dev.nycode.github.repositories.contents
 
 import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.repositories.RepositoriesAPI
+import dev.nycode.github.repositories.contents.model.ArchiveFormat
 import dev.nycode.github.repositories.contents.model.FileCommit
 import dev.nycode.github.repositories.contents.model.RepositoryContent
 import dev.nycode.github.repositories.contents.request.CreateFileContentsRequestBuilder
 import dev.nycode.github.repositories.contents.request.DeleteFileContentsRequestBuilder
+import dev.nycode.github.repositories.contents.request.DownloadRepositoryArchiveRequestBuilder
 import dev.nycode.github.repositories.contents.request.GetRepositoryContentRequestBuilder
 import dev.nycode.github.repositories.contents.request.GetRepositoryReadMeRequestBuilder
 import dev.nycode.github.repositories.contents.request.ReadMeRequest
@@ -35,6 +37,7 @@ import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.utils.io.ByteReadChannel
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.jvm.JvmInline
@@ -204,5 +207,31 @@ public value class RepositoryContentsAPI(@PublishedApi internal val gitHubClient
         }
         val (ref, path) = GetRepositoryReadMeRequestBuilder().apply(builder)
         return ReadMeRequest(gitHubClient, owner, repo, path, ref)
+    }
+
+    /**
+     * Downloads the repos archive as a [ByteReadChannel].
+     * You could write this to a file or work with it in-memory.
+     *
+     * Represents [this](https://docs.github.com/en/rest/reference/repos#download-a-repository-archive-tar) and [this](https://docs.github.com/en/rest/reference/repos#download-a-repository-archive-zip) endpoint.
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param format the archive type to download
+     * @param builder builder for specifying optional parameters e.g. the reference
+     * @return the data in a [ByteReadChannel]
+     */
+    public suspend inline fun downloadRepositoryArchive(
+        owner: String,
+        repo: String,
+        format: ArchiveFormat,
+        builder: DownloadRepositoryArchiveRequestBuilder.() -> Unit = {}
+    ): ByteReadChannel {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        val format = "${format.name.lowercase()}ball"
+        val (ref) = DownloadRepositoryArchiveRequestBuilder().apply(builder)
+        return gitHubClient.get("repos", owner, repo, format, ref)
     }
 }
