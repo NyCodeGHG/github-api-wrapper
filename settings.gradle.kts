@@ -14,7 +14,8 @@ include(
     "repositories:comments",
     "repositories:commits",
     "repositories:community",
-    "repositories:contents"
+    "repositories:contents",
+    "repositories:deploy-keys"
 )
 
 pluginManagement {
