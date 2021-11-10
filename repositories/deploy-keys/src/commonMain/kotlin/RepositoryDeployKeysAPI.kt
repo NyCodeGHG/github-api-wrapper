@@ -21,8 +21,12 @@ import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.repositories.RepositoriesAPI
 import dev.nycode.github.repositories.deploykeys.model.DeployKey
 import dev.nycode.github.repositories.deploykeys.request.CreateDeployKeyRequestBuilder
+import dev.nycode.github.request.get
 import dev.nycode.github.request.post
 import dev.nycode.github.request.simplePaginatedGet
+import io.ktor.client.call.receive
+import io.ktor.client.features.expectSuccess
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
@@ -83,6 +87,32 @@ public value class RepositoryDeployKeysAPI(@PublishedApi internal val gitHubClie
                 contentType(ContentType.Application.Json)
                 body = builder
             }
+        }
+    }
+
+    /**
+     * Gets a deploy key in a repository.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#get-a-deploy-key).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param keyId the id of the key
+     * @return the deploy key or null when not found
+     */
+    public suspend inline fun getDeployKey(
+        owner: String,
+        repo: String,
+        keyId: Int
+    ): DeployKey? {
+        val response = gitHubClient.get<HttpResponse>("repos", owner, repo, "keys", keyId.toString()) {
+            request {
+                expectSuccess = false
+            }
+        }
+        return when (response.status.value) {
+            200 -> response.receive<DeployKey>()
+            else -> null
         }
     }
 }
