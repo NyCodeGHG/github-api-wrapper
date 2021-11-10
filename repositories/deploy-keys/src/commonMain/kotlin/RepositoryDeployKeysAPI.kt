@@ -21,6 +21,7 @@ import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.repositories.RepositoriesAPI
 import dev.nycode.github.repositories.deploykeys.model.DeployKey
 import dev.nycode.github.repositories.deploykeys.request.CreateDeployKeyRequestBuilder
+import dev.nycode.github.request.delete
 import dev.nycode.github.request.get
 import dev.nycode.github.request.post
 import dev.nycode.github.request.simplePaginatedGet
@@ -115,4 +116,19 @@ public value class RepositoryDeployKeysAPI(@PublishedApi internal val gitHubClie
             else -> null
         }
     }
+
+    /**
+     * Deletes a deploy key in a repository.
+     *
+     * Represents [this endpoint](https://docs.github.com/en/rest/reference/repos#delete-a-deploy-key).
+     *
+     * @param owner the owner of the repository
+     * @param repo the name of the repo
+     * @param keyId the id of the key
+     */
+    public suspend inline fun deleteDeployKey(
+        owner: String,
+        repo: String,
+        keyId: Int
+    ): Unit = gitHubClient.delete("repos", owner, repo, "keys", keyId.toString())
 }
