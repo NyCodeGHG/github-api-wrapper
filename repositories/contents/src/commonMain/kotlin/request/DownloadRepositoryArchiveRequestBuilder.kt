@@ -14,19 +14,10 @@
  *    limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl`
-    `kotlin-dsl-precompiled-script-plugins`
-}
+package dev.nycode.github.repositories.contents.request
 
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-}
-
-dependencies {
-    implementation(kotlin("gradle-plugin", "1.5.31"))
-    implementation(kotlin("serialization", "1.5.31"))
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.5.31")
-    implementation("org.jlleitschuh.gradle:ktlint-gradle:10.2.0")
+public class DownloadRepositoryArchiveRequestBuilder(
+    public var ref: String = ""
+) {
+    public operator fun component1(): String = ref
 }

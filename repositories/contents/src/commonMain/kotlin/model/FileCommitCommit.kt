@@ -14,16 +14,26 @@
  *    limitations under the License.
  */
 
-package dev.nycode.github.repositories.model
+package dev.nycode.github.repositories.contents.model
 
+import dev.nycode.github.model.GitUser
+import dev.nycode.github.model.VerySimpleCommit
+import dev.nycode.github.repositories.model.CommitVerification
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @property strict Require branches to be up-to-date before merging.
- * @property contexts The list of status checks to require in order to merge into this branch
- */
 @Serializable
-public data class SimpleStatusChecks(
-    val strict: Boolean,
-    val contexts: List<String>
+public data class FileCommitCommit(
+    val sha: String,
+    @SerialName("node_id")
+    val nodeId: String,
+    val url: String,
+    @SerialName("html_url")
+    val htmlUrl: String,
+    val author: GitUser,
+    val committer: GitUser,
+    val message: String,
+    val tree: Tree,
+    val parents: List<VerySimpleCommit>,
+    val verification: CommitVerification
 )

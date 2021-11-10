@@ -14,19 +14,15 @@
  *    limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl`
-    `kotlin-dsl-precompiled-script-plugins`
-}
+package dev.nycode.github.repositories.contents.request
 
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-}
+import dev.nycode.github.repositories.contents.RepositoryContentsAPI
 
-dependencies {
-    implementation(kotlin("gradle-plugin", "1.5.31"))
-    implementation(kotlin("serialization", "1.5.31"))
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.5.31")
-    implementation("org.jlleitschuh.gradle:ktlint-gradle:10.2.0")
-}
+/**
+ * Represents the optional parameters of a [RepositoryContentsAPI.getRepositoryContent] request.
+ *
+ * @param ref the branch or commit of the repository. Defaults to the repository's default branch.
+ */
+public data class GetRepositoryContentRequestBuilder(
+    public var ref: String? = null
+)

@@ -14,19 +14,12 @@
  *    limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl`
-    `kotlin-dsl-precompiled-script-plugins`
-}
+package dev.nycode.github.repositories.contents.model
 
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-}
+import kotlinx.serialization.Serializable
 
-dependencies {
-    implementation(kotlin("gradle-plugin", "1.5.31"))
-    implementation(kotlin("serialization", "1.5.31"))
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.5.31")
-    implementation("org.jlleitschuh.gradle:ktlint-gradle:10.2.0")
-}
+@Serializable
+public data class FileCommit(
+    val content: RepositoryContent?,
+    val commit: FileCommitCommit
+)

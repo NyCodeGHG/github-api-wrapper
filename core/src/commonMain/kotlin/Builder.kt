@@ -17,6 +17,7 @@
 package dev.nycode.github
 
 import dev.nycode.github.auth.AuthProvider
+import dev.nycode.github.ktor.GitHubApiWrapperPlugin
 import dev.nycode.github.request.GitHubErrorResponse
 import dev.nycode.github.request.GitHubRequestException
 import dev.nycode.github.utils.receiveOrNull
@@ -27,8 +28,7 @@ import io.ktor.client.features.HttpResponseValidator
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.request.header
-import io.ktor.http.HttpHeaders
+import io.ktor.http.ContentType
 import io.ktor.http.userAgent
 import kotlinx.serialization.json.Json
 import kotlin.contracts.InvocationKind
@@ -127,13 +127,15 @@ public abstract class GitHubClientBuilderBase {
             }
             serializer = KotlinxSerializer(json)
         }
+        install(GitHubApiWrapperPlugin) {
+            // Set the Accept Header according to
+            // https://docs.github.com/en/rest/overview/resources-in-the-rest-api#current-version
+            defaultAccept = ContentType("application", "vnd.github.v3+json")
+        }
         defaultRequest {
             with(authProvider) {
                 configureAuth()
             }
-            // Set the Accept Header according to
-            // https://docs.github.com/en/rest/overview/resources-in-the-rest-api#current-version
-            header(HttpHeaders.Accept, "application/vnd.github.v3+json")
             userAgent("NyCodeGHG/github-api-wrapper") // TODO: replace hardcoded repo with build variable
         }
         HttpResponseValidator {
