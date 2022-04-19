@@ -38,7 +38,7 @@ kotlin {
         }
     }
 
-    js(BOTH) {
+    js(LEGACY) {
         browser()
         nodejs()
     }

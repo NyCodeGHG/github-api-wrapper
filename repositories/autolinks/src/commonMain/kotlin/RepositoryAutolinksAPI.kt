@@ -24,6 +24,7 @@ import dev.nycode.github.request.delete
 import dev.nycode.github.request.get
 import dev.nycode.github.request.post
 import dev.nycode.github.request.simplePaginatedGet
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
@@ -80,7 +81,7 @@ public value class RepositoryAutolinksAPI(private val gitHubClient: GitHubClient
         gitHubClient.post("repos", owner, repo, "autolinks") {
             request {
                 contentType(ContentType.Application.Json)
-                body = CreateRepositoryAutolinkReferenceRequest(keyPrefix, urlTemplate)
+                setBody(CreateRepositoryAutolinkReferenceRequest(keyPrefix, urlTemplate))
             }
         }
 

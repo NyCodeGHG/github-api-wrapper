@@ -25,6 +25,7 @@ import dev.nycode.github.repositories.organizations.request.ListOrganizationRepo
 import dev.nycode.github.request.request
 import dev.nycode.github.request.simplePaginatedGet
 import io.ktor.client.request.parameter
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
@@ -85,7 +86,7 @@ public value class RepositoriesOrganizationsAPI internal constructor(
             val builder = CreateOrganizationRepositoryRequestBuilder(name).apply(builder)
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
 }

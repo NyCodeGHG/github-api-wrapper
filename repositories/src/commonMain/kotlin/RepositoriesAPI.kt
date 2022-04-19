@@ -47,12 +47,12 @@ import dev.nycode.github.request.patch
 import dev.nycode.github.request.post
 import dev.nycode.github.request.put
 import dev.nycode.github.request.simplePaginatedGet
-import io.ktor.client.features.expectSuccess
+import io.ktor.client.plugins.expectSuccess
 import io.ktor.client.request.parameter
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -113,7 +113,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
         return gitHubClient.patch("repos", owner, repo) {
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
     }
@@ -246,7 +246,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
         return gitHubClient.post("repos", owner, repo, "dispatches") {
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
     }
@@ -327,7 +327,6 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
      * @return [List] of [String]s
      * @throws GitHubRequestException when the request fails
      */
-    @OptIn(FlowPreview::class)
     @ApiPreview
     public inline fun getRepositoryTopics(
         owner: String,
@@ -369,7 +368,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
             request {
                 preview(Previews.MercyPreview)
                 contentType(ContentType.Application.Json)
-                body = names
+                setBody(names)
             }
         }.names
 
@@ -401,7 +400,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
             val builder = TransferRepositoryRequestBuilder(newOwner).apply(builder)
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
     }
@@ -510,7 +509,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
             request {
                 preview(Previews.BaptistePreview)
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
     }
@@ -608,7 +607,7 @@ public value class RepositoriesAPI(public val gitHubClient: GitHubClientImpl) {
         return gitHubClient.post("user", "repos") {
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
     }

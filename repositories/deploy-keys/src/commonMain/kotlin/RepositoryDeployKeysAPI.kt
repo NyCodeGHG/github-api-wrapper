@@ -25,8 +25,9 @@ import dev.nycode.github.request.delete
 import dev.nycode.github.request.get
 import dev.nycode.github.request.post
 import dev.nycode.github.request.simplePaginatedGet
-import io.ktor.client.call.receive
-import io.ktor.client.features.expectSuccess
+import io.ktor.client.call.body
+import io.ktor.client.plugins.expectSuccess
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -86,7 +87,7 @@ public value class RepositoryDeployKeysAPI(@PublishedApi internal val gitHubClie
         return gitHubClient.post("repos", owner, repo, "keys") {
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
     }
@@ -112,7 +113,7 @@ public value class RepositoryDeployKeysAPI(@PublishedApi internal val gitHubClie
             }
         }
         return when (response.status.value) {
-            200 -> response.receive<DeployKey>()
+            200 -> response.body<DeployKey>()
             else -> null
         }
     }

@@ -22,6 +22,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.headersOf
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
@@ -71,7 +72,8 @@ class PaginatorTest {
             engine {
                 addHandler { request ->
                     if (request.url.encodedPath.substringAfter('/') == paginatedEndpoint) {
-                        val responseHeaders = headersOf("Content-Type", ContentType.Application.Json.toString())
+                        val responseHeaders =
+                            headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
                         val limit = request.url.parameters["per_page"]!!.toInt()
                         val page = request.url.parameters["page"]!!.toInt() - 1

@@ -19,10 +19,12 @@ package dev.nycode.github.request
 import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.utils.GitHubWrapperInternals
 import dev.nycode.github.utils.paginate
+import io.ktor.client.call.body
 import io.ktor.client.request.parameter
 import io.ktor.client.request.request
 import io.ktor.http.HttpMethod
 import io.ktor.http.URLBuilder
+import io.ktor.http.path
 import io.ktor.http.takeFrom
 import kotlinx.coroutines.flow.Flow
 
@@ -32,9 +34,9 @@ public suspend inline fun <reified T> GitHubClientImpl.request(
     builder: RequestBuilder.() -> Unit = {}
 ): T =
     httpClient.request {
+        url.takeFrom(URLBuilder(baseUrl).apply { path(*path) })
         RequestBuilder().apply(builder).requests.forEach { it() }
-        url.takeFrom(URLBuilder(baseUrl).path(*path))
-    }
+    }.body()
 
 @GitHubWrapperInternals
 public suspend inline fun <reified T> GitHubClientImpl.get(

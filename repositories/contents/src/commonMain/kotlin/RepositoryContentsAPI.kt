@@ -35,6 +35,7 @@ import dev.nycode.github.request.get
 import dev.nycode.github.request.put
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.utils.io.ByteReadChannel
@@ -111,7 +112,7 @@ public value class RepositoryContentsAPI(@PublishedApi internal val gitHubClient
         return gitHubClient.put("repos", owner, repo, "contents", path) {
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
     }
@@ -147,7 +148,7 @@ public value class RepositoryContentsAPI(@PublishedApi internal val gitHubClient
         return gitHubClient.put("repos", owner, repo, "contents", path) {
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
     }
@@ -179,7 +180,7 @@ public value class RepositoryContentsAPI(@PublishedApi internal val gitHubClient
         return gitHubClient.delete("repos", owner, repo, "contents", path) {
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
     }
