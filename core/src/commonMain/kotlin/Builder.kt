@@ -23,13 +23,13 @@ import dev.nycode.github.request.GitHubRequestException
 import dev.nycode.github.utils.receiveOrNull
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.HttpResponseValidator
-import io.ktor.client.features.defaultRequest
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.http.ContentType
 import io.ktor.http.userAgent
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -118,14 +118,16 @@ public abstract class GitHubClientBuilderBase {
     }
 
     private fun HttpClient.configure(): HttpClient = config {
+        expectSuccess = true
         with(authProvider) {
             configureClient()
         }
-        install(JsonFeature) {
+        install(ContentNegotiation) {
             val json = Json {
                 ignoreUnknownKeys = true
             }
-            serializer = KotlinxSerializer(json)
+
+            json(json)
         }
         install(GitHubApiWrapperPlugin) {
             // Set the Accept Header according to
@@ -138,9 +140,10 @@ public abstract class GitHubClientBuilderBase {
             }
             userAgent("NyCodeGHG/github-api-wrapper") // TODO: replace hardcoded repo with build variable
         }
+
         HttpResponseValidator {
-            handleResponseException { exception ->
-                if (exception !is ClientRequestException) return@handleResponseException
+            handleResponseExceptionWithRequest { exception, _ ->
+                if (exception !is ClientRequestException) return@handleResponseExceptionWithRequest
                 val errorResponse = exception.response.receiveOrNull<GitHubErrorResponse>()
                 if (errorResponse != null) {
                     throw GitHubRequestException(errorResponse)

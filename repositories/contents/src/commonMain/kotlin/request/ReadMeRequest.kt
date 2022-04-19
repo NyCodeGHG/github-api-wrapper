@@ -19,8 +19,8 @@ package dev.nycode.github.repositories.contents.request
 import dev.nycode.github.GitHubClientImpl
 import dev.nycode.github.repositories.contents.model.FileRepositoryContent
 import dev.nycode.github.request.get
-import io.ktor.client.call.receive
-import io.ktor.client.features.expectSuccess
+import io.ktor.client.call.body
+import io.ktor.client.plugins.expectSuccess
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
@@ -70,7 +70,7 @@ public class ReadMeRequest(
         }
         println(response.request.headers)
         return when (response.status.value) {
-            200 -> response.receive()
+            200 -> response.body()
             else -> null
         }
     }

@@ -16,12 +16,12 @@
 
 package dev.nycode.github.utils
 
-import io.ktor.client.call.receive
+import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 
 @GitHubWrapperInternals
 internal suspend inline fun <reified T> HttpResponse.receiveOrNull(): T? = try {
-    receive<T>()
+    body<T>()
 } catch (exception: Exception) {
     null
 }

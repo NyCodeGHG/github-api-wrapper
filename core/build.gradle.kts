@@ -25,7 +25,8 @@ kotlin {
             dependencies {
                 api(libs.ktor.client.core)
                 api(libs.ktor.client.auth)
-                api(libs.ktor.client.serialization)
+                api(libs.ktor.serialization.kotlinx.json)
+                api(libs.ktor.client.content.negotiation)
                 api(libs.kotlinx.serialization.json)
                 api(libs.kotlinx.datetime)
             }
@@ -42,10 +43,10 @@ kotlin {
                 runtimeOnly(test.junit5)
             }
         }
-        val jsMain by getting {
-            dependencies {
-                implementation(libs.ktor.client.js)
-            }
-        }
+        // val jsMain by getting {
+        //     dependencies {
+        //         implementation(libs.ktor.client.js)
+        //     }
+        // }
     }
 }

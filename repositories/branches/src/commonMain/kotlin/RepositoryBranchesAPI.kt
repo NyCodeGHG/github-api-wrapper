@@ -47,9 +47,10 @@ import dev.nycode.github.request.patch
 import dev.nycode.github.request.post
 import dev.nycode.github.request.put
 import dev.nycode.github.request.simplePaginatedGet
-import io.ktor.client.call.receive
-import io.ktor.client.features.expectSuccess
+import io.ktor.client.call.body
+import io.ktor.client.plugins.expectSuccess
 import io.ktor.client.request.parameter
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -182,7 +183,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
             ).apply(builder)
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
 
@@ -312,7 +313,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
             val builder = EditPullRequestReviewsBuilder().apply(builder)
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
 
@@ -471,7 +472,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
             val builder = StatusChecksBuilder().apply(builder)
             request {
                 contentType(ContentType.Application.Json)
-                body = builder
+                setBody(builder)
             }
         }
 
@@ -549,7 +550,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         ) {
             request {
                 contentType(ContentType.Application.Json)
-                body = StatusCheckContextsRequestBuilder(contexts)
+                setBody(StatusCheckContextsRequestBuilder(contexts))
             }
         }
 
@@ -577,7 +578,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         gitHubClient.put("repos", owner, repo, "branches", branch, "protection", "required_status_checks", "contexts") {
             request {
                 contentType(ContentType.Application.Json)
-                body = StatusCheckContextsRequestBuilder(contexts)
+                setBody(StatusCheckContextsRequestBuilder(contexts))
             }
         }
 
@@ -614,7 +615,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         ) {
             request {
                 contentType(ContentType.Application.Json)
-                body = StatusCheckContextsRequestBuilder(contexts)
+                setBody(StatusCheckContextsRequestBuilder(contexts))
             }
         }
 
@@ -711,7 +712,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         gitHubClient.post("repos", owner, repo, "branches", branch, "protection", "restrictions", "apps") {
             request {
                 contentType(ContentType.Application.Json)
-                body = mapOf("apps" to apps)
+                setBody(mapOf("apps" to apps))
             }
         }
 
@@ -741,7 +742,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         gitHubClient.put("repos", owner, repo, "branches", branch, "protection", "restrictions", "apps") {
             request {
                 contentType(ContentType.Application.Json)
-                body = mapOf("apps" to apps)
+                setBody(mapOf("apps" to apps))
             }
         }
 
@@ -770,7 +771,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         gitHubClient.delete("repos", owner, repo, "branches", branch, "protection", "restrictions", "apps") {
             request {
                 contentType(ContentType.Application.Json)
-                body = mapOf("apps" to apps)
+                setBody(mapOf("apps" to apps))
             }
         }
 
@@ -819,7 +820,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         gitHubClient.post("repos", owner, repo, "branches", branch, "protection", "restrictions", "teams") {
             request {
                 contentType(ContentType.Application.Json)
-                body = mapOf("teams" to teams)
+                setBody(mapOf("teams" to teams))
             }
         }
 
@@ -849,7 +850,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         gitHubClient.put("repos", owner, repo, "branches", branch, "protection", "restrictions", "teams") {
             request {
                 contentType(ContentType.Application.Json)
-                body = mapOf("teams" to teams)
+                setBody(mapOf("teams" to teams))
             }
         }
 
@@ -878,7 +879,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         gitHubClient.delete("repos", owner, repo, "branches", branch, "protection", "restrictions", "teams") {
             request {
                 contentType(ContentType.Application.Json)
-                body = mapOf("teams" to teams)
+                setBody(mapOf("teams" to teams))
             }
         }
 
@@ -927,7 +928,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         gitHubClient.post("repos", owner, repo, "branches", branch, "protection", "restrictions", "users") {
             request {
                 contentType(ContentType.Application.Json)
-                body = mapOf("users" to users)
+                setBody(mapOf("users" to users))
             }
         }
 
@@ -956,7 +957,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         gitHubClient.put("repos", owner, repo, "branches", branch, "protection", "restrictions", "users") {
             request {
                 contentType(ContentType.Application.Json)
-                body = mapOf("users" to users)
+                setBody(mapOf("users" to users))
             }
         }
 
@@ -985,7 +986,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         gitHubClient.delete("repos", owner, repo, "branches", branch, "protection", "restrictions", "users") {
             request {
                 contentType(ContentType.Application.Json)
-                body = mapOf("users" to users)
+                setBody(mapOf("users" to users))
             }
         }
 
@@ -1023,7 +1024,7 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
         gitHubClient.post("repos", owner, repo, "branches", branch, "rename") {
             request {
                 contentType(ContentType.Application.Json)
-                body = mapOf("new_name" to newName)
+                setBody(mapOf("new_name" to newName))
             }
         }
 
@@ -1060,11 +1061,11 @@ public value class RepositoryBranchesAPI(@PublishedApi internal val gitHubClient
             request {
                 expectSuccess = false
                 contentType(ContentType.Application.Json)
-                body = mapOf("branch" to branch)
+                setBody(mapOf("branch" to branch))
             }
         }
         return when (response.status.value) {
-            200 -> response.receive<BranchSyncResult.Success>()
+            200 -> response.body<BranchSyncResult.Success>()
             409 -> BranchSyncResult.Conflict
             422 -> BranchSyncResult.Unprocessable
             else -> BranchSyncResult.Unknown

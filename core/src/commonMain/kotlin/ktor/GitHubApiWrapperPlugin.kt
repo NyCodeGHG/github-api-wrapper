@@ -17,7 +17,7 @@
 package dev.nycode.github.ktor
 
 import io.ktor.client.HttpClient
-import io.ktor.client.features.HttpClientFeature
+import io.ktor.client.plugins.HttpClientPlugin
 import io.ktor.client.request.HttpRequestPipeline
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -31,10 +31,10 @@ internal class GitHubApiWrapperPlugin(config: Config) {
 
     private val defaultAccept = config.defaultAccept
 
-    companion object Feature : HttpClientFeature<Config, GitHubApiWrapperPlugin> {
+    companion object Feature : HttpClientPlugin<Config, GitHubApiWrapperPlugin> {
         override val key: AttributeKey<GitHubApiWrapperPlugin> = AttributeKey("github-api-wrapper")
 
-        override fun install(feature: GitHubApiWrapperPlugin, scope: HttpClient) {
+        override fun install(plugin: GitHubApiWrapperPlugin, scope: HttpClient) {
             val newPhase = PipelinePhase("github")
             scope.requestPipeline.insertPhaseAfter(HttpRequestPipeline.Transform, newPhase)
             scope.requestPipeline.intercept(newPhase) {
@@ -42,10 +42,10 @@ internal class GitHubApiWrapperPlugin(config: Config) {
                     ?.map(ContentType.Companion::parse)
                     ?.filterNot { it == ContentType.Application.Json } ?: emptyList()
                 context.headers.remove(HttpHeaders.Accept)
-                if (headers.any { it != feature.defaultAccept }) {
+                if (headers.any { it != plugin.defaultAccept }) {
                     context.headers.appendAll(HttpHeaders.Accept, headers.map { it.toString() })
                 } else {
-                    context.headers.append(HttpHeaders.Accept, feature.defaultAccept.toString())
+                    context.headers.append(HttpHeaders.Accept, plugin.defaultAccept.toString())
                 }
             }
         }

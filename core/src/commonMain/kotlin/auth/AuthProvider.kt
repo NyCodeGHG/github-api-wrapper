@@ -17,10 +17,10 @@
 package dev.nycode.github.auth
 
 import io.ktor.client.HttpClientConfig
-import io.ktor.client.features.auth.Auth
-import io.ktor.client.features.auth.providers.BasicAuthCredentials
-import io.ktor.client.features.auth.providers.basic
-import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BasicAuthCredentials
+import io.ktor.client.plugins.auth.providers.basic
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 
@@ -30,7 +30,7 @@ import io.ktor.http.HttpHeaders
 public sealed interface AuthProvider {
 
     public fun HttpClientConfig<*>.configureClient() {}
-    public fun HttpRequestBuilder.configureAuth() {}
+    public fun DefaultRequest.DefaultRequestBuilder.configureAuth() {}
 
     /**
      * [AuthProvider] for accessing the GitHub API without authentication.
@@ -59,7 +59,7 @@ public sealed interface AuthProvider {
      */
     public class OAuth(private val token: String) : AuthProvider {
 
-        override fun HttpRequestBuilder.configureAuth() {
+        override fun DefaultRequest.DefaultRequestBuilder.configureAuth() {
             header(HttpHeaders.Authorization, "token $token")
         }
     }
