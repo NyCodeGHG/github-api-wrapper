@@ -28,5 +28,5 @@ dependencies {
     implementation(kotlin("gradle-plugin", "1.5.31"))
     implementation(kotlin("serialization", "1.5.31"))
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.5.31")
-    implementation("org.jlleitschuh.gradle:ktlint-gradle:10.2.0")
+    implementation("org.jlleitschuh.gradle:ktlint-gradle:11.0.0")
 }
